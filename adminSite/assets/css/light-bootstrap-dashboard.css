@@ -4299,7 +4299,7 @@ fieldset[disabled] .form-control {
         margin-left: -15px;
         margin-right: -15px;
     }
-
+    
     .table-responsive {
         overflow: visible;
     }
@@ -4307,6 +4307,14 @@ fieldset[disabled] .form-control {
     .navbar-nav p {
         line-height: normal;
         margin: 0;
+    }
+}
+@media screen and (max-width:640px) {
+    .fbj
+    {
+        padding: 0px !important;
+        padding-right: 100%;
+        display: block;
     }
 }
 

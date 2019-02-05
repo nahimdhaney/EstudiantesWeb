@@ -1,6 +1,6 @@
-$(document).ready(function ($) {
+$(document).ready(function($) {
     var key = 'A10BB4B705310FB670185286C2B2367365A1CA2C';
-    $("#loginButton").click(function () {
+    $("#loginButton").click(function() {
         var registro = $("#registroNumber").val()
         var ping = $("#pingNumber").val()
         debugger
@@ -24,13 +24,13 @@ $(document).ready(function ($) {
     });
 
     function resultado(resultado) {
-        if (resultado != '') {
-            var url = 'adminSite/dashboard.html'
+        if (resultado.includes("Bloqueo") || resultado.includes("error") || resultado == '') {
+            swal("Bloqueo", "Tiene deuda pendiente.", "error")
+        } else {
             sessionStorage.setItem("token", resultado);
             sessionStorage.setItem("usrLog", JSON.stringify(resultado.Message));
+            var url = 'adminSite/dashboard.html'
             $(location).attr("href", url);
-        } else {
-            $('#alertError').show();
         }
     }
 

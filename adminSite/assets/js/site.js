@@ -1,5 +1,4 @@
-$(document).ready(function ($) {
-    debugger
+$(document).ready(function($) {
     var userId = sessionStorage.getItem("token");
     if (userId == null || userId == '') {
         var url = '../index.html'

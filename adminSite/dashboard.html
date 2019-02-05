@@ -34,6 +34,7 @@
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <style>
         /* Center the loader */
+        
         #loader {
             position: absolute;
             left: 50%;
@@ -50,7 +51,7 @@
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
-
+        
         #mainLoader {
             position: absolute;
             left: 50%;
@@ -67,8 +68,7 @@
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
-
-
+        
         @-webkit-keyframes spin {
             0% {
                 -webkit-transform: rotate(0deg);
@@ -77,7 +77,7 @@
                 -webkit-transform: rotate(360deg);
             }
         }
-
+        
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -86,8 +86,8 @@
                 transform: rotate(360deg);
             }
         }
-
         /* Add animation to "page content" */
+        
         .animate-bottom {
             position: relative;
             -webkit-animation-name: animatebottom;
@@ -95,7 +95,7 @@
             animation-name: animatebottom;
             animation-duration: 1s
         }
-
+        
         @-webkit-keyframes animatebottom {
             from {
                 bottom: -100px;
@@ -106,7 +106,7 @@
                 opacity: 1
             }
         }
-
+        
         @keyframes animatebottom {
             from {
                 bottom: -100px;
@@ -117,7 +117,7 @@
                 opacity: 1
             }
         }
-
+        
         #myDiv {
             display: none;
             text-align: center;
@@ -154,10 +154,9 @@
                 <ul class="nav">
                     <div style=" padding: 10px 15px;
                     border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
-
-
+                        <!-- <h4 style="margin-left: 23%;margin-top: 0px">Ofertas</h4> -->
                         <li class="active">
-                            <select id="carrerasAlumno" style="width:100%;margin:auto;text-align: center" class="form-control m-5 " id="selectCarrera">
+                            <select id="periodosOferta" style="width:100%;margin:auto;text-align: center" class="form-control m-5 " id="selectCarrera">
                             </select>
                         </li>
                         <li class="active-pro" style="margin-top: 20px;">
@@ -167,9 +166,19 @@
                             </a>
                         </li>
                     </div>
+                    <br>
+                    <div style=" padding: 10px 15px">
+                        <!-- <h4 style="margin-left: 23%;margin-top: 0px">Carreras</h4> -->
+                        <li class="active">
+                            <select id="carrerasAlumno" style="width:100%;margin:auto;text-align: center" class="form-control m-5 " id="selectCarrera">
+                            </select>
+                        </li>
+                    </div>
+
                     <li id="periodosTitle">
                         <h3 style="margin-left: 23%">Periodos</h3>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -184,18 +193,31 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <p class="navbar-brand" id="AlumnoId"></p><br>
-                        <p id='periodoActual' class="navbar-brand"></p>
+                        <p id="nombreEstudiante" class="navbar-brand" href="#"></p><br>
+                        <p id="periodoActual" class="navbar-brand" href="#"></p>
                     </div>
                     <div class="collapse navbar-collapse">
-
-
-
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="">
+                                    <p>Imprimir</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <p>Cambiar Pin</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a id="logout" href="#">
+                                    <p>Salir</p>
+                                </a>
+                            </li>
+                            <li class="separator hidden-lg hidden-md"></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
-
-
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
@@ -242,7 +264,6 @@
                                         <th>MATERIA</th>
                                         <th>GRUPO</th>
                                         <th>DOCENTE</th>
-                                        <th class="secondSemester" style="display: none">JUL</th>
                                         <th class="secondSemester" style="display: none">AGO</th>
                                         <th class="secondSemester" style="display: none">SEP</th>
                                         <th class="secondSemester" style="display: none">OCT</th>
@@ -306,8 +327,7 @@
                     &copy;
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love
-                    for a better web
+                    </script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
                 </p>
             </div>
         </footer>
@@ -328,8 +348,6 @@
 <!--  Notifications Plugin    -->
 <script src="assets/js/bootstrap-notify.js"></script>
 
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 <script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
@@ -338,9 +356,9 @@
 <script src="assets/js/demo.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         cargarPagina();
-        $("#carrerasAlumno").change(function () {
+        $("#carrerasAlumno").change(function() {
             comenzarMainCargado();
             $('#firstLoad').val('1');
             cargarPagina();
@@ -351,42 +369,49 @@
             $("#mainLoader").removeAttr("style");
         }
 
-        $(document).on('click', '.semestre', function () {
+        $("#logout").click(function() {
+            sessionStorage.removeItem("token");
+            var url = '../index.html'
+            $(location).attr("href", url);
+        });
+
+        $(document).on('click', '.semestre', function() {
             comenzarCargado();
-            debugger
             var id = parseInt(JSON.parse($(this).attr('data-json')))
-            $("#tablaAsistencia").empty();
-            $("#tablaNotas").empty();
-            debugger
             var dperiodoActual = $(this).children("p").text();
+            $('#periodoActual').text(dperiodoActual);
             $('#dperiodoActual').val(dperiodoActual);
             $('#hperiodoActual').val(id);
-            $('#periodoActual').text(dperiodoActual);
             obtenerNotas(id);
         });
+
         function comenzarCargado() {
             $("#loader").removeAttr("style");
             $('.main-panel').attr("style", 'display:none');
 
         }
+
         function terminarMainCargado() {
             $('#mainLoader').attr("style", 'display:none');
             $("#mainContainer").removeAttr("style");
         }
+
         function terminarCargado() {
             $(".main-panel").removeAttr("style");
             $('#loader').attr("style", 'display:none');
 
         }
+
         function cargarPagina() {
             var token = sessionStorage.getItem("token");
             obtenerNombre(token);
             GetPeriodosCursados();
             getCarreraInfo(token);
+            GetPeriodosOfertas();
         }
+
         function obtenerNombre(token) {
             console.log(token)
-            debugger
             if (token != '') {
                 $.ajax({
                     headers: {
@@ -404,10 +429,15 @@
 
         function resultado(resultado) {
             console.log(resultado.Data)
-            const { SAPELLIDOP, SAPELLIDOM, SNOMBRES } = resultado.Data;
+            const {
+                SAPELLIDOP,
+                SAPELLIDOM,
+                SNOMBRES
+            } = resultado.Data;
             var NombreCompleto = SNOMBRES + ' ' + SAPELLIDOP + ' ' + SAPELLIDOM
-            $('#AlumnoId').text(NombreCompleto)
+            $('#nombreEstudiante').text(NombreCompleto)
         }
+
         function getCarreraInfo(token) {
             if (token != '') {
                 jQuery.ajax({
@@ -428,17 +458,22 @@
         function infoCarrera(resultado) {
             var count = 0;
             //$('#carrerasAlumno').empty();
-            resultado.Data.forEach(function (element) {
-                const { LCARRERA_ID, SCARRERA_DSC, LPERIODOACTUAL, LPERIODOACTUAL_ID } = element;
+            resultado.Data.forEach(function(element) {
+                const {
+                    LCARRERA_ID,
+                    SCARRERA_DSC,
+                    LPERIODOACTUAL,
+                    LPERIODOACTUAL_ID
+                } = element;
+                $('#hperiodoActual').val(LPERIODOACTUAL_ID);
+                $('#dperiodoActual').val(LPERIODOACTUAL)
+                $('#periodoActual').text(LPERIODOACTUAL)
                 if (count == 0) {
                     obtenerNotas(LPERIODOACTUAL_ID);
                     if ($('#firstLoad').val() == 1) {
                         return;
                     }
-                }
-                $('#periodoActual').text(LPERIODOACTUAL)
-                $('#hperiodoActual').val(LPERIODOACTUAL_ID);
-                $('#dperiodoActual').val(LPERIODOACTUAL);
+                };
 
                 var opcion = $("<option></option>")
                 opcion.attr("value", LCARRERA_ID);
@@ -448,6 +483,7 @@
             });
 
         }
+
         function GetPeriodosCursados() {
             $('.semestre').remove();
             var carreraId = $('#carrerasAlumno').find(":selected").val();
@@ -471,8 +507,11 @@
         }
 
         function periodosCursados(resultado) {
-            resultado.Data.forEach(function (element) {
-                const { SPERIODO_DSC, LPERIODO_ID } = element;
+            resultado.Data.forEach(function(element) {
+                const {
+                    SPERIODO_DSC,
+                    LPERIODO_ID
+                } = element;
                 //Menu Lateral
                 var lista = $("<li></li>")
                 var link = $("<a></a>")
@@ -486,6 +525,60 @@
 
             });
         }
+
+        function GetPeriodosOfertas() {
+            var carreraId = $('#carrerasAlumno').find(":selected").val();
+            var usuario = new Object();
+            usuario.pCarreraId = carreraId;
+            var token = sessionStorage.getItem("token");
+            if (token != '') {
+                jQuery.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    'type': 'POST',
+                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOferta",
+                    'dataType': 'json',
+                    'data': JSON.stringify(usuario),
+                    'success': periodosOfertas
+                });
+            }
+        }
+
+        function periodosOfertas(resultado) {
+            for (i in resultado.Data) {
+                var element = resultado.Data[i];
+                const {
+                    SPERIODO_DSC,
+                    LPERIODO_ID
+                } = element;
+                var opcion = $("<option></option>")
+                opcion.attr("value", LPERIODO_ID);
+                opcion.text(SPERIODO_DSC);
+                $('#periodosOferta').append(opcion);
+            }
+            // resultado.Data.forEach(function(element) {
+            //     const {
+            //         SPERIODO_DSC,
+            //         LPERIODO_ID
+            //     } = element;
+            //     debugger
+            //     //Menu Lateral
+            //     var lista = $("<li></li>")
+            //     var link = $("<a></a>")
+            //     var parrafo = $("<p></p>").text(SPERIODO_DSC);
+            //     parrafo.attr("class", "periodos");
+            //     link.attr("class", "semestre");
+            //     link.attr("data-json", LPERIODO_ID);
+            //     link.append(parrafo);
+            //     lista.append(link);
+            //     $("#SPERIODO_DSC").after(lista);
+
+            // });
+        }
+
         function obtenerNotas(periodoId) {
             var periodoActual = $('#dperiodoActual').val();
             var semestre = periodoActual.split("-")[1];
@@ -511,6 +604,7 @@
                 });
             }
         }
+
         function mostrarColumnas(semestre) {
             switch (semestre) {
                 case '1':
@@ -542,10 +636,21 @@
                     break;
             }
         }
+
         function cargarNotas(resultado) {
             $('#tablaNotas').empty();
-            resultado.Data.forEach(function (element) {
-                const { SCODMATERIA, SSIGLA, DOCENTE, EXFINAL, FINAL, PAR1, PAR2, SMATERIA_DSC } = element;
+            $('#tablaAsistencia').empty();
+            resultado.Data.forEach(function(element) {
+                const {
+                    SCODMATERIA,
+                    SSIGLA,
+                    DOCENTE,
+                    EXFINAL,
+                    FINAL,
+                    PAR1,
+                    PAR2,
+                    SMATERIA_DSC
+                } = element;
                 var tr = $("<tr ></tr>")
                 var tdCodMateria = $("<td></td>").text(SCODMATERIA);
                 var tdMateria = $("<td></td>").text(SMATERIA_DSC);
@@ -569,10 +674,14 @@
 
             });
         }
+
         function cargarAsistencias(element) {
-            debugger
-            $('#tablaAsistencia').empty();
-            const { SCODMATERIA, SSIGLA, DOCENTE, SMATERIA_DSC } = element;
+            const {
+                SCODMATERIA,
+                SSIGLA,
+                DOCENTE,
+                SMATERIA_DSC
+            } = element;
             var tr = $("<tr ></tr>")
             var tdCodMateria = $("<td></td>").text(SCODMATERIA);
             var tdMateria = $("<td></td>").text(SMATERIA_DSC);
@@ -584,9 +693,16 @@
             tr.append(tdDocente)
             var periodoActual = $('#dperiodoActual').val();
             var semestre = periodoActual.split("-")[1];
+            var count = 0;
             switch (semestre) {
                 case '1':
-                    const { FMES3, FMES4, FMES5, FMES6, FMES7 } = element;
+                    const {
+                        FMES3,
+                        FMES4,
+                        FMES5,
+                        FMES6,
+                        FMES7
+                    } = element;
                     var tdFMES3 = $("<td></td>").text(FMES3);
                     var tdFMES4 = $("<td></td>").text(FMES4);
                     var tdFMES5 = $("<td></td>").text(FMES5);
@@ -597,9 +713,24 @@
                     tr.append(tdFMES5)
                     tr.append(tdFMES6)
                     tr.append(tdFMES7)
+                    count = FMES3 + FMES4 + FMES5 + FMES6 + FMES7
+                    if (count >= 3) {
+                        tr.css("background-color", "yellow");
+                    } else if (count == 5) {
+                        tr.css("background-color", "red");
+                    } else if (count > 5) {
+                        tr.css("background-color", "black");
+                        tr.css("color", "white");
+                    }
                     break;
                 case '2':
-                    const { FMES8, FMES9, FMES10, FMES11, FMES12 } = element;
+                    const {
+                        FMES8,
+                        FMES9,
+                        FMES10,
+                        FMES11,
+                        FMES12
+                    } = element;
                     var tdFMES8 = $("<td></td>").text(FMES8);
                     var tdFMES9 = $("<td></td>").text(FMES9);
                     var tdFMES10 = $("<td></td>").text(FMES10);
@@ -610,13 +741,34 @@
                     tr.append(tdFMES10)
                     tr.append(tdFMES11)
                     tr.append(tdFMES12)
+                    count = FMES8 + FMES9 + FMES10 + FMES11 + FMES12
+                    if (count >= 3) {
+                        tr.css("background-color", "yellow");
+                    } else if (count == 5) {
+                        tr.css("background-color", "red");
+                    } else if (count > 5) {
+                        tr.css("background-color", "black");
+                        tr.css("color", "white");
+                    }
                     break;
                 case 'V':
-                    const { FMES1, FMES2 } = element;
+                    const {
+                        FMES1,
+                        FMES2
+                    } = element;
                     var tdFMES1 = $("<td></td>").text(FMES1);
                     var tdFMES2 = $("<td></td>").text(FMES2);
                     tr.append(tdFMES1)
                     tr.append(tdFMES2)
+                    count = FMES1 + FMES2
+                    if (count >= 3) {
+                        tr.css("background-color", "yellow");
+                    } else if (count == 5) {
+                        tr.css("background-color", "red");
+                    } else if (count > 5) {
+                        tr.css("background-color", "black");
+                        tr.css("color", "white");
+                    }
                     break;
 
             }

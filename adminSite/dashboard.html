@@ -160,7 +160,7 @@
                             </select>
                         </li>
                         <li class="active-pro" style="margin-top: 20px;">
-                            <a href="table.html">
+                            <a id="verOferta" href="oferta.html" target="_blank">
                                 <i class="pe-7s-look"></i>
                                 <p>Ver Oferta</p>
                             </a>
@@ -373,6 +373,12 @@
             sessionStorage.removeItem("token");
             var url = '../index.html'
             $(location).attr("href", url);
+        });
+        $("#verOferta").click(function() {
+            var periodoOferta = $('#periodosOferta').find(":selected").val();
+            var carreraId = $('#carrerasAlumno').find(":selected").val();
+            sessionStorage.setItem("periodoOferta", periodoOferta);
+            sessionStorage.setItem("carreraId", carreraId);
         });
 
         $(document).on('click', '.semestre', function() {

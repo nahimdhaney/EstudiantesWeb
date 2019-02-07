@@ -12,8 +12,25 @@
 
 <body>
     <div class="container-fluid">
-        <h4 class="text-center">Formulario de Inscripcion</h4>
-        <h4>Materias Ofertadas en Presencial</h4>
+        <table style="width:50%;margin: auto;margin-top: 10px">
+            <tr>
+                <td id='nombreCodigo'></td>
+                <td></td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>001 Ingenieria de Sistemas</td>
+                <td>Jackson</td>
+                <td>94</td>
+            </tr>
+            <tr>
+                <td>Cod. Pensum: 3</td>
+                <td>Doe</td>
+                <td>80</td>
+            </tr>
+        </table>
+        <h4 style="font-weight: bold;" class="text-center">Formulario de Inscripcion</h4>
+        <h4 style="font-weight: bold;">Materias Ofertadas en Presencial</h4>
         <table id="tablaOferta" class="table">
             <thead>
                 <tr>
@@ -33,9 +50,29 @@
             <tbody>
             </tbody>
         </table>
-        <h4>Documentos que debe presentar</h4>
+        <h4 style="font-weight: bold;">Materias Ofertadas en SemiPresencial</h4>
+        <table id="tablaOfertaSemi" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">MATERIA</th>
+                    <th scope="col">SEM</th>
+                    <th scope="col">CR</th>
+                    <th scope="col">LAB</th>
+                    <th scope="col">DOCENTE</th>
+                    <th scope="col">CODIGO</th>
+                    <th scope="col">GR</th>
+                    <th scope="col">HORARIO</th>
+                    <th scope="col">DIAS</th>
+                    <th scope="col">SE</th>
+                    <th scope="col">OBS</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
         <div class="col-sm-4">
-            <table class="table">
+            <h4 style="font-weight: bold;">Documentos que debe presentar</h4>
+            <table id="tablaDocumentos" class="table">
                 <thead>
                     <tr>
                         <th scope="col">Documento</th>
@@ -55,33 +92,75 @@
     $(document).ready(function() {
         cargarPagina();
 
-        function cargarPagina() {
-            obtenerOferta();
-        }
-
-        function obtenerOferta() {
-            var carreraId = sessionStorage.getItem("carreraId");
-            var periodoOferta = sessionStorage.getItem("periodoOferta");
-            var token = sessionStorage.getItem("token");
-            var usuario = new Object();
-            usuario.pCarreraId = carreraId;
-            usuario.pPeriodoId = periodoOferta;
-            jQuery.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                'type': 'POST',
-                'data': JSON.stringify(usuario),
-                'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
-                'dataType': 'json',
-                'success': cargarOferta
-            });
-        }
     })
 
+    function cargarPagina() {
+        obtenerOferta();
+        obtenerDocumentos();
+        InfoPersonal();
+    }
+
+    function InfoPersonal() {
+        var token = sessionStorage.getItem("token");
+        jQuery.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+            'dataType': 'json',
+            'success': cargarInformacionPersonal
+        });
+    }
+
+    function cargarInformacionPersonal(resultado) {
+        debugger
+        const {
+            SREGISTRO,
+            SAPELLIDOP,
+            SAPELLIDOM,
+            SNOMBRES,
+            DTFECHNAC,
+            SSEXO_DSC,
+            SCELULAR,
+            STELEFONO,
+            SEMAIL,
+            SESTADOCIVIL_DSC,
+            STIPOSANGRE_DSC,
+            BOOLACTIVOPASIVO,
+            LHORASERVICIO
+        } = resultado.Data;
+        var NombreCompleto = SREGISTRO + '    ' + SNOMBRES + ' ' + SAPELLIDOP + ' ' + SAPELLIDOM;
+        $('#nombreCodigo').text(NombreCompleto);
+    }
+
+
+
+    function obtenerOferta() {
+        var carreraId = sessionStorage.getItem("carreraId");
+        var periodoOferta = sessionStorage.getItem("periodoOferta");
+        var token = sessionStorage.getItem("token");
+        var usuario = new Object();
+        usuario.pCarreraId = carreraId;
+        usuario.pPeriodoId = periodoOferta;
+        jQuery.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            'data': JSON.stringify(usuario),
+            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
+            'dataType': 'json',
+            'success': cargarOferta
+        });
+    }
+
     function cargarOferta(resultado) {
+
         resultado.Data.forEach(function(element) {
             const {
                 LGRUPO_ID,
@@ -101,6 +180,9 @@
                 SOBS1,
                 HORARIO
             } = element;
+            if (LCENTRO_ID == 2) {
+                cargarSemi(element);
+            }
             var tr = $("<tr ></tr>")
             var td1 = $("<td></td>").text(SMATERIA_DSC);
             var td2 = $("<td></td>").text(LSEMESTRE);
@@ -109,10 +191,10 @@
             var td5 = $("<td></td>").text(DOCENTE);
             var td6 = $("<td></td>").text(SCODMATERIA);
             var td7 = $("<td></td>").text(SCODGRUPO);
-            var td8 = $("<td></td>").text(HORARIO);
-            var td9 = $("<td></td>").text("Dias");
-            var td10 = $("<td></td>").text("SE");
-            var td11 = $("<td></td>").text("OBS");
+            var td8 = $("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO));
+            var td9 = $("<td></td>").text(HORARIO == null ? "" : HORARIO[0].DTHRENTRADA + " - " + HORARIO[0].DTHRSALIDA);
+            var td10 = $("<td></td>").text(SCODGRUPO);
+            var td11 = $("<td></td>").text(SOBS1);
             tr.append(td1)
             tr.append(td2)
             tr.append(td3)
@@ -126,6 +208,90 @@
             tr.append(td11)
             $('#tablaOferta').append(tr);
         });
+    }
+
+    function cargarSemi(element) {
+        const {
+            LGRUPO_ID,
+            LCENTRO_ID,
+            SCENTRO_DSC,
+            SMATERIA_DSC,
+            LSEMESTRE,
+            LCREDITOS,
+            LLABORATORIO,
+            DOCENTE,
+            SCODMATERIA,
+            CASILLA,
+            SCODGRUPO,
+            SSEMANA,
+            LESTADOGRUPO_ID,
+            SESTADOGRUPO_DSC,
+            SOBS1,
+            HORARIO
+        } = element;
+        var tr = $("<tr ></tr>")
+        var td1 = $("<td></td>").text(SMATERIA_DSC);
+        var td2 = $("<td></td>").text(LSEMESTRE);
+        var td3 = $("<td></td>").text(LCREDITOS);
+        var td4 = $("<td></td>").text(LLABORATORIO == 1 ? "*" : "");
+        var td5 = $("<td></td>").text(DOCENTE);
+        var td6 = $("<td></td>").text(SCODMATERIA);
+        var td7 = $("<td></td>").text(SCODGRUPO);
+        var td8 = $("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO));
+        var td9 = $("<td></td>").text(HORARIO == null ? "" : HORARIO[0].DTHRENTRADA + " - " + HORARIO[0].DTHRSALIDA);
+        var td10 = $("<td></td>").text(SCODGRUPO);
+        var td11 = $("<td></td>").text(SOBS1);
+        tr.append(td1)
+        tr.append(td2)
+        tr.append(td3)
+        tr.append(td4)
+        tr.append(td5)
+        tr.append(td6)
+        tr.append(td7)
+        tr.append(td8)
+        tr.append(td9)
+        tr.append(td10)
+        tr.append(td11)
+        $('#tablaOfertaSemi').append(tr);
+    }
+
+    function obtenerDocumentos() {
+        var token = sessionStorage.getItem("token");
+        jQuery.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoDoc",
+            'dataType': 'json',
+            'success': cargarDocumentos
+        });
+    }
+
+    function cargarDocumentos(resultado) {
+
+        resultado.Data.forEach(function(element) {
+            const {
+                STIPODOCUMENTO_DSC,
+                SESTADODOC_DSC
+            } = element;
+            var tr = $("<tr ></tr>")
+            var td1 = $("<td></td>").text(STIPODOCUMENTO_DSC);
+            var td2 = $("<td></td>").text(SESTADODOC_DSC);
+            tr.append(td1)
+            tr.append(td2)
+            $('#tablaDocumentos').append(tr);
+        });
+    }
+
+    function getDiasHorario(HORARIO) {
+        var dias = ''
+        HORARIO.forEach(function(element) {
+            dias += element.SDIA_DSC.substring(0, 2).toUpperCase() + "  ";
+        })
+        return dias;
     }
 </script>
 

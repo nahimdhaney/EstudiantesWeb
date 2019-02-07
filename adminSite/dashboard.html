@@ -233,7 +233,7 @@
                                         <th>GRUPO</th>
                                         <th>DOCENTE</th>
                                         <th>PAR1</th>
-                                        <th>PAR1</th>
+                                        <th>PAR2</th>
                                         <th>EX.FINAL</th>
                                         <th>N.FINAL</th>
                                     </thead>
@@ -299,7 +299,7 @@
 
         <footer class="footer">
             <div class="container-fluid">
-                <nav class="pull-left">
+                <!-- <nav class="pull-left">
                     <ul>
                         <li>
                             <a href="#">
@@ -328,7 +328,7 @@
                     <script>
                         document.write(new Date().getFullYear())
                     </script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                </p>
+                </p> -->
             </div>
         </footer>
 
@@ -655,7 +655,8 @@
                     FINAL,
                     PAR1,
                     PAR2,
-                    SMATERIA_DSC
+                    SMATERIA_DSC,
+                    LCENTRO_ID
                 } = element;
                 var tr = $("<tr ></tr>")
                 var tdCodMateria = $("<td></td>").text(SCODMATERIA);
@@ -686,7 +687,8 @@
                 SCODMATERIA,
                 SSIGLA,
                 DOCENTE,
-                SMATERIA_DSC
+                SMATERIA_DSC,
+                LCENTRO_ID
             } = element;
             var tr = $("<tr ></tr>")
             var tdCodMateria = $("<td></td>").text(SCODMATERIA);
@@ -699,6 +701,7 @@
             tr.append(tdDocente)
             var periodoActual = $('#dperiodoActual').val();
             var semestre = periodoActual.split("-")[1];
+            debugger
             var count = 0;
             switch (semestre) {
                 case '1':
@@ -720,14 +723,26 @@
                     tr.append(tdFMES6)
                     tr.append(tdFMES7)
                     count = FMES3 + FMES4 + FMES5 + FMES6 + FMES7
-                    if (count >= 3) {
-                        tr.css("background-color", "yellow");
-                    } else if (count == 5) {
-                        tr.css("background-color", "red");
-                    } else if (count > 5) {
-                        tr.css("background-color", "black");
-                        tr.css("color", "white");
+                    if (LCENTRO_ID == 1) {
+                        if (count == 3 || count == 4) {
+                            tr.css("background-color", "yellow");
+                        } else if (count == 5) {
+                            tr.css("background-color", "red");
+                        } else if (count > 5) {
+                            tr.css("background-color", "black");
+                            tr.css("color", "white");
+                        }
+                    } else if (LCENTRO_ID == 2) {
+                        if (count == 1) {
+                            tr.css("background-color", "yellow");
+                        } else if (count == 2) {
+                            tr.css("background-color", "red");
+                        } else if (count > 2) {
+                            tr.css("background-color", "black");
+                            tr.css("color", "white");
+                        }
                     }
+
                     break;
                 case '2':
                     const {
@@ -748,13 +763,24 @@
                     tr.append(tdFMES11)
                     tr.append(tdFMES12)
                     count = FMES8 + FMES9 + FMES10 + FMES11 + FMES12
-                    if (count >= 3) {
-                        tr.css("background-color", "yellow");
-                    } else if (count == 5) {
-                        tr.css("background-color", "red");
-                    } else if (count > 5) {
-                        tr.css("background-color", "black");
-                        tr.css("color", "white");
+                    if (LCENTRO_ID == 1) {
+                        if (count == 3 || count == 4) {
+                            tr.css("background-color", "yellow");
+                        } else if (count == 5) {
+                            tr.css("background-color", "red");
+                        } else if (count > 5) {
+                            tr.css("background-color", "black");
+                            tr.css("color", "white");
+                        }
+                    } else if (LCENTRO_ID == 2) {
+                        if (count == 1) {
+                            tr.css("background-color", "yellow");
+                        } else if (count == 2) {
+                            tr.css("background-color", "red");
+                        } else if (count > 2) {
+                            tr.css("background-color", "black");
+                            tr.css("color", "white");
+                        }
                     }
                     break;
                 case 'V':
@@ -767,13 +793,24 @@
                     tr.append(tdFMES1)
                     tr.append(tdFMES2)
                     count = FMES1 + FMES2
-                    if (count >= 3) {
-                        tr.css("background-color", "yellow");
-                    } else if (count == 5) {
-                        tr.css("background-color", "red");
-                    } else if (count > 5) {
-                        tr.css("background-color", "black");
-                        tr.css("color", "white");
+                    if (LCENTRO_ID == 1) {
+                        if (count == 3 || count == 4) {
+                            tr.css("background-color", "yellow");
+                        } else if (count == 5) {
+                            tr.css("background-color", "red");
+                        } else if (count > 5) {
+                            tr.css("background-color", "black");
+                            tr.css("color", "white");
+                        }
+                    } else if (LCENTRO_ID == 2) {
+                        if (count == 1) {
+                            tr.css("background-color", "yellow");
+                        } else if (count == 2) {
+                            tr.css("background-color", "red");
+                        } else if (count > 2) {
+                            tr.css("background-color", "black");
+                            tr.css("color", "white");
+                        }
                     }
                     break;
 

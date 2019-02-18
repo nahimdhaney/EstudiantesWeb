@@ -21,7 +21,7 @@ $(document).ready(function($) {
                 'error': errorLogin
             });
         }
-
+        return false
     });
 
     function resultado(resultado) {

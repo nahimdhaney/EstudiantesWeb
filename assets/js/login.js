@@ -36,8 +36,7 @@ $(document).ready(function($) {
     }
 
     function errorLogin() {
-        alert('asdasd')
-        swal("Error", "hubo un error al contactar al servidor.", "error")
+        swal("Error", "Hubo un error al contactar al servidor.", "error")
     }
 
 })

@@ -145,7 +145,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <ul class="nav">
-                        <a href="http://www.creative-tim.com" class="simple-text">
+                        <a href="" class="simple-text">
                             <img style="width:90%" src="assets/img/nur.png" alt="">
                         </a>
 
@@ -194,23 +194,23 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <p id="nombreEstudiante" class="navbar-brand" href="#"></p><br>
-                        <p id="periodoActual" class="navbar-brand" href="#"></p>
+                        <p id="nombreEstudiante" class="navbar-brand" href="javascript:void(0)"></p><br>
+                        <p id="periodoActual" class="navbar-brand" href="javascript:void(0)"></p>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="">
-                                    <p>Imprimir</p>
+                                <a id="botonImprimir" href="horario.html" target="_blank">
+                                    <p>Ver Horario</p>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-toggle="modal" data-target="#modalCambiarPin">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin">
                                     <p>Cambiar Pin</p>
                                 </a>
                             </li>
                             <li>
-                                <a id="logout" href="#">
+                                <a id="logout" href="../index.html">
                                     <p>Salir</p>
                                 </a>
                             </li>
@@ -303,22 +303,22 @@
                 <!-- <nav class="pull-left">
                     <ul>
                         <li>
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 Home
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 Company
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 Portfolio
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 Blog
                             </a>
                         </li>
@@ -403,8 +403,6 @@
 
         $("#logout").click(function() {
             sessionStorage.removeItem("token");
-            var url = '../index.html'
-            $(location).attr("href", url);
         });
 
         $("#formCambiarPin").submit(function(event) {
@@ -455,6 +453,14 @@
             sessionStorage.setItem("periodoOferta", periodoOferta);
             sessionStorage.setItem("carreraId", carreraId);
         });
+
+        $("#botonImprimir").click(function() {
+            var periodoActual = $('#hperiodoActual').val();
+            var carreraId = $('#carrerasAlumno').find(":selected").val();
+            sessionStorage.setItem("periodoActual", periodoActual);
+            sessionStorage.setItem("carreraId", carreraId);
+        });
+
 
         $(document).on('click', '.semestre', function() {
             comenzarCargado();
@@ -645,7 +651,7 @@
             //         SPERIODO_DSC,
             //         LPERIODO_ID
             //     } = element;
-            //     debugger
+            //      
             //     //Menu Lateral
             //     var lista = $("<li></li>")
             //     var link = $("<a></a>")
@@ -776,7 +782,7 @@
             tr.append(tdDocente)
             var periodoActual = $('#dperiodoActual').val();
             var semestre = periodoActual.split("-")[1];
-            debugger
+
             var count = 0;
             switch (semestre) {
                 case '1':

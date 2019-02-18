@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="assets/img/nur.png">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
-    <title>Notas y Asistencia</title>
+    <title>Horario</title>
     <style>
         .titulosTablas {
             font-size: 16px;
@@ -49,61 +49,17 @@
             <i class="pe-7s-print"></i>
         </a>
         <br>
-        <h4 style="font-weight: bold;padding-top: 15px;" class="text-center">Formulario de Inscripcion</h4>
-        <h4 id='noMateriasPresencial' style='display: none;margin-bottom: 1%' class="titulosTablas">No tiene materias ofertadas en Presencial</h4>
+        <h4 style="font-weight: bold;padding-top: 15px;" class="text-center">Horario</h4>
         <div id='materiasPresencial'>
-            <h4 class="titulosTablas">Materias Ofertadas en Presencial</h4>
-            <table id="tablaOferta" class="table">
+            <table id="tablaHorario" class="table">
                 <thead>
                     <tr>
                         <th scope="col">MATERIA</th>
-                        <th scope="col">SEM</th>
-                        <th scope="col">CR</th>
-                        <th scope="col">LAB</th>
+                        <th scope="col">TIPO</th>
                         <th scope="col">DOCENTE</th>
-                        <th scope="col">CODIGO</th>
-                        <th scope="col">MR</th>
-                        <th scope="col">GR</th>
+                        <th scope="col">GRUPO</th>
                         <th scope="col">HORARIO</th>
                         <th scope="col">DIAS</th>
-                        <th scope="col">SE</th>
-                        <th scope="col">OBS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <h4 id='noMateriasSemiPresencial' style='display: none;margin-bottom: 1%' class="titulosTablas">No tiene materias ofertadas en Semipresencial</h4>
-        <div id='materiasSemiPresencial'>
-            <h4 class="titulosTablas">Materias Ofertadas en Semipresencial</h4>
-            <table id="tablaOfertaSemi" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">MATERIA</th>
-                        <th scope="col">SEM</th>
-                        <th scope="col">CR</th>
-                        <th scope="col">LAB</th>
-                        <th scope="col">DOCENTE</th>
-                        <th scope="col">CODIGO</th>
-                        <th scope="col">GR</th>
-                        <th scope="col">HORARIO</th>
-                        <th scope="col">DIAS</th>
-                        <th scope="col">SE</th>
-                        <th scope="col">OBS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-6" style="padding-left: 0px">
-            <h4 class="titulosTablas">Documentos que debe presentar</h4>
-            <table id="tablaDocumentos" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Documento</th>
-                        <th scope="col">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,8 +81,7 @@
     });
 
     function cargarPagina() {
-        obtenerOferta();
-        obtenerDocumentos();
+        obtenerHorarios();
         InfoPersonal();
         InfoCarrera();
     }
@@ -203,7 +158,7 @@
     }
 
     function cargarInformacionPersonal(resultado) {
-        debugger
+
         const {
             SREGISTRO,
             SAPELLIDOP,
@@ -228,13 +183,14 @@
 
 
 
-    function obtenerOferta() {
+    function obtenerHorarios() {
+
         var carreraId = sessionStorage.getItem("carreraId");
-        var periodoOferta = sessionStorage.getItem("periodoOferta");
+        var periodoActual = sessionStorage.getItem("periodoActual");
         var token = sessionStorage.getItem("token");
         var usuario = new Object();
         usuario.pCarreraId = carreraId;
-        usuario.pPeriodoId = periodoOferta;
+        usuario.pPeriodoId = periodoActual;
         jQuery.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -243,153 +199,30 @@
             },
             'type': 'POST',
             'data': JSON.stringify(usuario),
-            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
+            'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
             'dataType': 'json',
-            'success': cargarOferta
+            'success': cargarHorarios
         });
     }
 
-    function cargarOferta(resultado) {
-        var haySemi = false;
-        if (resultado.Data.length == 0) {
-            $('#materiasSemiPresencial').hide();
-            $('#noMateriasSemiPresencial').show();
-            $('#materiasPresencial').hide();
-            $('#MateriasSemiPresencial').show();
-            return;
-        }
+    function cargarHorarios(resultado) {
         resultado.Data.forEach(function(element) {
             const {
-                LGRUPO_ID,
-                LCENTRO_ID,
                 SCENTRO_DSC,
-                SMATERIA_DSC,
-                LSEMESTRE,
-                LCREDITOS,
-                LLABORATORIO,
-                DOCENTE,
                 SCODMATERIA,
-                CASILLA,
+                SMATERIA_DSC,
                 SCODGRUPO,
-                SSEMANA,
-                LESTADOGRUPO_ID,
-                SESTADOGRUPO_DSC,
-                SOBS1,
+                DOCENTE,
                 HORARIO
             } = element;
-            if (LCENTRO_ID == 2) {
-                cargarSemi(element);
-                haySemi = true;
-            }
             var tr = $("<tr ></tr>")
-            var input = $('<input type="checkbox"/>')
-            var row = $("<td></td>").append(input);
-            var td1 = $("<td></td>").text(SMATERIA_DSC);
-            var td2 = $("<td></td>").text(LSEMESTRE);
-            var td3 = $("<td></td>").text(LCREDITOS);
-            var td4 = $("<td></td>").text(LLABORATORIO == 1 ? "*" : "");
-            var td5 = $("<td></td>").text(DOCENTE);
-            var td6 = $("<td></td>").text(SCODMATERIA);
-            var td7 = $("<td></td>").text(SCODGRUPO);
-            var td8 = $("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO));
-            var td9 = $("<td></td>").text(HORARIO == null ? "" : HORARIO[0].DTHRENTRADA + " - " + HORARIO[0].DTHRSALIDA);
-            var td10 = $("<td></td>").text(SCODGRUPO);
-            var td11 = $("<td></td>").text(SOBS1);
-            tr.append(td1)
-            tr.append(td2)
-            tr.append(td3)
-            tr.append(td4)
-            tr.append(td5)
-            tr.append(td6)
-            tr.append(row)
-            tr.append(td7)
-
-            tr.append(td8)
-            tr.append(td9)
-            tr.append(td10)
-            tr.append(td11)
-            $('#tablaOferta').append(tr);
-        });
-        if (haySemi == false) {
-            $('#materiasSemiPresencial').hide();
-            $('#noMateriasSemiPresencial').show();
-        }
-    }
-
-    function cargarSemi(element) {
-        const {
-            LGRUPO_ID,
-            LCENTRO_ID,
-            SCENTRO_DSC,
-            SMATERIA_DSC,
-            LSEMESTRE,
-            LCREDITOS,
-            LLABORATORIO,
-            DOCENTE,
-            SCODMATERIA,
-            CASILLA,
-            SCODGRUPO,
-            SSEMANA,
-            LESTADOGRUPO_ID,
-            SESTADOGRUPO_DSC,
-            SOBS1,
-            HORARIO
-        } = element;
-        var tr = $("<tr ></tr>")
-        debugger
-        var td1 = $("<td></td>").text(SMATERIA_DSC);
-        var td2 = $("<td></td>").text(LSEMESTRE);
-        var td3 = $("<td></td>").text(LCREDITOS);
-        var td4 = $("<td></td>").text(LLABORATORIO == 1 ? "*" : "");
-        var td5 = $("<td></td>").text(DOCENTE);
-        var td6 = $("<td></td>").text(SCODMATERIA);
-        var td7 = $("<td></td>").text(SCODGRUPO);
-        var td8 = $("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO));
-        var td9 = $("<td></td>").text(HORARIO == null ? "" : HORARIO[0].DTHRENTRADA + " - " + HORARIO[0].DTHRSALIDA);
-        var td10 = $("<td></td>").text(SCODGRUPO);
-        var td11 = $("<td></td>").text(SOBS1);
-        tr.append(td1)
-        tr.append(td2)
-        tr.append(td3)
-        tr.append(td4)
-        tr.append(td5)
-        tr.append(td6)
-        tr.append(td7)
-        tr.append(td8)
-        tr.append(td9)
-        tr.append(td10)
-        tr.append(td11)
-        $('#tablaOfertaSemi').append(tr);
-    }
-
-    function obtenerDocumentos() {
-        var token = sessionStorage.getItem("token");
-        jQuery.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            'type': 'POST',
-            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoDoc",
-            'dataType': 'json',
-            'success': cargarDocumentos
-        });
-    }
-
-    function cargarDocumentos(resultado) {
-
-        resultado.Data.forEach(function(element) {
-            const {
-                STIPODOCUMENTO_DSC,
-                SESTADODOC_DSC
-            } = element;
-            var tr = $("<tr ></tr>")
-            var td1 = $("<td></td>").text(STIPODOCUMENTO_DSC);
-            var td2 = $("<td></td>").text(SESTADODOC_DSC);
-            tr.append(td1)
-            tr.append(td2)
-            $('#tablaDocumentos').append(tr);
+            tr.append($("<td></td>").text(SMATERIA_DSC))
+            tr.append($("<td></td>").text(SCENTRO_DSC))
+            tr.append($("<td></td>").text(DOCENTE))
+            tr.append($("<td></td>").text(SCODGRUPO))
+            tr.append($("<td></td>").text(HORARIO == null ? "" : HORARIO[0].ENTRADA + " - " + HORARIO[0].SALIDA))
+            tr.append($("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO)))
+            $('#tablaHorario').append(tr);
         });
     }
 

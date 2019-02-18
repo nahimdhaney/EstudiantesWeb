@@ -17,7 +17,8 @@ $(document).ready(function($) {
                 'url': "http://sisnur.nur.edu:8085/api/Registros/Login",
                 'data': JSON.stringify(usuario),
                 'dataType': 'json',
-                'success': resultado
+                'success': resultado,
+                'error': errorLogin
             });
         }
 
@@ -32,6 +33,11 @@ $(document).ready(function($) {
             var url = 'adminSite/dashboard.html'
             $(location).attr("href", url);
         }
+    }
+
+    function errorLogin() {
+        alert('asdasd')
+        swal("Error", "hubo un error al contactar al servidor.", "error")
     }
 
 })

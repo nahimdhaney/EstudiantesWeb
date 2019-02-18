@@ -13,6 +13,7 @@
     <script src="assets/js/jquery.3.2.1.min.js"></script>
 
     <script src="assets/js/site.js"></script>
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
 
     <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -204,7 +205,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="#" data-toggle="modal" data-target="#modalCambiarPin">
                                     <p>Cambiar Pin</p>
                                 </a>
                             </li>
@@ -336,13 +337,44 @@
     <div id="loader" style="display:none"></div>
     </div>
 
+    <div id="modalCambiarPin" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Cambiar Pin</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCambiarPin">
+                        <div class="form-group">
+                            <label for="pinAnterior">Pin Anterior</label>
+                            <input type="password" class="form-control" id="pinAnterior" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nuevoPin">Nuevo Pin</label>
+                            <input type="password" class="form-control" id="nuevoPin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="repetirNuevoPin">Vuelve a escribir tu nuevo Pin</label>
+                            <input type="password" class="form-control" id="repetirNuevoPin" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
 <!--   Core JS Files   -->
 <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
 <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
-
+<script src="../assets/sweetalert2/sweetalert2.min.js"></script>
 
 
 <!--  Notifications Plugin    -->
@@ -374,6 +406,49 @@
             var url = '../index.html'
             $(location).attr("href", url);
         });
+
+        $("#formCambiarPin").submit(function(event) {
+            var pinAnterior = $("#pinAnterior").val();
+            var nuevoPin = $("#nuevoPin").val();
+            var repetirNuevoPin = $("#repetirNuevoPin").val();
+            if (nuevoPin.localeCompare(repetirNuevoPin) == 0) {
+                var token = sessionStorage.getItem("token");
+                var usuario = new Object();
+                usuario.pPinActual = pinAnterior;
+                usuario.pPinNuevo = nuevoPin;
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    'type': 'POST',
+                    'data': JSON.stringify(usuario),
+                    'url': "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
+                    'dataType': 'json',
+                }).done(function(response) {
+                    console.log(response);
+                    console.log(response.Status)
+                    if (response.Status) {
+                        swal(
+                            'Operacion Exitosa!',
+                            'Pin actualizado correctamente!',
+                            'success'
+                        )
+                    } else {
+                        swal("Error", "Hubo un error al actualizar su Pin", "error")
+                    }
+                });
+            } else {
+                swal("Error", "Los Pines no son iguales.", "error")
+            }
+            $('#modalCambiarPin').modal('hide')
+            $('#formCambiarPin')[0].reset();
+            event.preventDefault();
+        });
+
+
+
         $("#verOferta").click(function() {
             var periodoOferta = $('#periodosOferta').find(":selected").val();
             var carreraId = $('#carrerasAlumno').find(":selected").val();

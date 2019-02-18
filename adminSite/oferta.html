@@ -23,11 +23,29 @@
                 display: none !important;
             }
         }
+        
+        #mainLoader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div id="mainLoader"></div>
+    <div id="mainContainer" class="container-fluid">
         <table style="width:85%;margin: auto;margin-top: 10px;font-size: 12px">
             <tr>
                 <td id='nombreCodigo'></td>
@@ -125,10 +143,21 @@
     });
 
     function cargarPagina() {
-        obtenerOferta();
+        comenzarMainCargado()
         obtenerDocumentos();
         InfoPersonal();
         InfoCarrera();
+        obtenerOferta();
+    }
+
+    function comenzarMainCargado() {
+        $('#mainContainer').attr("style", 'display:none');
+        $("#mainLoader").removeAttr("style");
+    }
+
+    function terminarMainCargado() {
+        $('#mainLoader').attr("style", 'display:none');
+        $("#mainContainer").removeAttr("style");
     }
 
     function InfoCarrera() {
@@ -314,6 +343,7 @@
             $('#materiasSemiPresencial').hide();
             $('#noMateriasSemiPresencial').show();
         }
+        terminarMainCargado()
     }
 
     function cargarSemi(element) {

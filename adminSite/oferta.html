@@ -5,11 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
+
+    <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="assets/img/nur.png">
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
-    <title>Notas y Asistencia</title>
+    <title>Oferta de Materias</title>
     <style>
         .titulosTablas {
             font-size: 16px;
@@ -21,6 +34,9 @@
             .no-print,
             .no-print * {
                 display: none !important;
+            }
+            body {
+                overflow-x: hidden;
             }
         }
         
@@ -40,99 +56,165 @@
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
+        
+        .notas td {
+            padding: 0.4% !important;
+            padding-left: 0.8% !important;
+            font-size: 13px
+        }
+        
+        #infoAlumno td {
+            border-top: none !important;
+            padding: 0.2%;
+        }
+        
+        #infoAlumno * {
+            font-size: 12px
+        }
+        
+        #imgPrint {
+            width: 2.8%;
+            float: left;
+            left: 30;
+        }
     </style>
 </head>
 
 <body>
     <div id="mainLoader"></div>
-    <div id="mainContainer" class="container-fluid">
-        <table style="width:85%;margin: auto;margin-top: 10px;font-size: 12px">
-            <tr>
-                <td id='nombreCodigo'></td>
-                <td id='idsemestreActual'></td>
-                <td id='semestreActual'></td>
-            </tr>
-            <tr>
-                <td id='carrera'></td>
-                <td id='semestreIngreso'></td>
-                <td id='tipoColegio'></td>
-            </tr>
-            <tr>
-                <td id='Pensul'></td>
-                <td id='codigoCentro'></td>
-                <td id='creditosVencidos'></td>
-            </tr>
-        </table>
-        <a class='no-print' id='imprimir' href="#" style="font-size: 50px;float: left;color: black;text-decoration: none;margin-left: 0.4%;">
-            <i class="pe-7s-print"></i>
-        </a>
-        <br>
-        <h4 style="font-weight: bold;padding-top: 15px;" class="text-center">Formulario de Inscripcion</h4>
-        <h4 id='noMateriasPresencial' style='display: none;margin-bottom: 1%' class="titulosTablas">No tiene materias ofertadas en Presencial</h4>
-        <div id='materiasPresencial'>
-            <h4 class="titulosTablas">Materias Ofertadas en Presencial</h4>
-            <table id="tablaOferta" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">MATERIA</th>
-                        <th scope="col">SEM</th>
-                        <th scope="col">CR</th>
-                        <th scope="col">LAB</th>
-                        <th scope="col">DOCENTE</th>
-                        <th scope="col">CODIGO</th>
-                        <th scope="col">MR</th>
-                        <th scope="col">GR</th>
-                        <th scope="col">HORARIO</th>
-                        <th scope="col">DIAS</th>
-                        <th scope="col">SE</th>
-                        <th scope="col">OBS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+    <div class="container-fluid">
+        <div class="content">
+            <div class="row" style="margin-top:2%">
+                <div class="col-md-12">
+                    <div class="card" style="padding: 1%;padding-bottom: 0px">
+                        <table id='infoAlumno' class="table">
+                            <thead>
+                                <tr>
+                                    <td id='nombreCodigo'></td>
+                                    <td id='idsemestreActual'></td>
+                                    <td id='semestreActual'></td>
+                                </tr>
+                                <tr>
+                                    <td id='carrera'></td>
+                                    <td id='semestreIngreso'></td>
+                                    <td id='tipoColegio'></td>
+                                </tr>
+                                <tr>
+                                    <td id='Pensul'></td>
+                                    <td id='codigoCentro'></td>
+                                    <td id='creditosVencidos'></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="header" style="padding: 0px;padding-bottom: 1%">
+                            <a class='no-print' id='imprimir' href="#">
+                                <img id='imgPrint' src="../adminSite/assets//img/print.png" alt="Imprimir">
+                            </a>
+                            <h4 class="title" style="text-align: center;">Formulario de Inscripcion</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title noMateriasPresencial">Materias Ofertdas en Presencial</h5>
+                            <h5 style='display: none' class="title noMateriasPresencial">No tiene Materias Ofertdas en Presencial</h5>
+                        </div>
+                        <div class="content table-responsive table-full-width materiasPresencial">
+                            <table id="tablaOferta" class="table notas">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">MATERIA</th>
+                                        <th scope="col">SEM</th>
+                                        <th scope="col">CR</th>
+                                        <th scope="col">LAB</th>
+                                        <th scope="col">DOCENTE</th>
+                                        <th scope="col">CODIGO</th>
+                                        <th scope="col">MR</th>
+                                        <th scope="col">GR</th>
+                                        <th scope="col">HORARIO</th>
+                                        <th scope="col">DIAS</th>
+                                        <th scope="col">SE</th>
+                                        <th scope="col">OBS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title materiasSemiPresencial">Materias Ofertdas en SemiPresencial</h5>
+                            <h5 style='display: none;' class="title noMateriasSemiPresencial">No tiene Materias Ofertdas en SemiPresencial</h5>
+                        </div>
+                        <div class="content table-responsive table-full-width materiasSemiPresencial">
+                            <table id="tablaOfertaSemi" class="table notas">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">MATERIA</th>
+                                        <th scope="col">SEM</th>
+                                        <th scope="col">CR</th>
+                                        <th scope="col">LAB</th>
+                                        <th scope="col">DOCENTE</th>
+                                        <th scope="col">CODIGO</th>
+                                        <th scope="col">GR</th>
+                                        <th scope="col">HORARIO</th>
+                                        <th scope="col">DIAS</th>
+                                        <th scope="col">SE</th>
+                                        <th scope="col">OBS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h5 class="title">Documentos que debe Presentar</h5>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <table id="tablaDocumentos" class="table notas">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Documento</th>
+                                        <th scope="col">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
         </div>
-        <h4 id='noMateriasSemiPresencial' style='display: none;margin-bottom: 1%' class="titulosTablas">No tiene materias ofertadas en Semipresencial</h4>
-        <div id='materiasSemiPresencial'>
-            <h4 class="titulosTablas">Materias Ofertadas en Semipresencial</h4>
-            <table id="tablaOfertaSemi" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">MATERIA</th>
-                        <th scope="col">SEM</th>
-                        <th scope="col">CR</th>
-                        <th scope="col">LAB</th>
-                        <th scope="col">DOCENTE</th>
-                        <th scope="col">CODIGO</th>
-                        <th scope="col">GR</th>
-                        <th scope="col">HORARIO</th>
-                        <th scope="col">DIAS</th>
-                        <th scope="col">SE</th>
-                        <th scope="col">OBS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-6" style="padding-left: 0px">
-            <h4 class="titulosTablas">Documentos que debe presentar</h4>
-            <table id="tablaDocumentos" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Documento</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
 
 </body>
 <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/site.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         cargarPagina();
@@ -161,7 +243,7 @@
     }
 
     function InfoCarrera() {
-        var token = sessionStorage.getItem("token");
+        var token = localStorage.getItem("token");
         jQuery.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -217,7 +299,7 @@
     }
 
     function InfoPersonal() {
-        var token = sessionStorage.getItem("token");
+        var token = localStorage.getItem("token");
         jQuery.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -258,9 +340,9 @@
 
 
     function obtenerOferta() {
-        var carreraId = sessionStorage.getItem("carreraId");
-        var periodoOferta = sessionStorage.getItem("periodoOferta");
-        var token = sessionStorage.getItem("token");
+        var carreraId = localStorage.getItem("carreraId");
+        var periodoOferta = localStorage.getItem("periodoOferta");
+        var token = localStorage.getItem("token");
         var usuario = new Object();
         usuario.pCarreraId = carreraId;
         usuario.pPeriodoId = periodoOferta;
@@ -281,10 +363,10 @@
     function cargarOferta(resultado) {
         var haySemi = false;
         if (resultado.Data.length == 0) {
-            $('#materiasSemiPresencial').hide();
-            $('#noMateriasSemiPresencial').show();
-            $('#materiasPresencial').hide();
-            $('#MateriasSemiPresencial').show();
+            $('.materiasSemiPresencial').hide();
+            $('.noMateriasSemiPresencial').show();
+            $('.materiasPresencial').hide();
+            $('.MateriasSemiPresencial').show();
             return;
         }
         resultado.Data.forEach(function(element) {
@@ -340,8 +422,8 @@
             $('#tablaOferta').append(tr);
         });
         if (haySemi == false) {
-            $('#materiasSemiPresencial').hide();
-            $('#noMateriasSemiPresencial').show();
+            $('.materiasSemiPresencial').hide();
+            $('.noMateriasSemiPresencial').show();
         }
         terminarMainCargado()
     }
@@ -393,7 +475,7 @@
     }
 
     function obtenerDocumentos() {
-        var token = sessionStorage.getItem("token");
+        var token = localStorage.getItem("token");
         jQuery.ajax({
             headers: {
                 'Accept': 'application/json',

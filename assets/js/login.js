@@ -28,8 +28,8 @@ $(document).ready(function($) {
         if (resultado.includes("Bloqueo") || resultado.includes("error") || resultado == '') {
             swal("Bloqueo", "Tiene deuda pendiente.", "error")
         } else {
-            sessionStorage.setItem("token", resultado);
-            sessionStorage.setItem("usrLog", JSON.stringify(resultado.Message));
+            localStorage.setItem("token", resultado);
+            localStorage.setItem("usrLog", JSON.stringify(resultado.Message));
             var url = 'adminSite/dashboard.html'
             $(location).attr("href", url);
         }

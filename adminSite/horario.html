@@ -5,9 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
+
+    <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="assets/img/nur.png">
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <title>Horario</title>
     <style>
@@ -21,6 +34,9 @@
             .no-print,
             .no-print * {
                 display: none !important;
+            }
+            body {
+                overflow: hidden;
             }
         }
         
@@ -40,55 +56,90 @@
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
+        
+        #infoAlumno td {
+            border-top: none !important;
+            padding: 0.2%
+        }
+        
+        #infoAlumno * {
+            font-size: 12px
+        }
+        
+        #imgPrint {
+            width: 2.8%;
+            float: left;
+            left: 30;
+        }
     </style>
 </head>
 
 <body>
     <div id="mainLoader"></div>
-    <div id="mainContainer" class="container-fluid">
-        <table style="width:85%;margin: auto;margin-top: 10px;font-size: 12px">
-            <tr>
-                <td id='nombreCodigo'></td>
-                <td id='idsemestreActual'></td>
-                <td id='semestreActual'></td>
-            </tr>
-            <tr>
-                <td id='carrera'></td>
-                <td id='semestreIngreso'></td>
-                <td id='tipoColegio'></td>
-            </tr>
-            <tr>
-                <td id='Pensul'></td>
-                <td id='codigoCentro'></td>
-                <td id='creditosVencidos'></td>
-            </tr>
-        </table>
-        <a class='no-print' id='imprimir' href="#" style="font-size: 50px;float: left;color: black;text-decoration: none;margin-left: 0.4%;">
-            <i class="pe-7s-print"></i>
-        </a>
-        <br>
-        <h4 style="font-weight: bold;padding-top: 15px;" class="text-center">Horario</h4>
-        <div id='materiasPresencial'>
-            <table id="tablaHorario" class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">MATERIA</th>
-                        <th scope="col">TIPO</th>
-                        <th scope="col">DOCENTE</th>
-                        <th scope="col">GRUPO</th>
-                        <th scope="col">HORARIO</th>
-                        <th scope="col">DIAS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+    <div class="container-fluid">
+        <div class="content">
+            <div class="row" style="margin-top:2%">
+                <div class="col-md-12">
+                    <div class="card" style="padding: 1%;padding-bottom: 0px">
+                        <table id='infoAlumno' class="table">
+                            <thead>
+                                <tr>
+                                    <td id='nombreCodigo'></td>
+                                    <td id='idsemestreActual'></td>
+                                    <td id='semestreActual'></td>
+                                </tr>
+                                <tr>
+                                    <td id='carrera'></td>
+                                    <td id='semestreIngreso'></td>
+                                    <td id='tipoColegio'></td>
+                                </tr>
+                                <tr>
+                                    <td id='Pensul'></td>
+                                    <td id='codigoCentro'></td>
+                                    <td id='creditosVencidos'></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="header" style="padding: 0px;padding-bottom: 1%">
+                            <a class='no-print' id='imprimir' href="#">
+                                <img id='imgPrint' src="../adminSite/assets//img/print.png" alt="Imprimir">
+                            </a>
+                            <h3 class="title" style="text-align: center;">Horarios</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="content table-responsive table-full-width materiasPresencial">
+                            <table id="tablaHorario" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">MATERIA</th>
+                                        <th scope="col">TIPO</th>
+                                        <th scope="col">DOCENTE</th>
+                                        <th scope="col">GRUPO</th>
+                                        <th scope="col">HORARIO</th>
+                                        <th scope="col">DIAS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
 
 </body>
 <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/site.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         cargarPagina();
@@ -106,7 +157,7 @@
     }
 
     function InfoCarrera() {
-        var token = sessionStorage.getItem("token");
+        var token = localStorage.getItem("token");
         jQuery.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -172,7 +223,7 @@
     }
 
     function InfoPersonal() {
-        var token = sessionStorage.getItem("token");
+        var token = localStorage.getItem("token");
         jQuery.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -214,9 +265,9 @@
 
     function obtenerHorarios() {
 
-        var carreraId = sessionStorage.getItem("carreraId");
-        var periodoActual = sessionStorage.getItem("periodoActual");
-        var token = sessionStorage.getItem("token");
+        var carreraId = localStorage.getItem("carreraId");
+        var periodoActual = localStorage.getItem("periodoActual");
+        var token = localStorage.getItem("token");
         var usuario = new Object();
         usuario.pCarreraId = carreraId;
         usuario.pPeriodoId = periodoActual;

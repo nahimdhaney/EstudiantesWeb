@@ -24,20 +24,21 @@
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <title>Oferta de Materias</title>
     <style>
-        .titulosTablas {
-            font-size: 16px;
-            margin-left: 0.4%;
-            font-weight: bold;
-        }
-        
-        @media print {
-            .no-print,
-            .no-print * {
-                display: none !important;
-            }
-            body {
-                overflow-x: hidden;
-            }
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
         }
         
         #mainLoader {
@@ -55,6 +56,71 @@
             height: 120px;
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
+        }
+        
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+        
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+        
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+        
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+        
+        .titulosTablas {
+            font-size: 16px;
+            margin-left: 0.4%;
+            font-weight: bold;
+        }
+        
+        @media print {
+            .no-print,
+            .no-print * {
+                display: none !important;
+            }
+            body {
+                overflow-x: hidden;
+            }
         }
         
         .notas td {
@@ -77,140 +143,157 @@
             float: left;
             left: 30;
         }
+        
+        @media (max-width: 600px) {
+            #infoAlumno * {
+                font-size: 8px
+            }
+            #imgPrint {
+                width: 10%;
+            }
+        }
+        
+        @media (min-width: 600px) and (max-width: 1024px) {
+            #imgPrint {
+                width: 50px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="mainLoader"></div>
-    <div class="container-fluid">
-        <div class="content">
-            <div class="row" style="margin-top:2%">
-                <div class="col-md-12">
-                    <div class="card" style="padding: 1%;padding-bottom: 0px">
-                        <table id='infoAlumno' class="table">
-                            <thead>
-                                <tr>
-                                    <td id='nombreCodigo'></td>
-                                    <td id='idsemestreActual'></td>
-                                    <td id='semestreActual'></td>
-                                </tr>
-                                <tr>
-                                    <td id='carrera'></td>
-                                    <td id='semestreIngreso'></td>
-                                    <td id='tipoColegio'></td>
-                                </tr>
-                                <tr>
-                                    <td id='Pensul'></td>
-                                    <td id='codigoCentro'></td>
-                                    <td id='creditosVencidos'></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <div class="header" style="padding: 0px;padding-bottom: 1%">
-                            <a class='no-print' id='imprimir' href="#">
-                                <img id='imgPrint' src="../adminSite/assets//img/print.png" alt="Imprimir">
-                            </a>
-                            <h4 class="title" style="text-align: center;">Formulario de Inscripcion</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h5 class="title noMateriasPresencial">Materias Ofertdas en Presencial</h5>
-                            <h5 style='display: none' class="title noMateriasPresencial">No tiene Materias Ofertdas en Presencial</h5>
-                        </div>
-                        <div class="content table-responsive table-full-width materiasPresencial">
-                            <table id="tablaOferta" class="table notas">
+    <div id="mainContainer" class="wrapper" style="display:none">
+        <div class="container-fluid">
+            <div class="content">
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-12">
+                        <div class="card" style="padding: 1%;padding-bottom: 0px">
+                            <table id='infoAlumno' class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">MATERIA</th>
-                                        <th scope="col">SEM</th>
-                                        <th scope="col">CR</th>
-                                        <th scope="col">LAB</th>
-                                        <th scope="col">DOCENTE</th>
-                                        <th scope="col">CODIGO</th>
-                                        <th scope="col">MR</th>
-                                        <th scope="col">GR</th>
-                                        <th scope="col">HORARIO</th>
-                                        <th scope="col">DIAS</th>
-                                        <th scope="col">SE</th>
-                                        <th scope="col">OBS</th>
+                                        <td id='nombreCodigo'></td>
+                                        <td id='idsemestreActual'></td>
+                                        <td id='semestreActual'></td>
+                                    </tr>
+                                    <tr>
+                                        <td id='carrera'></td>
+                                        <td id='semestreIngreso'></td>
+                                        <td id='tipoColegio'></td>
+                                    </tr>
+                                    <tr>
+                                        <td id='Pensul'></td>
+                                        <td id='codigoCentro'></td>
+                                        <td id='creditosVencidos'></td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                             </table>
-
+                            <div class="header" style="padding: 0px;padding-bottom: 1%">
+                                <a class='no-print' id='imprimir' href="#">
+                                    <img id='imgPrint' src="../adminSite/assets//img/print.png" alt="Imprimir">
+                                </a>
+                                <h4 class="title" style="text-align: center;">Formulario de Inscripcion</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h5 class="title materiasSemiPresencial">Materias Ofertdas en SemiPresencial</h5>
-                            <h5 style='display: none;' class="title noMateriasSemiPresencial">No tiene Materias Ofertdas en SemiPresencial</h5>
-                        </div>
-                        <div class="content table-responsive table-full-width materiasSemiPresencial">
-                            <table id="tablaOfertaSemi" class="table notas">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">MATERIA</th>
-                                        <th scope="col">SEM</th>
-                                        <th scope="col">CR</th>
-                                        <th scope="col">LAB</th>
-                                        <th scope="col">DOCENTE</th>
-                                        <th scope="col">CODIGO</th>
-                                        <th scope="col">GR</th>
-                                        <th scope="col">HORARIO</th>
-                                        <th scope="col">DIAS</th>
-                                        <th scope="col">SE</th>
-                                        <th scope="col">OBS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h5 class="title noMateriasPresencial">Materias Ofertdas en Presencial</h5>
+                                <h5 style='display: none' class="title noMateriasPresencial">No tiene Materias Ofertdas en Presencial</h5>
+                            </div>
+                            <div class="content table-responsive table-full-width materiasPresencial">
+                                <table id="tablaOferta" class="table notas">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">MATERIA</th>
+                                            <th scope="col">SEM</th>
+                                            <th scope="col">CR</th>
+                                            <th scope="col">LAB</th>
+                                            <th scope="col">DOCENTE</th>
+                                            <th scope="col">CODIGO</th>
+                                            <th scope="col">MR</th>
+                                            <th scope="col">GR</th>
+                                            <th scope="col">HORARIO</th>
+                                            <th scope="col">DIAS</th>
+                                            <th scope="col">SE</th>
+                                            <th scope="col">OBS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h5 class="title">Documentos que debe Presentar</h5>
-                        </div>
-                        <div class="content table-responsive table-full-width">
-                            <table id="tablaDocumentos" class="table notas">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Documento</th>
-                                        <th scope="col">Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h5 class="title materiasSemiPresencial">Materias Ofertdas en SemiPresencial</h5>
+                                <h5 style='display: none;' class="title noMateriasSemiPresencial">No tiene Materias Ofertdas en SemiPresencial</h5>
+                            </div>
+                            <div class="content table-responsive table-full-width materiasSemiPresencial">
+                                <table id="tablaOfertaSemi" class="table notas">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">MATERIA</th>
+                                            <th scope="col">SEM</th>
+                                            <th scope="col">CR</th>
+                                            <th scope="col">LAB</th>
+                                            <th scope="col">DOCENTE</th>
+                                            <th scope="col">CODIGO</th>
+                                            <th scope="col">GR</th>
+                                            <th scope="col">HORARIO</th>
+                                            <th scope="col">DIAS</th>
+                                            <th scope="col">SE</th>
+                                            <th scope="col">OBS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h5 class="title">Documentos que debe Presentar</h5>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table id="tablaDocumentos" class="table notas">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Documento</th>
+                                            <th scope="col">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
 
 
 
 
 
+                </div>
             </div>
+            <div id="loader" style="display:none"></div>
         </div>
-
 
 </body>
 <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>

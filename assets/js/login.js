@@ -36,7 +36,7 @@ $(document).ready(function($) {
     }
 
     function errorLogin() {
-        swal("Error", "Hubo un error al contactar al servidor.", "error")
+        swal("Error", "Usuario o Pin incorrectos.", "error")
     }
 
 })

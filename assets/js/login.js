@@ -3,7 +3,6 @@ $(document).ready(function($) {
     $("#loginButton").click(function() {
         var registro = $("#registroNumber").val()
         var ping = $("#pingNumber").val()
-        debugger
         var usuario = new Object();
         usuario.username = registro;
         usuario.password = ping;

@@ -435,6 +435,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        var esconderPeriodos = false;
         cargarPagina();
         $("#carrerasAlumno").change(function() {
             comenzarMainCargado();
@@ -471,8 +472,6 @@
                     'url': "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
                     'dataType': 'json',
                 }).done(function(response) {
-                    console.log(response);
-                    console.log(response.Status)
                     if (response.Status) {
                         swal(
                             'Operacion Exitosa!',
@@ -502,6 +501,18 @@
             window.open('oferta.html', '_blank');
         });
 
+        $(document).on('click', '#verMasPeriodos', function() {
+            if (esconderPeriodos == false) {
+                $('.periodosInvisibles').removeAttr("style");
+                $(this).children().text('Ver Menos Periodos');
+                esconderPeriodos = true;
+            } else {
+                $('.periodosInvisibles').attr("style", 'display:none');
+                $(this).children().text('Ver Mas Periodos');
+                esconderPeriodos = false;
+            }
+
+        });
 
 
 
@@ -512,6 +523,7 @@
             $('#periodoActual').text(dperiodoActual);
             $('#dperiodoActual').val(dperiodoActual);
             $('#hperiodoActual').val(id);
+
             obtenerNotas(id);
         });
 
@@ -541,7 +553,6 @@
         }
 
         function obtenerNombre(token) {
-            console.log(token)
             if (token != '') {
                 $.ajax({
                     headers: {
@@ -558,7 +569,6 @@
         }
 
         function resultado(resultado) {
-            console.log(resultado.Data)
             const {
                 SAPELLIDOP,
                 SAPELLIDOM,
@@ -640,21 +650,64 @@
         }
 
         function periodosCursados(resultado) {
+
+            var count = 0;
+            var length = resultado.Data.length;
             resultado.Data.forEach(function(element) {
                 const {
                     SPERIODO_DSC,
                     LPERIODO_ID
                 } = element;
-                //Menu Lateral
-                var lista = $("<li></li>")
-                var link = $("<a></a>")
-                var parrafo = $("<p></p>").text(SPERIODO_DSC);
-                parrafo.attr("class", "periodos");
-                link.attr("class", "semestre");
-                link.attr("data-json", LPERIODO_ID);
-                link.append(parrafo);
-                lista.append(link);
-                $("#periodosTitle").after(lista);
+                if (length > 2) {
+                    if (count == 0) {
+                        var lista = $("<li></li>")
+                        var link = $("<a></a>")
+                        var parrafo = $("<p></p>").text("Ver mas Periodos");
+                        parrafo.attr("style", 'margin-left:0px;text-align:center');
+                        parrafo.attr("class", "periodos");
+                        link.attr("id", "verMasPeriodos");
+                        link.append(parrafo);
+                        lista.append(link);
+
+                        $("#periodosTitle").after(lista);
+                    }
+                    if (count >= length - 2) {
+                        var lista = $("<li></li>")
+                        var link = $("<a></a>")
+                        var parrafo = $("<p></p>").text(SPERIODO_DSC);
+                        parrafo.attr("class", "periodos");
+                        link.attr("class", "semestre");
+                        link.attr("data-json", LPERIODO_ID);
+                        link.append(parrafo);
+                        lista.append(link);
+                        $("#periodosTitle").after(lista);
+                    }
+
+                    if (count < length - 2) {
+                        var lista = $("<li></li>")
+                        var link = $("<a></a>")
+                        var parrafo = $("<p></p>").text(SPERIODO_DSC);
+                        parrafo.attr("class", "periodos");
+                        link.attr("class", "semestre");
+                        link.attr("data-json", LPERIODO_ID);
+                        link.append(parrafo);
+                        lista.append(link);
+                        lista.attr("style", 'display:none');
+                        lista.attr("class", "periodosInvisibles");
+                        $("#periodosTitle").after(lista);
+                    }
+                } else {
+                    var lista = $("<li></li>")
+                    var link = $("<a></a>")
+                    var parrafo = $("<p></p>").text(SPERIODO_DSC);
+                    parrafo.attr("class", "periodos");
+                    link.attr("class", "semestre");
+                    link.attr("data-json", LPERIODO_ID);
+                    link.append(parrafo);
+                    lista.append(link);
+                    $("#periodosTitle").after(lista);
+                }
+                count++;
             });
         }
 

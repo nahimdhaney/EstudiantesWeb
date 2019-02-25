@@ -225,7 +225,7 @@
 <script src="assets/js/site.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        debugger
+
         cargarPagina();
 
     })
@@ -307,7 +307,7 @@
     }
 
     function InfoPersonal() {
-        debugger
+
         var token = localStorage.getItem("token");
         jQuery.ajax({
             headers: {
@@ -323,7 +323,7 @@
     }
 
     function cargarInformacionPersonal(resultado) {
-        debugger
+
         const {
             SREGISTRO,
             SAPELLIDOP,
@@ -349,7 +349,7 @@
 
 
     function obtenerHorarios() {
-        debugger
+
         var carreraId = localStorage.getItem("carreraId");
         var periodoActual = localStorage.getItem("MasterPeriodoActual");
         var token = localStorage.getItem("token");
@@ -371,7 +371,7 @@
     }
 
     function cargarHorarios(resultado) {
-        debugger
+
         resultado.Data.forEach(function(element) {
             const {
                 SCENTRO_DSC,

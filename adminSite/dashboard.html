@@ -551,7 +551,7 @@
                     MATERIAS,
                     REQUISITOS
                 } = element;
-                var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC);
+                var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
                 REQUISITOS.forEach(function(req) {
                     var objNodo = new Object();
                     objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());

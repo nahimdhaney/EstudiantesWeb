@@ -27,30 +27,13 @@
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <style>
         /* Center the loader */
         
-        #loader {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index: 1;
-            width: 150px;
-            height: 150px;
-            margin: -75px 0 0 -75px;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite;
-            animation: spin 2s linear infinite;
-        }
-        
-        #mainLoader {
+        .loader {
             position: absolute;
             left: 50%;
             top: 50%;
@@ -120,6 +103,52 @@
             display: none;
             text-align: center;
         }
+        
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            /* padding: .25rem 1.5rem; */
+            clear: both;
+            font-weight: 400;
+            color: #212529;
+            text-align: inherit;
+            white-space: nowrap;
+            /* background: 0 0; */
+            /* border: 0; */
+            padding: 8px 16px;
+            color: #333333;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 991px) {
+            .nav-mobile-menu .dropdown .dropdown-menu .dropdown-item {
+                border-radius: 4px;
+                color: #FFFFFF;
+                opacity: .86;
+                padding: 8px 50px;
+            }
+        }
+        
+        .sidebar .nav .nav-link,
+        body>.navbar-collapse .nav .nav-link {
+            color: #FFFFFF;
+            margin: 5px 15px;
+            opacity: .86;
+            border-radius: 4px;
+            text-transform: uppercase;
+            line-height: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .sidebar .nav span {
+            margin: 0;
+            line-height: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 45px;
+        }
     </style>
 
 </head>
@@ -130,7 +159,7 @@
     <input type="hidden" id="dperiodoActual">
     <input type="hidden" id="isHistorialCargado" value="0">
     <input type="hidden" id="firstLoad" value="">
-    <div id="mainLoader"></div>
+    <div id="mainLoader" class='loader'></div>
     <div id="mainContainer" class="wrapper" style="display:none">
         <div class="sidebar" data-color="purple">
 
@@ -192,32 +221,34 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <p id="nombreEstudiante" class="navbar-brand" href="javascript:void(0)"></p><br>
-                        <p id="periodoActual" class="navbar-brand" href="javascript:void(0)"></p>
+                        <div style="float:left">
+                            <p id="nombreEstudiante" class="navbar-brand" href="javascript:void(0)"></p><br>
+                            <p id="periodoActual" class="navbar-brand" href="javascript:void(0)"></p>
+                        </div>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a id="botonHistorial" href="javascript:void(0)">
-                                    <p>Ver Historial</p>
+                            <li class="nav-item dropdown show">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="no-icon">Mas Opciones</span>
                                 </a>
+                                <div class="dropdown-menu show" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalOferta" onclick="getElementById('bodyClick').click()">
+                                        <p>Ver Oferta</p>
+                                    </a>
+                                    <a class="dropdown-item" id="botonHistorial" href="javascript:void(0)">
+                                        <p>Ver Historial</p>
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
+                                        <p>Cambiar Pin</p>
+                                    </a>
+                                </div>
                             </li>
                             <li>
                                 <a id="botonImprimir" href="horario.html">
                                     <p>Ver Horario</p>
                                 </a>
                             </li>
-                            <li>
-                                <a href="javascript:void(0)" data-toggle="modal" data-target="#modalOferta" onclick="getElementById('bodyClick').click()">
-                                    <p>Ver Oferta</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
-                                    <p>Cambiar Pin</p>
-                                </a>
-                            </li>
-
                             <li>
                                 <a id="logout" href="../index.html">
                                     <p>Salir</p>
@@ -254,6 +285,7 @@
                     </div> -->
                 </div>
             </nav>
+            <div id="loader" class='loader' style="display:none"></div>
             <div class="content">
                 <div class="row" id='containerNotas'>
                     <div class="col-md-12">
@@ -323,27 +355,30 @@
                         <div class="card">
                             <div class="header">
                                 <h4 class="title" style="float: left;">Historial pénsum académico</h4>
-                                <a href="javascript:void(0)" style="float-right">fechar</a>
+                                <a id='closePensul' href="javascript:void(0)" style="color: #3498db;float: right;font-size: 30px;">
+                                    <i class="far fa-times-circle"></i>
+                                </a>
+                                <br>
                                 <div style="margin-top:20px">
                                     <div style="height:20px;width:20px;background-color: black;float: left;border-radius: 5px">
                                     </div>
                                     <p style="margin-left:30px">Materias faltantes</p>
                                 </div>
                             </div>
-                            <div class="container-fluid" style="overflow-y:auto;height: 500px;">
-                                <div id="chartdiv" style="width:100%;height: 480px;min-width: 1800px;">
+                            <div class="container-fluid" style="overflow:auto;height: 500px;">
+                                <div id="chartdiv" style="width:100%;height: 480px;min-width: 1600px;">
 
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
-    <div id="loader" style="display:none"></div>
     </div>
+
 
     <div id="modalCambiarPin" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -437,6 +472,12 @@
         $("#logout").click(function() {
             localStorage.removeItem("token");
         });
+        $("#closePensul").click(function() {
+            $('#containerNotas').show();
+            $('#containerAsistencia').show();
+            $('#containerPensul').hide();
+        });
+
 
         $("#formCambiarPin").submit(function(event) {
             var pinAnterior = $("#pinAnterior").val();
@@ -641,7 +682,7 @@
 
         function comenzarCargado() {
             $("#loader").removeAttr("style");
-            $('.main-panel').attr("style", 'display:none');
+            $('.content').attr("style", 'display:none');
 
         }
 
@@ -651,7 +692,7 @@
         }
 
         function terminarCargado() {
-            $(".main-panel").removeAttr("style");
+            $(".content").removeAttr("style");
             $('#loader').attr("style", 'display:none');
 
         }

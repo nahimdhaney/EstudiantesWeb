@@ -1,4 +1,11 @@
 $(document).ready(function($) {
+
+    var userId = localStorage.getItem("token");
+    if (userId != null && userId != '') {
+        var url = 'adminSite/dashboard.html'
+        $(location).attr("href", url);
+    }
+
     var key = 'A10BB4B705310FB670185286C2B2367365A1CA2C';
     $("#loginButton").click(function() {
         var registro = $("#registroNumber").val()

@@ -1,5 +1,4 @@
 $(document).ready(function($) {
-
     var userId = localStorage.getItem("token");
     if (userId != null && userId != '') {
         var url = 'adminSite/dashboard.html'

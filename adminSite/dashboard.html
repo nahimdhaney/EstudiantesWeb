@@ -230,13 +230,13 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="nav-item dropdown show">
                                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <span class="no-icon">Mas Opciones</span>
+                                    <span class="no-icon">Más opciones</span>
                                 </a>
                                 <div class="dropdown-menu show" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalOferta" onclick="getElementById('bodyClick').click()">
                                         <p>Ver Oferta</p>
                                     </a>
-                                    <a class="dropdown-item" id="botonHistorial" href="javascript:void(0)">
+                                    <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
                                         <p>Ver Historial</p>
                                     </a>
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
@@ -250,7 +250,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a id="logout" href="../index.html">
+                                <a id="logout" onclick="logout()" href="../index.html">
                                     <p>Salir</p>
                                 </a>
                             </li>
@@ -455,6 +455,142 @@
 <script src="assets/js/demo.js"></script>
 
 <script type="text/javascript">
+    function removerAcentos(newStringComAcento) {
+        var string = newStringComAcento;
+        var mapaAcentosHex = {
+            a: /[\xE0-\xE6]/g,
+            A: /[\xC0-\xC6]/g,
+            e: /[\xE8-\xEB]/g,
+            E: /[\xC8-\xCB]/g,
+            i: /[\xEC-\xEF]/g,
+            I: /[\xCC-\xCF]/g,
+            o: /[\xF2-\xF6]/g,
+            O: /[\xD2-\xD6]/g,
+            u: /[\xF9-\xFC]/g,
+            U: /[\xD9-\xDC]/g,
+            c: /\xE7/g,
+            C: /\xC7/g,
+            n: /\xF1/g,
+            N: /\xD1/g
+        };
+
+        for (var letra in mapaAcentosHex) {
+            var expressaoRegular = mapaAcentosHex[letra];
+            string = string.replace(expressaoRegular, letra);
+        }
+
+        return string;
+    }
+
+    function comenzarCargado() {
+        $("#loader").removeAttr("style");
+        $('.content').attr("style", 'display:none');
+
+    }
+
+    function terminarCargado() {
+        $(".content").removeAttr("style");
+        $('#loader').attr("style", 'display:none');
+
+    }
+
+    function logout() {
+        localStorage.removeItem("token");
+    }
+
+    function verHistorial() {
+        $('#containerNotas').hide();
+        $('#containerAsistencia').hide();
+        $('#bodyClick').click()
+
+        var isHistorialCargado = $('#isHistorialCargado').val();
+        if (isHistorialCargado == 1) {
+            $('#containerPensul').show();
+            return;
+        }
+        comenzarCargado();
+        var carreraId = $('#carrerasAlumno').find(":selected").val();
+        $('#containerPensul').show();
+        var usuario = new Object();
+        usuario.pCarreraId = carreraId;
+        var token = localStorage.getItem("token");
+        if (token != '') {
+            jQuery.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                'type': 'POST',
+                'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
+                'dataType': 'json',
+                'data': JSON.stringify(usuario),
+                'success': carrgarHistorial
+            });
+        }
+        return false;
+    }
+
+    function carrgarHistorial(resultado) {
+
+        var arbol = [];
+        resultado.Data.CURSADAS.forEach(function(element) {
+            const {
+                MATERIAS,
+                REQUISITOS
+            } = element;
+            var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
+            REQUISITOS.forEach(function(req) {
+                var objNodo = new Object();
+                objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
+                objNodo.to = materiaPadre;
+                objNodo.value = 1;
+                arbol.push(objNodo)
+            });
+        });
+        resultado.Data.FALTANTES.forEach(function(element) {
+            const {
+                MATERIAS,
+                REQUISITOS
+            } = element;
+            var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
+            REQUISITOS.forEach(function(req) {
+                var objNodo = new Object();
+                objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
+                objNodo.to = materiaPadre;
+                objNodo.value = 1;
+                objNodo.nodeColor = '#212121';
+                arbol.push(objNodo)
+            });
+        });
+        am4core.useTheme(am4themes_animated);
+        // Themes end
+        var chart = am4core.create("chartdiv", am4charts.SankeyDiagram);
+        chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+        chart.data = arbol;
+        let hoverState = chart.links.template.states.create("hover");
+        hoverState.properties.fillOpacity = 0.6;
+        chart.dataFields.fromName = "from";
+        chart.dataFields.toName = "to";
+        chart.dataFields.value = "value";
+        chart.dataFields.color = "nodeColor";
+        // for right-most label to fit
+        chart.paddingRight = 30;
+        // make nodes draggable
+        var nodeTemplate = chart.nodes.template;
+        nodeTemplate.inert = true;
+        nodeTemplate.readerTitle = "Drag me!";
+        nodeTemplate.showSystemTooltip = true;
+        nodeTemplate.width = 20;
+        // make nodes draggable
+        var nodeTemplate = chart.nodes.template;
+        nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
+        nodeTemplate.showSystemTooltip = true;
+        nodeTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer
+        terminarCargado();
+        $('#isHistorialCargado').val(1);
+    }
+
     $(document).ready(function() {
         var esconderPeriodos = false;
         cargarPagina();
@@ -469,9 +605,14 @@
             $("#mainLoader").removeAttr("style");
         }
 
-        $("#logout").click(function() {
-            localStorage.removeItem("token");
-        });
+        // $("#logout").click(function() {
+        //     
+        //     localStorage.removeItem("token");
+        //     window.location = "../index.html";
+        //     return false;
+        // });
+
+
         $("#closePensul").click(function() {
             $('#containerNotas').show();
             $('#containerAsistencia').show();
@@ -528,37 +669,6 @@
             window.location = "oferta.html";
         });
 
-        $("#botonHistorial").click(function() {
-            $('#containerNotas').hide();
-            $('#containerAsistencia').hide();
-            debugger
-            var isHistorialCargado = $('#isHistorialCargado').val();
-            if (isHistorialCargado == 1) {
-                $('#containerPensul').show();
-                return;
-            }
-            comenzarCargado();
-            var carreraId = $('#carrerasAlumno').find(":selected").val();
-            $('#containerPensul').show();
-            var usuario = new Object();
-            usuario.pCarreraId = carreraId;
-            var token = localStorage.getItem("token");
-            if (token != '') {
-                jQuery.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    'type': 'POST',
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
-                    'dataType': 'json',
-                    'data': JSON.stringify(usuario),
-                    'success': carrgarHistorial
-                });
-            }
-        });
-
         function removerAcentos(newStringComAcento) {
             var string = newStringComAcento;
             var mapaAcentosHex = {
@@ -586,71 +696,6 @@
             return string;
         }
 
-        function carrgarHistorial(resultado) {
-            var arbol = [];
-            resultado.Data.CURSADAS.forEach(function(element) {
-                const {
-                    MATERIAS,
-                    REQUISITOS
-                } = element;
-                var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
-                REQUISITOS.forEach(function(req) {
-                    var objNodo = new Object();
-                    objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
-                    objNodo.to = materiaPadre;
-                    objNodo.value = 1;
-                    arbol.push(objNodo)
-                });
-            });
-            resultado.Data.FALTANTES.forEach(function(element) {
-                const {
-                    MATERIAS,
-                    REQUISITOS
-                } = element;
-                var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
-                REQUISITOS.forEach(function(req) {
-                    var objNodo = new Object();
-                    objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
-                    objNodo.to = materiaPadre;
-                    objNodo.value = 1;
-                    objNodo.nodeColor = '#212121';
-                    arbol.push(objNodo)
-                });
-            });
-            console.log(JSON.stringify(arbol));
-            am4core.useTheme(am4themes_animated);
-            // Themes end
-
-            var chart = am4core.create("chartdiv", am4charts.SankeyDiagram);
-            chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-            chart.data = arbol;
-            let hoverState = chart.links.template.states.create("hover");
-            hoverState.properties.fillOpacity = 0.6;
-
-            chart.dataFields.fromName = "from";
-            chart.dataFields.toName = "to";
-            chart.dataFields.value = "value";
-            chart.dataFields.color = "nodeColor";
-
-            // for right-most label to fit
-            chart.paddingRight = 30;
-
-            // make nodes draggable
-            var nodeTemplate = chart.nodes.template;
-            nodeTemplate.inert = true;
-            nodeTemplate.readerTitle = "Drag me!";
-            nodeTemplate.showSystemTooltip = true;
-            nodeTemplate.width = 20;
-
-            // make nodes draggable
-            var nodeTemplate = chart.nodes.template;
-            nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
-            nodeTemplate.showSystemTooltip = true;
-            nodeTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer
-            terminarCargado();
-            $('#isHistorialCargado').val(1);
-        }
 
         $(document).on('click', '#verMasPeriodos', function() {
             if (esconderPeriodos == false) {
@@ -686,16 +731,17 @@
 
         }
 
-        function terminarMainCargado() {
-            $('#mainLoader').attr("style", 'display:none');
-            $("#mainContainer").removeAttr("style");
-        }
-
         function terminarCargado() {
             $(".content").removeAttr("style");
             $('#loader').attr("style", 'display:none');
 
         }
+
+        function terminarMainCargado() {
+            $('#mainLoader').attr("style", 'display:none');
+            $("#mainContainer").removeAttr("style");
+        }
+
 
         function cargarPagina() {
             var token = localStorage.getItem("token");

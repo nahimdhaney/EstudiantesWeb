@@ -181,6 +181,18 @@
         .panel-body {
             padding: 9px !important;
         }
+        
+        @media (max-width: 576px) {
+            .card-user .card-image {
+                height: 100px !important;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            #infoPersonal {
+                height: 300px;
+            }
+        }
     </style>
 
 </head>
@@ -401,6 +413,45 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6" id='infoPersonal'>
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title" style="float: left;">Informacion Personal</h4>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">
+                                                        <i class="fas fa-phone"></i>
+                                                        Telefono
+                                                </span>
+                                    </span>
+                                    <input id='inputTelefono' type="text" style="cursor:text" readonly="readonly" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span style='padding-right: 35px;' class="input-group-addon">
+                                                <i class="fas fa-mobile-alt"></i>
+                                                Celular
+                                                    </span>
+                                    </span>
+                                    <input id='inputCelular' type="text" style="cursor:text" readonly="readonly" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span style='padding-right: 40px;' class="input-group-addon">
+                                                <i class="far fa-envelope"></i>
+                                                Email
+                                                    </span>
+                                    </span>
+                                    <input id='inputEmail' type="text" style="cursor:text" readonly="readonly" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="card">
                             <div class="header">
@@ -413,45 +464,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title" style="float: left;">Informacion Personal</h4>
-                            </div>
-                            <br/>
-                            <br/>
-                            <div class="panel-body">
-                                <div class="input-group input-group-lg">
-                                    <span style='width: 127px !important;' class="input-group-addon">
-                                                    <i class="fas fa-phone"></i>
-                                                    Telefono
-                                            </span>
-                                    </span>
-                                    <input id='inputTelefono' type="text" style="cursor:text" readonly="readonly" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="input-group input-group-lg">
-                                    <span style='width: 127px !important;' class="input-group-addon">
-                                            <i class="fas fa-mobile-alt"></i>
-                                            Celular
-                                                </span>
-                                    </span>
-                                    <input id='inputCelular' type="text" style="cursor:text" readonly="readonly" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="input-group input-group-lg">
-                                    <span style='width: 127px !important;' class="input-group-addon">
-                                            <i class="far fa-envelope"></i>
-                                            Email
-                                                </span>
-                                    </span>
-                                    <input id='inputEmail' type="text" style="cursor:text" readonly="readonly" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -729,31 +742,42 @@
             var nuevoPin = $("#nuevoPin").val();
             var repetirNuevoPin = $("#repetirNuevoPin").val();
             if (nuevoPin.localeCompare(repetirNuevoPin) == 0) {
-                var token = localStorage.getItem("token");
-                var usuario = new Object();
-                usuario.pPinActual = pinAnterior;
-                usuario.pPinNuevo = nuevoPin;
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    'type': 'POST',
-                    'data': JSON.stringify(usuario),
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
-                    'dataType': 'json',
-                }).done(function(response) {
-                    if (response.Status) {
-                        swal(
-                            'Operacion Exitosa!',
-                            'Pin actualizado correctamente!',
-                            'success'
-                        )
-                    } else {
-                        swal("Error", "Hubo un error al actualizar su Pin", "error")
-                    }
-                });
+                Swal.fire({
+                    title: 'Estas Seguro de cambiar tu Pin?',
+                    text: "Esto cambiara tu ingreso a la pagina de notas, y al ingreso para el WI-FI",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si,Quiero cambiarlo!'
+                }).then((result) => {
+                    var token = localStorage.getItem("token");
+                    var usuario = new Object();
+                    usuario.pPinActual = pinAnterior;
+                    usuario.pPinNuevo = nuevoPin;
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        'type': 'POST',
+                        'data': JSON.stringify(usuario),
+                        'url': "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
+                        'dataType': 'json',
+                    }).done(function(response) {
+                        if (response.Status) {
+                            swal(
+                                'Operacion Exitosa!',
+                                'Pin actualizado correctamente!',
+                                'success'
+                            )
+                        } else {
+                            swal("Error", "Hubo un error al actualizar su Pin", "error")
+                        }
+                    });
+                })
+
             } else {
                 swal("Error", "Los Pines no son iguales.", "error")
             }
@@ -963,7 +987,7 @@
                     LPERIODOACTUAL,
                     LPERIODOACTUAL_ID
                 } = element;
-                debugger
+
                 $('#MasterPeriodoActual').val(LPERIODOACTUAL_ID);
                 localStorage.setItem("MasterPeriodoActual", LPERIODOACTUAL_ID);
                 $('#hperiodoActual').val(LPERIODOACTUAL_ID);

@@ -605,6 +605,7 @@
         $('#containerNotas').hide();
         $('#containerAsistencia').hide();
         $("#containerPerfil").fadeIn();
+        $('#bodyClick').click()
     }
 
     function verHistorial() {
@@ -613,7 +614,7 @@
         $('#bodyClick').click()
         var isHistorialCargado = $('#isHistorialCargado').val();
         if (isHistorialCargado == 1) {
-            $('#containerPensul').show();
+            $('#containerPensul').fadeIn();
             return;
         }
         comenzarCargado();

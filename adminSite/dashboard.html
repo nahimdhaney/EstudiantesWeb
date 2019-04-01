@@ -149,6 +149,38 @@
             text-transform: uppercase;
             margin-left: 45px;
         }
+        
+        .card .card-image img {
+            width: 100%;
+        }
+        
+        .card-user .card-image {
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        .card-user .avatar {
+            border: 4px solid #FFFFFF;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 992px) {
+            .table-full-width {
+                margin-left: 0px !important;
+                margin-right: 0px !important;
+            }
+        }
+        
+        .input-group-addon {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: white;
+        }
+        
+        .panel-body {
+            padding: 9px !important;
+        }
     </style>
 
 </head>
@@ -164,10 +196,8 @@
         <div class="sidebar" data-color="purple">
 
             <!--
-
         Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
         Tip 2: you can also add an image using data-image tag
-
     -->
 
             <div class="sidebar-wrapper">
@@ -239,6 +269,9 @@
                                     <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
                                         <p>Ver Historial</p>
                                     </a>
+                                    <a class="dropdown-item" id="botonPerfil" onclick="verPerfil()" href="javascript:void(0)">
+                                        <p>Ver Perfil</p>
+                                    </a>
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
                                         <p>Cambiar Pin</p>
                                     </a>
@@ -285,7 +318,7 @@
                     </div> -->
                 </div>
             </nav>
-            <div id="loader" class='loader' style="display:none"></div>
+            <div id="loader" class='loader'></div>
             <div class="content">
                 <div class="row" id='containerNotas'>
                     <div class="col-md-12">
@@ -350,24 +383,71 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="containerPensul" style="display:none">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title" style="float: left;">Historial pénsum académico</h4>
-                                <a id='closePensul' href="javascript:void(0)" style="color: #3498db;float: right;font-size: 30px;">
-                                    <i class="far fa-times-circle"></i>
-                                </a>
-                                <br>
-                                <div style="margin-top:20px">
-                                    <div style="height:20px;width:20px;background-color: black;float: left;border-radius: 5px">
-                                    </div>
-                                    <p style="margin-left:30px">Materias faltantes</p>
+                <div class="row" id='containerPerfil' style="display:none">
+                    <div class="col-md-6">
+                        <div class="card card-user" style='border:none'>
+                            <div class="card-image">
+                                <img src="https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="No se pudo obtener la imagen">
+                            </div>
+                            <div class="card-body">
+                                <div class="author">
+                                    <a href="#">
+                                        <img id='imgUsuario' class="avatar border-gray" alt="No se pudo obtener la imagen">
+                                        <h5 id='tituloNombreEstudiante' class="title"></h5>
+                                        <p id='carreraPerfil' class="description">
+                                        </p>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="container-fluid" style="overflow:auto;height: 500px;">
-                                <div id="chartdiv" style="width:100%;height: 480px;min-width: 1600px;">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title" style="float: left;">Horas de Servicio</h4>
+                            </div>
+                            <div class="container-fluid" style="height:300px;">
+                                <div id="divCreditos" style="height: 270px;">
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title" style="float: left;">Informacion Personal</h4>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span style='width: 127px !important;' class="input-group-addon">
+                                                    <i class="fas fa-phone"></i>
+                                                    Telefono
+                                            </span>
+                                    </span>
+                                    <input id='inputTelefono' type="text" style="cursor:text" readonly="readonly" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span style='width: 127px !important;' class="input-group-addon">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            Celular
+                                                </span>
+                                    </span>
+                                    <input id='inputCelular' type="text" style="cursor:text" readonly="readonly" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span style='width: 127px !important;' class="input-group-addon">
+                                            <i class="far fa-envelope"></i>
+                                            Email
+                                                </span>
+                                    </span>
+                                    <input id='inputEmail' type="text" style="cursor:text" readonly="readonly" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -375,7 +455,32 @@
                 </div>
             </div>
 
+            <div class="row" id="containerPensul" style="display:none">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title" style="float: left;">Historial pénsum académico</h4>
+                            <a id='closePensul' href="javascript:void(0)" style="color: #3498db;float: right;font-size: 30px;">
+                                <i class="far fa-times-circle"></i>
+                            </a>
+                            <br>
+                            <div style="margin-top:20px">
+                                <div style="height:20px;width:20px;background-color: black;float: left;border-radius: 5px">
+                                </div>
+                                <p style="margin-left:30px">Materias faltantes</p>
+                            </div>
+                        </div>
+                        <div class="container-fluid" style="overflow:auto;height:710px">
+                            <div id="chartdiv" style="height: 700px;min-width: 1600px;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+    </div>
     </div>
     </div>
 
@@ -455,6 +560,8 @@
 <script src="assets/js/demo.js"></script>
 
 <script type="text/javascript">
+    var horasServicio = 120;
+
     function removerAcentos(newStringComAcento) {
         var string = newStringComAcento;
         var mapaAcentosHex = {
@@ -473,36 +580,37 @@
             n: /\xF1/g,
             N: /\xD1/g
         };
-
         for (var letra in mapaAcentosHex) {
             var expressaoRegular = mapaAcentosHex[letra];
             string = string.replace(expressaoRegular, letra);
         }
-
         return string;
     }
 
     function comenzarCargado() {
         $("#loader").removeAttr("style");
         $('.content').attr("style", 'display:none');
-
     }
 
     function terminarCargado() {
         $(".content").removeAttr("style");
         $('#loader').attr("style", 'display:none');
-
     }
 
     function logout() {
         localStorage.removeItem("token");
     }
 
+    function verPerfil() {
+        $('#containerNotas').hide();
+        $('#containerAsistencia').hide();
+        $("#containerPerfil").fadeIn();
+    }
+
     function verHistorial() {
         $('#containerNotas').hide();
         $('#containerAsistencia').hide();
         $('#bodyClick').click()
-
         var isHistorialCargado = $('#isHistorialCargado').val();
         if (isHistorialCargado == 1) {
             $('#containerPensul').show();
@@ -532,7 +640,6 @@
     }
 
     function carrgarHistorial(resultado) {
-
         var arbol = [];
         resultado.Data.CURSADAS.forEach(function(element) {
             const {
@@ -544,7 +651,7 @@
                 var objNodo = new Object();
                 objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
                 objNodo.to = materiaPadre;
-                objNodo.value = 1;
+                objNodo.value = 2;
                 arbol.push(objNodo)
             });
         });
@@ -558,7 +665,7 @@
                 var objNodo = new Object();
                 objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
                 objNodo.to = materiaPadre;
-                objNodo.value = 1;
+                objNodo.value = 5;
                 objNodo.nodeColor = '#212121';
                 arbol.push(objNodo)
             });
@@ -591,6 +698,7 @@
         $('#isHistorialCargado').val(1);
     }
 
+
     $(document).ready(function() {
         var esconderPeriodos = false;
         cargarPagina();
@@ -604,22 +712,17 @@
             $('#mainContainer').attr("style", 'display:none');
             $("#mainLoader").removeAttr("style");
         }
-
         // $("#logout").click(function() {
         //     
         //     localStorage.removeItem("token");
         //     window.location = "../index.html";
         //     return false;
         // });
-
-
         $("#closePensul").click(function() {
             $('#containerNotas').show();
             $('#containerAsistencia').show();
             $('#containerPensul').hide();
         });
-
-
         $("#formCambiarPin").submit(function(event) {
             var pinAnterior = $("#pinAnterior").val();
             var nuevoPin = $("#nuevoPin").val();
@@ -657,9 +760,6 @@
             $('#formCambiarPin')[0].reset();
             event.preventDefault();
         });
-
-
-
         $("#verOferta").click(function() {
             var periodoOferta = $('#periodosOferta').find(":selected").val();
             var carreraId = $('#carrerasAlumno').find(":selected").val();
@@ -687,16 +787,12 @@
                 n: /\xF1/g,
                 N: /\xD1/g
             };
-
             for (var letra in mapaAcentosHex) {
                 var expressaoRegular = mapaAcentosHex[letra];
                 string = string.replace(expressaoRegular, letra);
             }
-
             return string;
         }
-
-
         $(document).on('click', '#verMasPeriodos', function() {
             if (esconderPeriodos == false) {
                 $('.periodosInvisibles').removeAttr("style");
@@ -707,15 +803,12 @@
                 $(this).children().text('Ver Mas Periodos');
                 esconderPeriodos = false;
             }
-
         });
-
-
-
         $(document).on('click', '.semestre', function() {
             comenzarCargado();
             $('#containerNotas').show();
             $('#containerAsistencia').show();
+            $('#containerPerfil').show();
             var id = parseInt(JSON.parse($(this).attr('data-json')))
             var dperiodoActual = $(this).children("p").text();
             $('#containerPensul').hide();
@@ -728,13 +821,11 @@
         function comenzarCargado() {
             $("#loader").removeAttr("style");
             $('.content').attr("style", 'display:none');
-
         }
 
         function terminarCargado() {
             $(".content").removeAttr("style");
             $('#loader').attr("style", 'display:none');
-
         }
 
         function terminarMainCargado() {
@@ -742,13 +833,70 @@
             $("#mainContainer").removeAttr("style");
         }
 
-
         function cargarPagina() {
             var token = localStorage.getItem("token");
             obtenerNombre(token);
+            obtenerImagen(token);
             GetPeriodosCursados();
             getCarreraInfo(token);
             GetPeriodosOfertas();
+        }
+
+        function cargarCreditos(creditosVencidos) {
+
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+            var chart = am4core.create("divCreditos", am4charts.PieChart);
+            chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+            chart.data = [{
+                country: "Realizadas",
+                value: creditosVencidos
+            }, {
+                country: "Restantes",
+                value: horasServicio - creditosVencidos
+            }];
+            chart.radius = am4core.percent(70);
+            chart.innerRadius = am4core.percent(40);
+            chart.startAngle = 180;
+            chart.endAngle = 360;
+
+            var series = chart.series.push(new am4charts.PieSeries());
+            series.dataFields.value = "value";
+            series.dataFields.category = "country";
+
+            series.slices.template.cornerRadius = 10;
+            series.slices.template.innerCornerRadius = 7;
+            series.slices.template.draggable = true;
+            series.slices.template.inert = true;
+            series.alignLabels = false;
+
+            series.hiddenState.properties.startAngle = 90;
+            series.hiddenState.properties.endAngle = 90;
+
+            chart.legend = new am4charts.Legend();
+        }
+
+        function obtenerImagen(token) {
+            if (token != '') {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    'type': 'POST',
+                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoImagen",
+                    'dataType': 'json',
+                    'success': cargarImagem
+                });
+            }
+        }
+
+        function cargarImagem(resultado) {
+
+            var imagen = 'data:image/png;base64,' + resultado.Data;
+            $("#imgUsuario").attr("src", imagen);
         }
 
         function obtenerNombre(token) {
@@ -768,13 +916,23 @@
         }
 
         function resultado(resultado) {
+
             const {
                 SAPELLIDOP,
                 SAPELLIDOM,
-                SNOMBRES
+                SNOMBRES,
+                SCELULAR,
+                STELEFONO,
+                SEMAIL,
+                LHORASERVICIO,
             } = resultado.Data;
             var NombreCompleto = SNOMBRES + ' ' + SAPELLIDOP + ' ' + SAPELLIDOM
             $('#nombreEstudiante').text(NombreCompleto)
+            $('#inputTelefono').val(STELEFONO);
+            $('#inputCelular').val(SCELULAR);
+            $('#inputEmail').val(SEMAIL);
+            $('#tituloNombreEstudiante').text(NombreCompleto);
+            cargarCreditos(LHORASERVICIO);
         }
 
         function getCarreraInfo(token) {
@@ -793,10 +951,10 @@
             }
         }
 
-
         function infoCarrera(resultado) {
             var count = 0;
             //$('#carrerasAlumno').empty();
+            var carreras = '';
             resultado.Data.forEach(function(element) {
                 const {
                     LCARRERA_ID,
@@ -804,7 +962,7 @@
                     LPERIODOACTUAL,
                     LPERIODOACTUAL_ID
                 } = element;
-
+                debugger
                 $('#MasterPeriodoActual').val(LPERIODOACTUAL_ID);
                 localStorage.setItem("MasterPeriodoActual", LPERIODOACTUAL_ID);
                 $('#hperiodoActual').val(LPERIODOACTUAL_ID);
@@ -816,14 +974,18 @@
                         return;
                     }
                 };
-
                 var opcion = $("<option></option>")
                 opcion.attr("value", LCARRERA_ID);
                 opcion.text(SCARRERA_DSC);
                 $('#carrerasAlumno').append(opcion);
+                if (carreras == '')
+                    carreras += SCARRERA_DSC;
+                else
+                    carreras += ' , ' + SCARRERA_DSC;
                 count++;
             });
 
+            $('#carreraPerfil').text(carreras)
         }
 
         function GetPeriodosCursados() {
@@ -849,7 +1011,6 @@
         }
 
         function periodosCursados(resultado) {
-
             var count = 0;
             var length = resultado.Data.length;
             resultado.Data.forEach(function(element) {
@@ -867,7 +1028,6 @@
                         link.attr("id", "verMasPeriodos");
                         link.append(parrafo);
                         lista.append(link);
-
                         $("#periodosTitle").after(lista);
                     }
                     if (count >= length - 2) {
@@ -881,7 +1041,6 @@
                         lista.append(link);
                         $("#periodosTitle").after(lista);
                     }
-
                     if (count < length - 2) {
                         var lista = $("<li></li>")
                         var link = $("<a></a>")
@@ -959,7 +1118,6 @@
             //     link.append(parrafo);
             //     lista.append(link);
             //     $("#SPERIODO_DSC").after(lista);
-
             // });
         }
 
@@ -1055,8 +1213,6 @@
                 tr.append(tdFinal)
                 $('#tablaNotas').append(tr);
                 cargarAsistencias(element)
-
-
             });
         }
 
@@ -1079,7 +1235,6 @@
             tr.append(tdDocente)
             var periodoActual = $('#dperiodoActual').val();
             var semestre = periodoActual.split("-")[1];
-
             var count = 0;
             switch (semestre) {
                 case '1':
@@ -1120,7 +1275,6 @@
                             tr.css("color", "white");
                         }
                     }
-
                     break;
                 case '2':
                     const {
@@ -1191,15 +1345,11 @@
                         }
                     }
                     break;
-
             }
             $('#tablaAsistencia').append(tr);
             terminarCargado();
             terminarMainCargado();
-
         }
-
-
     });
 </script>
 

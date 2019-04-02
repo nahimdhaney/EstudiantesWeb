@@ -482,7 +482,7 @@
                                     <p style="margin-left:30px">Materias faltantes</p>
                                 </div>
                             </div>
-                            <div class="container-fluid" style="overflow-y:auto;height: 560px;">
+                            <div class="container-fluid" style="overflow:auto;height:560px">
                                 <div id="chartdiv" style="height: 540px;min-width: 3400px;">
 
                                 </div>
@@ -573,6 +573,12 @@
 <script type="text/javascript">
     var horasServicio = 120;
 
+    function errorSesion() {
+        localStorage.removeItem("token");
+        var url = '../index.html'
+        $(location).attr("href", url);
+    }
+
     function removerAcentos(newStringComAcento) {
         var string = newStringComAcento;
         var mapaAcentosHex = {
@@ -647,7 +653,8 @@
                 'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
                 'dataType': 'json',
                 'data': JSON.stringify(usuario),
-                'success': carrgarHistorial
+                'success': carrgarHistorial,
+                'error': errorSesion
             });
         }
         return false;
@@ -657,44 +664,68 @@
         var semestre = ' SEMESTRE';
         var espacio = ' - ';
         var arbol = [];
-        var lista = resultado.Data.CURSADAS;
-        debugger
-        lista.sort(function(a, b) {
-            return parseInt(a.MATERIAS.LSEMESTRE) - parseInt(b.MATERIAS.LSEMESTRE);
-        });
         resultado.Data.CURSADAS.forEach(function(element) {
             const {
                 MATERIAS,
                 REQUISITOS
             } = element;
             var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
+            var count = 0;
             REQUISITOS.forEach(function(req) {
+                if (req.LSEMESTRE == null)
+                    return;
                 var objNodo = new Object();
                 var numeroSemestre = req.LSEMESTRE == null ? '' : req.LSEMESTRE;
                 objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase()) + espacio + numeroSemestre + semestre;
                 objNodo.to = materiaPadre;
                 objNodo.value = 1;
                 arbol.push(objNodo)
+                count++;
             });
+            if (count == 0) {
+                var objNodo = new Object();
+                var numeroSemestre = MATERIAS.LSEMESTRE;
+                objNodo.from = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
+                objNodo.to = '';
+                objNodo.value = 1;
+                objNodo.semestre = MATERIAS.LSEMESTRE
+                arbol.push(objNodo)
+            }
         });
         resultado.Data.FALTANTES.forEach(function(element) {
             const {
                 MATERIAS,
                 REQUISITOS,
-                LSEMESTRE,
             } = element;
             var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
+            var count = 0;
             REQUISITOS.forEach(function(req) {
+                if (req.LSEMESTRE == null)
+                    return;
                 var objNodo = new Object();
                 var numeroSemestre = req.LSEMESTRE == null ? '' : req.LSEMESTRE;
                 objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase()) + espacio + numeroSemestre + semestre;
                 objNodo.to = materiaPadre;
                 objNodo.value = 1;
                 objNodo.nodeColor = '#757575';
-                arbol.push(objNodo)
+                arbol.push(objNodo);
+                count++;
             });
+            if (count == 0) {
+                var objNodo = new Object();
+                var numeroSemestre = MATERIAS.LSEMESTRE;
+                objNodo.from = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
+                objNodo.to = '';
+                objNodo.value = 1;
+                objNodo.semestre = MATERIAS.LSEMESTRE
+                arbol.push(objNodo)
+            }
         });
-
+        debugger
+        arbol.sort(function(a, b) {
+            return parseInt(a.semestre) - parseInt(b.semestre);
+        });
+        debugger
         am4core.useTheme(am4themes_animated);
         // Themes end
         var chart = am4core.create("chartdiv", am4charts.SankeyDiagram);
@@ -734,6 +765,12 @@
             $('#firstLoad').val('1');
             cargarPagina();
         });
+
+        function errorSesion() {
+            localStorage.removeItem("token");
+            var url = '../index.html'
+            $(location).attr("href", url);
+        }
 
         function comenzarMainCargado() {
             $('#mainContainer').attr("style", 'display:none');
@@ -848,6 +885,7 @@
             var id = parseInt(JSON.parse($(this).attr('data-json')))
             var dperiodoActual = $(this).children("p").text();
             $('#containerPensul').hide();
+            $('#containerPerfil').hide();
             $('#periodoActual').text(dperiodoActual);
             $('#dperiodoActual').val(dperiodoActual);
             $('#hperiodoActual').val(id);
@@ -918,7 +956,8 @@
                     'type': 'POST',
                     'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoImagen",
                     'dataType': 'json',
-                    'success': cargarImagem
+                    'success': cargarImagem,
+                    'error': errorSesion
                 });
             }
         }
@@ -939,7 +978,8 @@
                     'type': 'POST',
                     'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
                     'dataType': 'json',
-                    'success': resultado
+                    'success': resultado,
+                    'error': errorSesion
                 });
             }
         }
@@ -974,7 +1014,8 @@
                     'type': 'POST',
                     'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
                     'dataType': 'json',
-                    'success': infoCarrera
+                    'success': infoCarrera,
+                    'error': errorSesion
                 });
             }
         }
@@ -1031,7 +1072,8 @@
                     'url': "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosCursados",
                     'dataType': 'json',
                     'data': JSON.stringify(usuario),
-                    'success': periodosCursados
+                    'success': periodosCursados,
+                    'error': errorSesion
                 });
             }
         }
@@ -1111,7 +1153,8 @@
                     'url': "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOferta",
                     'dataType': 'json',
                     'data': JSON.stringify(usuario),
-                    'success': periodosOfertas
+                    'success': periodosOfertas,
+                    'error': errorSesion
                 });
             }
         }
@@ -1168,7 +1211,8 @@
                     'data': JSON.stringify(usuario),
                     'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
                     'dataType': 'json',
-                    'success': cargarNotas
+                    'success': cargarNotas,
+                    'error': errorSesion
                 });
             }
         }

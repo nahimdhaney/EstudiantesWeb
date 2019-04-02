@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
-
+    <link rel="icon" type="image/png" href="assets/img/nur.png">
     <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 
@@ -167,7 +167,7 @@
                                 <thead>
                                     <tr>
                                         <td id='nombreCodigo'></td>
-                                        <td id='idsemestreActual'></td>
+                                        <td id='horasServicio'></td>
                                         <td id='semestreActual'></td>
                                     </tr>
                                     <tr>
@@ -204,6 +204,7 @@
                                             <th scope="col">TIPO</th>
                                             <th scope="col">DOCENTE</th>
                                             <th scope="col">GRUPO</th>
+                                            <th scope="col">AULA</th>
                                             <th scope="col">HORARIO</th>
                                             <th scope="col">DIAS</th>
                                         </tr>
@@ -291,14 +292,13 @@
             } = element;
             var carrera = pad(LCARRERA_ID, 4) + '    ' + SCARRERA_DSC;
             var pensul = 'Cod. Pensum: ' + LCODPENSUM
-            var semestreActual = 'Semestre Act.:  ' + LPERIODOACTUAL_ID
+            var semestreActual = 'Semestre Act.:  ' + LPERIODOACTUAL
             var semestreIngreso = 'Sem. Ingreso:    ' + LPERIODOINICIO
             var codigoCentro = 'Cod. Centro:    ' + SCODCENTRO
             var fechaPeriodo = LPERIODOACTUAL
             var creditosVencidos = 'Cred. Vencidos:     ' + LCREDVENCIDOS
             $('#carrera').text(carrera)
             $('#Pensul').text(pensul)
-            $('#idsemestreActual').text(semestreActual)
             $('#semestreIngreso').text(semestreIngreso)
             $('#codigoCentro').text(codigoCentro)
             $('#creditosVencidos').text(creditosVencidos)
@@ -344,6 +344,7 @@
         $('#nombreCodigo').text(NombreCompleto);
         var colegio = 'Colegio:	' + STIPOCOLEGIO
         $('#tipoColegio').text(colegio)
+        $('#horasServicio').text('Horas de Servicio: ' + LHORASERVICIO)
     }
 
 
@@ -381,11 +382,13 @@
                 DOCENTE,
                 HORARIO
             } = element;
+            debugger
             var tr = $("<tr ></tr>")
             tr.append($("<td></td>").text(SMATERIA_DSC))
             tr.append($("<td></td>").text(SCENTRO_DSC))
             tr.append($("<td></td>").text(DOCENTE))
             tr.append($("<td></td>").text(SCODGRUPO))
+            tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC))
             tr.append($("<td></td>").text(HORARIO == null ? "" : HORARIO[0].ENTRADA + " - " + HORARIO[0].SALIDA))
             tr.append($("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO)))
             $('#tablaHorario').append(tr);

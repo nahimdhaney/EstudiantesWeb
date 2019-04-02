@@ -399,7 +399,7 @@
                     <div class="col-md-6">
                         <div class="card card-user" style='border:none'>
                             <div class="card-image">
-                                <img src="https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="No se pudo obtener la imagen">
+                                <img src="assets/img/beach.jpg" alt="No se pudo obtener la imagen">
                             </div>
                             <div class="card-body">
                                 <div class="author">
@@ -466,35 +466,33 @@
                     </div>
 
                 </div>
-            </div>
 
-            <div class="row" id="containerPensul" style="display:none">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title" style="float: left;">Historial pénsum académico</h4>
-                            <a id='closePensul' href="javascript:void(0)" style="color: #3498db;float: right;font-size: 30px;">
-                                <i class="far fa-times-circle"></i>
-                            </a>
-                            <br>
-                            <div style="margin-top:20px">
-                                <div style="height:20px;width:20px;background-color: black;float: left;border-radius: 5px">
+                <div class="row" id="containerPensul" style="display:none">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title" style="float: left;">Historial pénsum académico</h4>
+                                <a id='closePensul' href="javascript:void(0)" style="color: #3498db;float: right;font-size: 30px;">
+                                    <i class="far fa-times-circle"></i>
+                                </a>
+                                <br>
+                                <div style="margin-top:20px">
+                                    <div style="height:20px;width:20px;background-color: #757575;float: left;border-radius: 5px">
+                                    </div>
+                                    <p style="margin-left:30px">Materias faltantes</p>
                                 </div>
-                                <p style="margin-left:30px">Materias faltantes</p>
                             </div>
-                        </div>
-                        <div class="container-fluid" style="overflow:auto;height:710px">
-                            <div id="chartdiv" style="height: 700px;min-width: 1600px;">
+                            <div class="container-fluid" style="overflow-y:auto;height: 560px;">
+                                <div id="chartdiv" style="height: 540px;min-width: 3400px;">
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    </div>
+        </div>
     </div>
 
 
@@ -617,6 +615,7 @@
     function verPerfil() {
         $('#containerNotas').hide();
         $('#containerAsistencia').hide();
+        $('#containerPensul').hide();
         $("#containerPerfil").fadeIn();
         $('#bodyClick').click()
     }
@@ -624,10 +623,11 @@
     function verHistorial() {
         $('#containerNotas').hide();
         $('#containerAsistencia').hide();
+        $('#containerPerfil').hide();
         $('#bodyClick').click()
         var isHistorialCargado = $('#isHistorialCargado').val();
         if (isHistorialCargado == 1) {
-            $('#containerPensul').fadeIn();
+            $('#containerPensul').show();
             return;
         }
         comenzarCargado();
@@ -654,36 +654,47 @@
     }
 
     function carrgarHistorial(resultado) {
+        var semestre = ' SEMESTRE';
+        var espacio = ' - ';
         var arbol = [];
+        var lista = resultado.Data.CURSADAS;
+        debugger
+        lista.sort(function(a, b) {
+            return parseInt(a.MATERIAS.LSEMESTRE) - parseInt(b.MATERIAS.LSEMESTRE);
+        });
         resultado.Data.CURSADAS.forEach(function(element) {
             const {
                 MATERIAS,
                 REQUISITOS
             } = element;
-            var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
+            var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
             REQUISITOS.forEach(function(req) {
                 var objNodo = new Object();
-                objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
+                var numeroSemestre = req.LSEMESTRE == null ? '' : req.LSEMESTRE;
+                objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase()) + espacio + numeroSemestre + semestre;
                 objNodo.to = materiaPadre;
-                objNodo.value = 2;
+                objNodo.value = 1;
                 arbol.push(objNodo)
             });
         });
         resultado.Data.FALTANTES.forEach(function(element) {
             const {
                 MATERIAS,
-                REQUISITOS
+                REQUISITOS,
+                LSEMESTRE,
             } = element;
-            var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase());
+            var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
             REQUISITOS.forEach(function(req) {
                 var objNodo = new Object();
-                objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase());
+                var numeroSemestre = req.LSEMESTRE == null ? '' : req.LSEMESTRE;
+                objNodo.from = removerAcentos(req.SMATERIA_DSC.toUpperCase()) + espacio + numeroSemestre + semestre;
                 objNodo.to = materiaPadre;
-                objNodo.value = 5;
-                objNodo.nodeColor = '#212121';
+                objNodo.value = 1;
+                objNodo.nodeColor = '#757575';
                 arbol.push(objNodo)
             });
         });
+
         am4core.useTheme(am4themes_animated);
         // Themes end
         var chart = am4core.create("chartdiv", am4charts.SankeyDiagram);
@@ -698,11 +709,15 @@
         // for right-most label to fit
         chart.paddingRight = 30;
         // make nodes draggable
+        var linkTemplate = chart.links.template;
+        linkTemplate.controlPointDistance = 0.01;
         var nodeTemplate = chart.nodes.template;
+        nodeTemplate.nameLabel.width = 380;
         nodeTemplate.inert = true;
         nodeTemplate.readerTitle = "Drag me!";
         nodeTemplate.showSystemTooltip = true;
-        nodeTemplate.width = 20;
+        nodeTemplate.width = 380;
+        nodeTemplate.nameLabel.locationX = 0.01;
         // make nodes draggable
         var nodeTemplate = chart.nodes.template;
         nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
@@ -711,8 +726,6 @@
         terminarCargado();
         $('#isHistorialCargado').val(1);
     }
-
-
     $(document).ready(function() {
         var esconderPeriodos = false;
         cargarPagina();
@@ -741,15 +754,15 @@
             var pinAnterior = $("#pinAnterior").val();
             var nuevoPin = $("#nuevoPin").val();
             var repetirNuevoPin = $("#repetirNuevoPin").val();
+            debugger
             if (nuevoPin.localeCompare(repetirNuevoPin) == 0) {
-                Swal.fire({
-                    title: 'Estas Seguro de cambiar tu Pin?',
-                    text: "Esto cambiara tu ingreso a la pagina de notas, y al ingreso para el WI-FI",
-                    type: 'warning',
+                swal({
+                    title: "¿Estas seguro de cambiar tu Pin ?",
+                    type: "warning",
+                    text: "Cambiara tu contraseña para ingresar al sitio de notas y para conectarte al Wi-Fi de la universidad",
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si,Quiero cambiarlo!'
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar"
                 }).then((result) => {
                     var token = localStorage.getItem("token");
                     var usuario = new Object();
@@ -777,13 +790,12 @@
                         }
                     });
                 })
-
             } else {
                 swal("Error", "Los Pines no son iguales.", "error")
             }
             $('#modalCambiarPin').modal('hide')
             $('#formCambiarPin')[0].reset();
-            event.preventDefault();
+            return false;
         });
         $("#verOferta").click(function() {
             var periodoOferta = $('#periodosOferta').find(":selected").val();
@@ -833,7 +845,6 @@
             comenzarCargado();
             $('#containerNotas').show();
             $('#containerAsistencia').show();
-            $('#containerPerfil').show();
             var id = parseInt(JSON.parse($(this).attr('data-json')))
             var dperiodoActual = $(this).children("p").text();
             $('#containerPensul').hide();
@@ -868,12 +879,10 @@
         }
 
         function cargarCreditos(creditosVencidos) {
-
             am4core.useTheme(am4themes_animated);
             // Themes end
             var chart = am4core.create("divCreditos", am4charts.PieChart);
             chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
             chart.data = [{
                 country: "Realizadas",
                 value: creditosVencidos
@@ -885,20 +894,16 @@
             chart.innerRadius = am4core.percent(40);
             chart.startAngle = 180;
             chart.endAngle = 360;
-
             var series = chart.series.push(new am4charts.PieSeries());
             series.dataFields.value = "value";
             series.dataFields.category = "country";
-
             series.slices.template.cornerRadius = 10;
             series.slices.template.innerCornerRadius = 7;
             series.slices.template.draggable = true;
             series.slices.template.inert = true;
             series.alignLabels = false;
-
             series.hiddenState.properties.startAngle = 90;
             series.hiddenState.properties.endAngle = 90;
-
             chart.legend = new am4charts.Legend();
         }
 
@@ -919,7 +924,6 @@
         }
 
         function cargarImagem(resultado) {
-
             var imagen = 'data:image/png;base64,' + resultado.Data;
             $("#imgUsuario").attr("src", imagen);
         }
@@ -941,7 +945,6 @@
         }
 
         function resultado(resultado) {
-
             const {
                 SAPELLIDOP,
                 SAPELLIDOM,
@@ -987,7 +990,6 @@
                     LPERIODOACTUAL,
                     LPERIODOACTUAL_ID
                 } = element;
-
                 $('#MasterPeriodoActual').val(LPERIODOACTUAL_ID);
                 localStorage.setItem("MasterPeriodoActual", LPERIODOACTUAL_ID);
                 $('#hperiodoActual').val(LPERIODOACTUAL_ID);
@@ -1009,7 +1011,6 @@
                     carreras += ' , ' + SCARRERA_DSC;
                 count++;
             });
-
             $('#carreraPerfil').text(carreras)
         }
 

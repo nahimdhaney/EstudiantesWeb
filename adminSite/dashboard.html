@@ -483,7 +483,7 @@
                                 </div>
                             </div>
                             <div class="container-fluid" style="overflow:auto;height:560px">
-                                <div id="chartdiv" style="height: 540px;min-width: 3400px;">
+                                <div id="chartdiv" style="height: 640px;min-width: 3700px;">
 
                                 </div>
                             </div>
@@ -761,6 +761,14 @@
         var esconderPeriodos = false;
         cargarPagina();
         $("#carrerasAlumno").change(function() {
+            debugger
+            if ($('#containerPensul').is(":visible")) {
+                $('#isHistorialCargado').val(0)
+                verHistorial()
+
+            }
+            $('#verMasPeriodos').remove();
+            $('.periodosInvisibles').remove();
             comenzarMainCargado();
             $('#firstLoad').val('1');
             cargarPagina();

@@ -119,8 +119,17 @@
                 display: none !important;
             }
             body {
-                overflow: hidden;
+                overflow: hidden !important;
+                font-size: 10px;
             }
+            .content {
+                overflow: hidden !important;
+            }
+        }
+        
+        @page {
+            size: auto;
+            margin: 0mm;
         }
         
         #infoAlumno td {
@@ -384,10 +393,14 @@
             } = element;
             debugger
             var tr = $("<tr ></tr>")
+            var tdGrupo = $("<td ></td>")
+            debugger
+            tdGrupo.text(SCODGRUPO)
+            tdGrupo.css("padding-left", "20px");
             tr.append($("<td></td>").text(SMATERIA_DSC))
             tr.append($("<td></td>").text(SCENTRO_DSC))
             tr.append($("<td></td>").text(DOCENTE))
-            tr.append($("<td></td>").text(SCODGRUPO))
+            tr.append(tdGrupo)
             tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC))
             tr.append($("<td></td>").text(HORARIO == null ? "" : HORARIO[0].ENTRADA + " - " + HORARIO[0].SALIDA))
             tr.append($("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO)))

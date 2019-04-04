@@ -121,12 +121,27 @@
             body {
                 overflow-x: hidden;
             }
+            .content {
+                overflow: hidden !important;
+                font-size: 5px !important;
+                ;
+            }
+            .card {
+                margin-bottom: 1px;
+            }
+            .table {
+                margin-bottom: 2px;
+            }
+            .notas td {
+                padding: 0.4% !important;
+                padding-left: 0.8% !important;
+                font-size: 8px
+            }
         }
         
-        .notas td {
-            padding: 0.4% !important;
-            padding-left: 0.8% !important;
-            font-size: 13px
+        @page {
+            size: auto;
+            margin: 0mm;
         }
         
         #infoAlumno td {
@@ -249,7 +264,9 @@
                                             <th scope="col">LAB</th>
                                             <th scope="col">DOCENTE</th>
                                             <th scope="col">CODIGO</th>
+                                            <th scope="col">MR</th>
                                             <th scope="col">GR</th>
+
                                             <th scope="col">HORARIO</th>
                                             <th scope="col">DIAS</th>
                                             <th scope="col">SE</th>
@@ -498,9 +515,9 @@
             tr.append(td6)
             tr.append(row)
             tr.append(td7)
-
-            tr.append(td8)
             tr.append(td9)
+            tr.append(td8)
+
             tr.append(td10)
             tr.append(td11)
             $('#tablaOferta').append(tr);
@@ -540,6 +557,8 @@
         var td5 = $("<td></td>").text(DOCENTE);
         var td6 = $("<td></td>").text(SCODMATERIA);
         var td7 = $("<td></td>").text(SCODGRUPO);
+        var input = $('<input type="checkbox"/>')
+        var td12 = $("<td></td>").append(input)
         var td8 = $("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO));
         var td9 = $("<td></td>").text(HORARIO == null ? "" : HORARIO[0].DTHRENTRADA + " - " + HORARIO[0].DTHRSALIDA);
         var td10 = $("<td></td>").text(SCODGRUPO);
@@ -550,11 +569,14 @@
         tr.append(td4)
         tr.append(td5)
         tr.append(td6)
+        tr.append(td12)
         tr.append(td7)
-        tr.append(td8)
         tr.append(td9)
+        tr.append(td8)
+
         tr.append(td10)
         tr.append(td11)
+
         $('#tablaOfertaSemi').append(tr);
     }
 

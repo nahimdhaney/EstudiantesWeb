@@ -20,6 +20,7 @@
 
     <!-- Animation library for notifications   -->
     <link href="assets/css/animate.min.css" rel="stylesheet" />
+    <!-- <link href="assets/css/deuda.css" rel="stylesheet" /> -->
 
     <!--  Light Bootstrap Table core CSS    -->
     <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
@@ -246,7 +247,7 @@
                     </div>
 
                     <li id="periodosTitle">
-                        <h3 style="margin-left: 23%">Periodos</h3>
+                        <h3 id='titlePeriodos' style="margin-left: 23%">Periodos</h3>
                     </li>
 
                 </ul>
@@ -490,6 +491,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" id="containerDeuda" style="display:none">
+                    <div class='col-md-12'>
+                            <div class="card">
+                            <div class="alert alert-danger" role="alert">
+                                    <h2 class="alert-heading">Bloqueo por Deuda</h2>
+                                    <p>Pase por planes de pago.</p>
+                                  </div>
+                                </div>
+                    </div>
+                        <!-- <div class="overlay"></div>
+                    <div class="terminal">
+                        <h1>Bloqueo por <span class="errorcode">Deuda</span></h1>
+                        <p class="output">Pase por planes de pago para ver sus notas</ü>
+                      </div> -->
+                     
+                </div>
             </div>
 
         </div>
@@ -650,7 +667,7 @@
                     'Authorization': 'Bearer ' + token
                 },
                 'type': 'POST',
-                'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
+                'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
                 'dataType': 'json',
                 'data': JSON.stringify(usuario),
                 'success': carrgarHistorial,
@@ -821,7 +838,7 @@
                         },
                         'type': 'POST',
                         'data': JSON.stringify(usuario),
-                        'url': "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
+                        'url': "http://wsnotas.nur.edu:8880/api/Registros/UpdatePin",
                         'dataType': 'json',
                     }).done(function(response) {
                         if (response.Status) {
@@ -917,13 +934,32 @@
 
         function cargarPagina() {
             var token = localStorage.getItem("token");
+            var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
             obtenerNombre(token);
-            obtenerImagen(token);
-            GetPeriodosCursados();
+            obtenerImagen(token);          
             getCarreraInfo(token);
             GetPeriodosOfertas();
+            if(tieneBloqueo==0)
+            {
+                GetPeriodosCursados();  
+            }
+            else
+            {
+                $('#titlePeriodos').remove();
+                $('#containerNotas').remove();
+                $('#containerAsistencia').remove();
+                $("#containerDeuda").removeAttr("style");
+                $('#containerDeuda').fadeIn();
+            }
+            
         }
+        
 
+        function resultadoBloqueo(resultado) {
+            var data = resultado.Data.toLowerCase();
+            if(data.inclues(bloqueo))
+            cargarCreditos(LHORASERVICIO);
+        }
         function cargarCreditos(creditosVencidos) {
             am4core.useTheme(am4themes_animated);
             // Themes end
@@ -962,7 +998,7 @@
                         'Authorization': 'Bearer ' + token
                     },
                     'type': 'POST',
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoImagen",
+                    'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoImagen",
                     'dataType': 'json',
                     'success': cargarImagem,
                     'error': errorSesion
@@ -984,7 +1020,7 @@
                         'Authorization': 'Bearer ' + token
                     },
                     'type': 'POST',
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+                    'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
                     'dataType': 'json',
                     'success': resultado,
                     'error': errorSesion
@@ -1020,7 +1056,7 @@
                         'Authorization': 'Bearer ' + token
                     },
                     'type': 'POST',
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
+                    'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoCarreras",
                     'dataType': 'json',
                     'success': infoCarrera,
                     'error': errorSesion
@@ -1077,7 +1113,7 @@
                         'Authorization': 'Bearer ' + token
                     },
                     'type': 'POST',
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosCursados",
+                    'url': "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosCursados",
                     'dataType': 'json',
                     'data': JSON.stringify(usuario),
                     'success': periodosCursados,
@@ -1158,7 +1194,7 @@
                         'Authorization': 'Bearer ' + token
                     },
                     'type': 'POST',
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOferta",
+                    'url': "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOferta",
                     'dataType': 'json',
                     'data': JSON.stringify(usuario),
                     'success': periodosOfertas,
@@ -1201,7 +1237,11 @@
         function obtenerNotas(periodoId) {
             var periodoActual = $('#dperiodoActual').val();
             var semestre = periodoActual.split("-")[1];
-            mostrarColumnas(semestre);
+            var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
+            if(tieneBloqueo==0)
+            {
+                mostrarColumnas(semestre);
+            }          
             var token = localStorage.getItem("token");
             var carreraId = $('#carrerasAlumno').find(":selected").val();
             var userId = localStorage.getItem("idUser");
@@ -1217,7 +1257,7 @@
                     },
                     'type': 'POST',
                     'data': JSON.stringify(usuario),
-                    'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+                    'url': "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
                     'dataType': 'json',
                     'success': cargarNotas,
                     'error': errorSesion

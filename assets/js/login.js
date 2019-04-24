@@ -30,12 +30,14 @@ $(document).ready(function($) {
     });
 
     function resultado(resultado) {
-            localStorage.setItem("token", resultado);
-            debugger
-            obtenerBloqueo(resultado)
-            localStorage.setItem("usrLog", JSON.stringify(resultado.Message));
-            var url = 'adminSite/dashboard.html'
-            $(location).attr("href", url);
+        if ( resultado == '') {
+            swal("Error", "Usuario o Pin incorrectos.", "error")
+            return;
+        }
+        localStorage.setItem("token", resultado);
+        obtenerBloqueo(resultado)
+        var url = 'adminSite/dashboard.html'
+        $(location).attr("href", url);
     }
     function obtenerBloqueo(token)
         {
@@ -50,7 +52,7 @@ $(document).ready(function($) {
                 'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
                 'dataType': 'json',
             }).done(function(response) {
-                debugger
+                
                 var data = response.Data.toLowerCase();
                 localStorage.setItem("tieneBloqueo", data.includes('bloqueo') ?  1 :0);
             });

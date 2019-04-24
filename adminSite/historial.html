@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
+    <link rel="icon" type="image/png" href="assets/img/nur.png">
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <!--     Fonts and icons     -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Historial</title>
+    <style>
+        .iconClass 
+        {
+            font-size: 30px;
+            color: #4CAF50;
+        }
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        
+        #mainLoader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+        
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+        
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+        
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+        
+        .titulosTablas {
+            font-size: 16px;
+            margin-left: 0.4%;
+            font-weight: bold;
+        }        
+        @page {
+            size: auto;
+            margin: 0mm;
+        }
+        
+        #infoAlumno td {
+            border-top: none !important;
+            padding: 0.2%
+        }
+        
+        #infoAlumno * {
+            font-size: 12px
+        }
+        
+        #imgPrint {
+            width: 2.8%;
+            float: left;
+            left: 30;
+        }
+        
+        @media (max-width: 600px) {
+            #infoAlumno * {
+                font-size: 8px
+            }
+            #imgPrint {
+                width: 10%;
+            }
+        }
+        
+        @media (min-width: 600px) and (max-width: 1024px) {
+            #imgPrint {
+                width: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mainLoader"></div>
+    <div id="mainContainer" class="wrapper" style="display:none">
+        <div class="container-fluid">
+            <div id='contentMaster' class="content" >
+                    <div class="row" style="margin-top:2%">
+                            <div class="col-md-12">
+                                <div class="card" style="padding: 1%;padding-bottom: 0px">
+                                    <div class="header" style="padding: 0px;padding-bottom: 1%">
+                                        <h3 id='carreraNombre' class="title" style="text-align: center;"></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row" id='containerNotas'>
+                            <div id='templateTabla' class="col-md-4" style="display:none">
+                                <div class="card">
+                                    <div class="header">
+                                        <h4 class="title">{Semestre}</h4>
+                                    </div>
+                                    <div class="content table-responsive table-full-width">
+                                        <table class="table table-hover table-striped">
+                                            <thead>
+                                                <th>Materia</th>
+                                                <th>Cursada</th>
+                                                <th>Creditos</th>
+                                                <th>Requisitos</th>
+                                            </thead>
+                                            <tbody id='{tableId}'>    
+                                            </tbody>
+                                        </table>
+        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+        <div id="loader" style="display:none"></div>
+
+</body>
+<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/site.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        cargarPagina();
+
+    })
+    function cargarPagina() {
+        comenzarMainCargado()
+        obtenerHistorial();
+    }
+
+
+    function comenzarMainCargado() {
+        $('#mainContainer').attr("style", 'display:none');
+        $("#mainLoader").removeAttr("style");
+    }
+
+    function terminarMainCargado() {
+        $('#mainLoader').attr("style", 'display:none');
+        $("#mainContainer").removeAttr("style");
+    }
+
+    function obtenerHistorial() {
+        var carreraId = localStorage.getItem("carreraId");
+        var carreraNombre = localStorage.getItem("carreraNombre");
+        var usuario = new Object();
+        usuario.pCarreraId = carreraId;
+        $('#carreraNombre').text(carreraNombre);
+        var token = localStorage.getItem("token");
+        jQuery.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                'type': 'POST',
+                'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+                'dataType': 'json',
+                'data': JSON.stringify(usuario),
+                'success': cargarHistorial,
+                'error': errorSesion
+            });
+    }
+    function errorSesion() {
+            localStorage.removeItem("token");
+            var url = '../index.html'
+            $(location).attr("href", url);
+        }
+    function cargarHistorial(resultado) {
+        var semestre = ' SEMESTRE';
+        var espacio = ' - ';
+        var arbol = [];
+        resultado.Data.CURSADAS.forEach(function(element) {
+            const {
+                MATERIAS,
+                REQUISITOS
+            } = element;
+            var objMateria = new Object();    
+            objMateria.semestre=parseInt(MATERIAS.LSEMESTRE);
+            objMateria.creditos=parseInt(MATERIAS.LCREDITOS);
+            objMateria.nombre=MATERIAS.SMATERIA_DSC;
+            objMateria.requisitos=REQUISITOS;
+            objMateria.cursada=1;
+            arbol.push(objMateria)
+        });
+        resultado.Data.FALTANTES.forEach(function(element) {
+            const {
+                MATERIAS,
+                REQUISITOS
+            } = element;
+            var objMateria = new Object();    
+            objMateria.semestre=parseInt(MATERIAS.LSEMESTRE);
+            objMateria.creditos=parseInt(MATERIAS.LCREDITOS);
+            objMateria.nombre=MATERIAS.SMATERIA_DSC;
+            objMateria.requisitos=REQUISITOS;
+            objMateria.cursada=0;
+            arbol.push(objMateria)
+        });
+        arbol.sort(function(a, b){
+            return a.semestre-b.semestre;
+        })
+        construirTablas(arbol);
+    }
+    function construirTablas(arbol)
+    {
+        var semestreAnterior=0;
+        var trPlantilla = $('#templateTabla').clone();
+        var tableBody = $("<tbody ></tbody>")
+        var html =trPlantilla.html(); 
+        for (var i = 0; i < arbol.length; i++) {
+            const {
+                creditos,
+                cursada,
+                nombre,
+                requisitos,
+                semestre
+            } = arbol[i];
+            if(semestre != semestreAnterior)
+            {
+                semestreAnterior=semestre;
+                var html =trPlantilla.html(); 
+                tablaId='tabla'+i ;             
+                html = html.replace('{Semestre}', obtenerNumerosCardinales(semestre)+' Semestre');  
+                html = html.replace('{tableId}',tablaId);  
+                var div = $("<div ></div>").addClass("col-md-6");
+                div.append(html);
+                $('#contentMaster').append(div);
+                var tableBody = document.getElementById(tablaId);
+                var tableBody =$('#'+tablaId);
+            }
+            var tr = $("<tr ></tr>")
+            tr.append($("<td></td>").text(nombre))
+           
+            if(cursada ==1)
+            {
+                tr.append($("<td></td>").append( $("<i ></i>").addClass("fas fa-check-square iconClass")))
+            }
+            else
+            {
+                tr.append($("<td></td>").text(''))
+            }   
+            tr.append($("<td></td>").text(creditos))         
+            tr.append($("<td></td>").text(obtenerRequisitos(requisitos)))
+            console.log(requisitos)
+            tableBody.append(tr);
+        }
+        terminarMainCargado();
+    }
+    function obtenerNumerosCardinales(semestre)
+    {
+        var numeroCardinal='';
+        switch (semestre) {
+        case 1:
+        numeroCardinal = "Primer";
+            break;
+        case 2:
+        numeroCardinal = "Segundo";
+            break;
+        case 3:
+        numeroCardinal = "Tercer";
+            break;
+        case 4:
+        numeroCardinal = "Cuarto";
+            break;
+        case 5:
+        numeroCardinal = "Quinto";
+            break;
+        case 6:
+        numeroCardinal = "Sexto";
+            break;
+        case 7:
+        numeroCardinal = "Séptimo";
+            break;
+        case 8:
+        numeroCardinal = "Octavo";
+            break;
+        case 9:
+        numeroCardinal = "Noveno";
+            break;
+        case 10:
+        numeroCardinal = "Décimo ";
+            break;
+        case 11:
+        numeroCardinal = "Décimo Primero";
+            break;
+        case 12:
+        numeroCardinal = "Décimo Segundo";
+            break;
+        case 13:
+        numeroCardinal = "Décimo Tercero";
+            break;
+        case 14:
+        numeroCardinal = "Décimo Cuarto";
+            break;    
+        default:
+        numeroCardinal = semestre;
+        }
+        return numeroCardinal;
+    }
+    function obtenerRequisitos(requisitos)
+    {
+        var requisitosConcatenado='';
+        requisitos.forEach(function(req) {
+            
+            var nombreMateria=req.SMATERIA_DSC;
+            if(requisitosConcatenado !='')
+            {
+                requisitosConcatenado+=' ,'; 
+            }
+            requisitosConcatenado+=nombreMateria;
+            });
+        return requisitosConcatenado;
+    }
+</script>
+
+</html>

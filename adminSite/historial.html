@@ -19,16 +19,16 @@
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <!--     Fonts and icons     -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='assets/css/robotoFont.css' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/icons/css/all.min.css">
     <title>Historial</title>
     <style>
-        .iconClass 
-        {
+        .iconClass {
             font-size: 30px;
             color: #4CAF50;
         }
+        
         #loader {
             position: absolute;
             left: 50%;
@@ -116,7 +116,8 @@
             font-size: 16px;
             margin-left: 0.4%;
             font-weight: bold;
-        }        
+        }
+        
         @page {
             size: auto;
             margin: 0mm;
@@ -158,38 +159,38 @@
     <div id="mainLoader"></div>
     <div id="mainContainer" class="wrapper" style="display:none">
         <div class="container-fluid">
-            <div id='contentMaster' class="content" >
-                    <div class="row" style="margin-top:2%">
-                            <div class="col-md-12">
-                                <div class="card" style="padding: 1%;padding-bottom: 0px">
-                                    <div class="header" style="padding: 0px;padding-bottom: 1%">
-                                        <h3 id='carreraNombre' class="title" style="text-align: center;"></h3>
-                                    </div>
-                                </div>
+            <div id='contentMaster' class="content">
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-12">
+                        <div class="card" style="padding: 1%;padding-bottom: 0px">
+                            <div class="header" style="padding: 0px;padding-bottom: 1%">
+                                <h3 id='carreraNombre' class="title" style="text-align: center;"></h3>
                             </div>
                         </div>
-                    <div class="row" id='containerNotas'>
-                            <div id='templateTabla' class="col-md-4" style="display:none">
-                                <div class="card">
-                                    <div class="header">
-                                        <h4 class="title">{Semestre}</h4>
-                                    </div>
-                                    <div class="content table-responsive table-full-width">
-                                        <table class="table table-hover table-striped">
-                                            <thead>
-                                                <th>Materia</th>
-                                                <th>Cursada</th>
-                                                <th>Creditos</th>
-                                                <th>Requisitos</th>
-                                            </thead>
-                                            <tbody id='{tableId}'>    
-                                            </tbody>
-                                        </table>
-        
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="row" id='containerNotas'>
+                    <div id='templateTabla' class="col-md-4" style="display:none">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">{Semestre}</h4>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <th>Materia</th>
+                                        <th>Cursada</th>
+                                        <th>Creditos</th>
+                                        <th>Requisitos</th>
+                                    </thead>
+                                    <tbody id='{tableId}'>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="loader" style="display:none"></div>
@@ -203,6 +204,7 @@
         cargarPagina();
 
     })
+
     function cargarPagina() {
         comenzarMainCargado()
         obtenerHistorial();
@@ -227,24 +229,26 @@
         $('#carreraNombre').text(carreraNombre);
         var token = localStorage.getItem("token");
         jQuery.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                'type': 'POST',
-                'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
-                'dataType': 'json',
-                'data': JSON.stringify(usuario),
-                'success': cargarHistorial,
-                'error': errorSesion
-            });
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+            'dataType': 'json',
+            'data': JSON.stringify(usuario),
+            'success': cargarHistorial,
+            'error': errorSesion
+        });
     }
+
     function errorSesion() {
-            localStorage.removeItem("token");
-            var url = '../index.html'
-            $(location).attr("href", url);
-        }
+        localStorage.removeItem("token");
+        var url = '../index.html'
+        $(location).attr("href", url);
+    }
+
     function cargarHistorial(resultado) {
         var semestre = ' SEMESTRE';
         var espacio = ' - ';
@@ -254,12 +258,12 @@
                 MATERIAS,
                 REQUISITOS
             } = element;
-            var objMateria = new Object();    
-            objMateria.semestre=parseInt(MATERIAS.LSEMESTRE);
-            objMateria.creditos=parseInt(MATERIAS.LCREDITOS);
-            objMateria.nombre=MATERIAS.SMATERIA_DSC;
-            objMateria.requisitos=REQUISITOS;
-            objMateria.cursada=1;
+            var objMateria = new Object();
+            objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
+            objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
+            objMateria.nombre = MATERIAS.SMATERIA_DSC;
+            objMateria.requisitos = REQUISITOS;
+            objMateria.cursada = 1;
             arbol.push(objMateria)
         });
         resultado.Data.FALTANTES.forEach(function(element) {
@@ -267,25 +271,25 @@
                 MATERIAS,
                 REQUISITOS
             } = element;
-            var objMateria = new Object();    
-            objMateria.semestre=parseInt(MATERIAS.LSEMESTRE);
-            objMateria.creditos=parseInt(MATERIAS.LCREDITOS);
-            objMateria.nombre=MATERIAS.SMATERIA_DSC;
-            objMateria.requisitos=REQUISITOS;
-            objMateria.cursada=0;
+            var objMateria = new Object();
+            objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
+            objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
+            objMateria.nombre = MATERIAS.SMATERIA_DSC;
+            objMateria.requisitos = REQUISITOS;
+            objMateria.cursada = 0;
             arbol.push(objMateria)
         });
-        arbol.sort(function(a, b){
-            return a.semestre-b.semestre;
+        arbol.sort(function(a, b) {
+            return a.semestre - b.semestre;
         })
         construirTablas(arbol);
     }
-    function construirTablas(arbol)
-    {
-        var semestreAnterior=0;
+
+    function construirTablas(arbol) {
+        var semestreAnterior = 0;
         var trPlantilla = $('#templateTabla').clone();
         var tableBody = $("<tbody ></tbody>")
-        var html =trPlantilla.html(); 
+        var html = trPlantilla.html();
         for (var i = 0; i < arbol.length; i++) {
             const {
                 creditos,
@@ -294,100 +298,95 @@
                 requisitos,
                 semestre
             } = arbol[i];
-            if(semestre != semestreAnterior)
-            {
-                semestreAnterior=semestre;
-                var html =trPlantilla.html(); 
-                tablaId='tabla'+i ;             
-                html = html.replace('{Semestre}', obtenerNumerosCardinales(semestre)+' Semestre');  
-                html = html.replace('{tableId}',tablaId);  
+            if (semestre != semestreAnterior) {
+                semestreAnterior = semestre;
+                var html = trPlantilla.html();
+                tablaId = 'tabla' + i;
+                html = html.replace('{Semestre}', obtenerNumerosCardinales(semestre) + ' Semestre');
+                html = html.replace('{tableId}', tablaId);
                 var div = $("<div ></div>").addClass("col-md-6");
                 div.append(html);
                 $('#contentMaster').append(div);
                 var tableBody = document.getElementById(tablaId);
-                var tableBody =$('#'+tablaId);
+                var tableBody = $('#' + tablaId);
             }
             var tr = $("<tr ></tr>")
             tr.append($("<td></td>").text(nombre))
-           
-            if(cursada ==1)
-            {
-                tr.append($("<td></td>").append( $("<i ></i>").addClass("fas fa-check-square iconClass")))
-            }
-            else
-            {
+
+            if (cursada == 1) {
+                tr.append($("<td></td>").append($("<i ></i>").addClass("fas fa-check-square iconClass")))
+            } else {
                 tr.append($("<td></td>").text(''))
-            }   
-            tr.append($("<td></td>").text(creditos))         
+            }
+            tr.append($("<td></td>").text(creditos))
             tr.append($("<td></td>").text(obtenerRequisitos(requisitos)))
             console.log(requisitos)
             tableBody.append(tr);
         }
         terminarMainCargado();
     }
-    function obtenerNumerosCardinales(semestre)
-    {
-        var numeroCardinal='';
+
+    function obtenerNumerosCardinales(semestre) {
+        var numeroCardinal = '';
         switch (semestre) {
-        case 1:
-        numeroCardinal = "Primer";
-            break;
-        case 2:
-        numeroCardinal = "Segundo";
-            break;
-        case 3:
-        numeroCardinal = "Tercer";
-            break;
-        case 4:
-        numeroCardinal = "Cuarto";
-            break;
-        case 5:
-        numeroCardinal = "Quinto";
-            break;
-        case 6:
-        numeroCardinal = "Sexto";
-            break;
-        case 7:
-        numeroCardinal = "Séptimo";
-            break;
-        case 8:
-        numeroCardinal = "Octavo";
-            break;
-        case 9:
-        numeroCardinal = "Noveno";
-            break;
-        case 10:
-        numeroCardinal = "Décimo ";
-            break;
-        case 11:
-        numeroCardinal = "Décimo Primero";
-            break;
-        case 12:
-        numeroCardinal = "Décimo Segundo";
-            break;
-        case 13:
-        numeroCardinal = "Décimo Tercero";
-            break;
-        case 14:
-        numeroCardinal = "Décimo Cuarto";
-            break;    
-        default:
-        numeroCardinal = semestre;
+            case 1:
+                numeroCardinal = "Primer";
+                break;
+            case 2:
+                numeroCardinal = "Segundo";
+                break;
+            case 3:
+                numeroCardinal = "Tercer";
+                break;
+            case 4:
+                numeroCardinal = "Cuarto";
+                break;
+            case 5:
+                numeroCardinal = "Quinto";
+                break;
+            case 6:
+                numeroCardinal = "Sexto";
+                break;
+            case 7:
+                numeroCardinal = "Séptimo";
+                break;
+            case 8:
+                numeroCardinal = "Octavo";
+                break;
+            case 9:
+                numeroCardinal = "Noveno";
+                break;
+            case 10:
+                numeroCardinal = "Décimo ";
+                break;
+            case 11:
+                numeroCardinal = "Décimo Primero";
+                break;
+            case 12:
+                numeroCardinal = "Décimo Segundo";
+                break;
+            case 13:
+                numeroCardinal = "Décimo Tercero";
+                break;
+            case 14:
+                numeroCardinal = "Décimo Cuarto";
+                break;
+            default:
+                numeroCardinal = semestre;
         }
         return numeroCardinal;
     }
-    function obtenerRequisitos(requisitos)
-    {
-        var requisitosConcatenado='';
+
+    function obtenerRequisitos(requisitos) {
+        var requisitosConcatenado = '';
         requisitos.forEach(function(req) {
-            
-            var nombreMateria=req.SMATERIA_DSC;
-            if(requisitosConcatenado !='')
-            {
-                requisitosConcatenado+=' ,'; 
+
+            var nombreMateria = req.SMATERIA_DSC;
+            if (requisitosConcatenado != '') {
+                requisitosConcatenado += ' ,';
             }
-            requisitosConcatenado+=nombreMateria;
-            });
+            requisitosConcatenado += nombreMateria;
+        });
         return requisitosConcatenado;
     }
 </script>

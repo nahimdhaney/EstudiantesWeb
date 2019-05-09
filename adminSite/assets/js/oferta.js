@@ -150,6 +150,7 @@ function cargarOferta(resultado) {
         $('.noMateriasSemiPresencial').show();
         $('.materiasPresencial').hide();
         $('.MateriasSemiPresencial').show();
+        terminarMainCargado()
         return;
     }
     resultado.Data.forEach(function(element) {

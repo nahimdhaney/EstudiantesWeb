@@ -45,11 +45,51 @@ function logout() {
     localStorage.removeItem("token");
 }
 
+function mostrarHorario() {
+    response = true;
+    var carreraId = localStorage.getItem("carreraId");
+    var periodoActual = localStorage.getItem("MasterPeriodoActual");
+    var token = localStorage.getItem("token");
+    var usuario = new Object();
+    usuario.pCarreraId = carreraId;
+    usuario.pPeriodoId = periodoActual;
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        async: false,
+        'data': JSON.stringify(usuario),
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+        'dataType': 'json'
+    }).done(function(resultado) {
+        if (resultado.Data.length == 0)
+            response = false
+    });
+    if (response)
+        window.location = "oferta.html";
+    swal("Ups!", "Tu horario no esta disponible aún", "info")
+    $('#bodyClick').click()
+
+}
+
 function verPerfil() {
     $('#containerNotas').hide();
     $('#containerAsistencia').hide();
     $('#containerPensul').hide();
     $("#containerPerfil").fadeIn();
+    $('#bodyClick').click()
+}
+
+function verOferta() {
+    var periodosOferta = document.getElementById('periodosOferta').options.length;
+    if (periodosOferta > 0) {
+        $('#modalOferta').show();
+    } else {
+        swal("Humm!", "No tienes más ofertas", "info")
+    }
     $('#bodyClick').click()
 }
 
@@ -270,12 +310,17 @@ $(document).ready(function() {
         return false;
     });
     $("#verOferta").click(function() {
-        var periodoOferta = $('#periodosOferta').find(":selected").val();
-        var carreraId = $('#carrerasAlumno').find(":selected").val();
-        localStorage.setItem("periodoOferta", periodoOferta);
-        localStorage.setItem("carreraId", carreraId);
-        $('#modalOferta').modal('hide')
-        window.location = "oferta.html";
+        if (tieneOferta()) {
+            var periodoOferta = $('#periodosOferta').find(":selected").val();
+            var carreraId = $('#carrerasAlumno').find(":selected").val();
+            localStorage.setItem("periodoOferta", periodoOferta);
+            localStorage.setItem("carreraId", carreraId);
+            window.location = "oferta.html";
+        } else {
+            $('#modalOferta').hide()
+            swal("Ups!", "No tienes ninguna materia ofertada aún", "info")
+        }
+
     });
 
     function removerAcentos(newStringComAcento) {
@@ -314,6 +359,7 @@ $(document).ready(function() {
         }
     });
     $(document).on('click', '.semestre', function() {
+        $('#bodyClick').click()
         comenzarCargado();
         $('#containerNotas').show();
         $('#containerAsistencia').show();
@@ -877,5 +923,31 @@ $(document).ready(function() {
         $('#tablaAsistencia').append(tr);
         terminarCargado();
         terminarMainCargado();
+    }
+
+    function tieneOferta() {
+        var response = true;
+        var carreraId = localStorage.getItem("carreraId");
+        var periodoOferta = localStorage.getItem("periodoOferta");
+        var token = localStorage.getItem("token");
+        var usuario = new Object();
+        usuario.pCarreraId = carreraId;
+        usuario.pPeriodoId = periodoOferta;
+        jQuery.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            async: false,
+            'data': JSON.stringify(usuario),
+            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
+            'dataType': 'json'
+        }).done(function(resultado) {
+            if (resultado.Data.length == 0)
+                response = false
+        });
+        return response;
     }
 });

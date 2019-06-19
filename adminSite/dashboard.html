@@ -27,6 +27,7 @@
     <link href='assets/css/robotoFont.css' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/historial.css">
 
 </head>
 
@@ -111,7 +112,7 @@
                                     <a class="dropdown-item" onclick="verOferta()" href="javascript:void(0)">
                                         <p>Ver oferta</p>
                                     </a>
-                                    <a class="dropdown-item" id="botonHistorial" href="historial.html">
+                                    <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial" onclick="verListaHistorial()">
                                         <p>Ver historial</p>
                                     </a>
                                     <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
@@ -338,6 +339,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" id="containerHistorial" style="display:none">
+                    <div id='templateTabla' class="col-md-4" style="display:none">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">{Semestre}</h4>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <th>Materia</th>
+                                        <th>Aprobada</th>
+                                        <th>Creditos</th>
+                                        <th>Requisitos</th>
+                                    </thead>
+                                    <tbody id='{tableId}'>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" id="containerDeuda" style="display:none">
                     <div class='col-md-12'>
                         <div class="card">
@@ -424,7 +447,6 @@
 <script src="../assets/sweetalert2/sweetalert2.min.js"></script>
 <script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
 <script src="assets/js/site.js"></script>
-
 <script src="assets/js/dashboard.js"></script>
 
 </html>

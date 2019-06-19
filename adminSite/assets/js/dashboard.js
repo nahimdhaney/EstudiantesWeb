@@ -1,6 +1,159 @@
 var horasServicio = 120;
 var promedio=0;
 var isPageLoaded=false;
+var isHistorialCargado=false;
+
+function comenzarCargado() {
+    
+    $("#loader").removeAttr("style");
+    $('.content').attr("style", 'display:none');
+}
+
+function terminarCargado() {
+    $(".content").removeAttr("style");
+    $('#loader').attr("style", 'display:none');
+}
+
+function cargarHistorial(resultado) {
+    
+    var semestre = " SEMESTRE";
+    var espacio = '-';
+    
+    var arbol = [];
+    resultado.Data.CURSADAS.forEach(function(element) {
+        const { MATERIAS, REQUISITOS } = element;
+        var objMateria = new Object();
+        objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
+        objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
+        objMateria.nombre = MATERIAS.SMATERIA_DSC;
+        objMateria.requisitos = REQUISITOS;
+        objMateria.cursada = 1;
+        arbol.push(objMateria);
+    });
+    resultado.Data.FALTANTES.forEach(function(element) {
+        const { MATERIAS, REQUISITOS } = element;
+        if (MATERIAS.SPERIODO_DSC.length > 1) {
+            return;
+        }
+        var objMateria = new Object();
+        objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
+        objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
+        objMateria.nombre = MATERIAS.SMATERIA_DSC;
+        objMateria.requisitos = REQUISITOS;
+        objMateria.cursada = 0;
+        arbol.push(objMateria);
+    });
+    arbol.sort(function(a, b) {
+        return a.semestre - b.semestre;
+    });
+    construirTablas(arbol);
+}
+
+function construirTablas(arbol) {
+    var semestreAnterior = 0;
+    var trPlantilla = $("#templateTabla").clone();
+    var tableBody = $("<tbody ></tbody>");
+    var html = trPlantilla.html();
+    for (var i = 0; i < arbol.length; i++) {
+        const { creditos, cursada, nombre, requisitos, semestre } = arbol[i];
+        if (semestre != semestreAnterior) {
+            semestreAnterior = semestre;
+            var html = trPlantilla.html();
+            tablaId = "tabla" + i;
+            html = html.replace(
+                "{Semestre}",
+                obtenerNumerosCardinales(semestre) + " Semestre"
+            );
+            html = html.replace("{tableId}", tablaId);
+            var div = $("<div ></div>").addClass("col-md-6");
+            div.append(html);
+            
+            $("#containerHistorial").append(div);
+            var tableBody = document.getElementById(tablaId);
+            var tableBody = $("#" + tablaId);
+        }
+        var tr = $("<tr ></tr>");
+        tr.append($("<td></td>").text(nombre));
+
+        if (cursada == 1) {
+            tr.append(
+                $("<td></td>").append(
+                    $("<i ></i>").addClass("fas fa-check-square iconClass")
+                )
+            );
+        } else {
+            tr.append($("<td></td>").text(""));
+        }
+        tr.append($("<td></td>").text(creditos));
+        tr.append($("<td></td>").text(obtenerRequisitos(requisitos)));
+        tableBody.append(tr);
+        terminarCargado();
+        isHistorialCargado=true;
+    }
+}
+
+function obtenerNumerosCardinales(semestre) {
+    var numeroCardinal = "";
+    switch (semestre) {
+        case 1:
+            numeroCardinal = "Primer";
+            break;
+        case 2:
+            numeroCardinal = "Segundo";
+            break;
+        case 3:
+            numeroCardinal = "Tercer";
+            break;
+        case 4:
+            numeroCardinal = "Cuarto";
+            break;
+        case 5:
+            numeroCardinal = "Quinto";
+            break;
+        case 6:
+            numeroCardinal = "Sexto";
+            break;
+        case 7:
+            numeroCardinal = "Séptimo";
+            break;
+        case 8:
+            numeroCardinal = "Octavo";
+            break;
+        case 9:
+            numeroCardinal = "Noveno";
+            break;
+        case 10:
+            numeroCardinal = "Décimo ";
+            break;
+        case 11:
+            numeroCardinal = "Décimo Primero";
+            break;
+        case 12:
+            numeroCardinal = "Décimo Segundo";
+            break;
+        case 13:
+            numeroCardinal = "Décimo Tercero";
+            break;
+        case 14:
+            numeroCardinal = "Décimo Cuarto";
+            break;
+        default:
+            numeroCardinal = semestre;
+    }
+    return numeroCardinal;
+}
+
+function obtenerRequisitos(requisitos) {
+    var requisitosConcatenado = "";
+    requisitos.forEach(function(req) {
+        var nombreMateria = req.SMATERIA_DSC;
+        if (requisitosConcatenado != "") {
+            requisitosConcatenado += " ,";
+        }
+        requisitosConcatenado += nombreMateria;
+    });
+    return requisitosConcatenado;
+}
 
 function cargarPromedio()
 {
@@ -152,6 +305,7 @@ function verPerfil() {
     $('#containerAsistencia').hide();
     $('#containerPensul').hide();
     $("#containerPerfil").fadeIn();
+    $('#containerHistorial').hide();
     $('#bodyClick').click()
     cargarPromedio();
 }
@@ -171,6 +325,7 @@ function verHistorial() {
     $('#containerAsistencia').hide();
     $('#containerPerfil').hide();
     $('#bodyClick').click()
+    
     var isHistorialCargado = $('#isHistorialCargado').val();
     if (isHistorialCargado == 1) {
         $('#containerPensul').show();
@@ -178,9 +333,46 @@ function verHistorial() {
     }
     comenzarCargado();
     realizarAjaxHistorial()
+    $('#containerHistorial').hide();
     $('#containerPensul').show();
     return false;
 }
+function verListaHistorial() {
+    
+    $('#containerNotas').hide();
+    $('#containerAsistencia').hide();
+    $('#containerPerfil').hide();
+    $('#containerPensul').hide();
+    $('#bodyClick').click()
+    if(isHistorialCargado)
+    {
+        $('#containerHistorial').show();  
+        return;
+    }
+    comenzarCargado();
+    var carreraId = localStorage.getItem("carreraId");
+    var carreraNombre = localStorage.getItem("carreraNombre");
+    var usuario = new Object();
+    usuario.pCarreraId = carreraId;
+    $("#carreraNombre").text(carreraNombre);
+    var token = localStorage.getItem("token");
+    jQuery.ajax({
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+        },
+        type: "POST",
+        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+        dataType: "json",
+        data: JSON.stringify(usuario),
+        success: cargarHistorial,
+        error: errorSesion
+    });
+    $('#containerHistorial').show();
+}
+
+
 
 function realizarAjaxHistorial()
 
@@ -197,7 +389,6 @@ function realizarAjaxHistorial()
                 'Authorization': 'Bearer ' + token
             },
             'type': 'POST',
-            async: false,
             'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
             'dataType': 'json',
             'data': JSON.stringify(usuario),
@@ -453,6 +644,7 @@ $(document).ready(function() {
         var dperiodoActual = $(this).children("p").text();
         $('#containerPensul').hide();
         $('#containerPerfil').hide();
+        $('#containerHistorial').hide();
         $('#periodoActual').text(dperiodoActual);
         $('#dperiodoActual').val(dperiodoActual);
         $('#hperiodoActual').val(id);
@@ -1036,4 +1228,5 @@ $(document).ready(function() {
         });
         return response;
     }
+    
 });

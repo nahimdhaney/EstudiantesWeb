@@ -1,22 +1,19 @@
 $(document).ready(function() {
-
     cargarPagina();
-
-})
+});
 
 function cargarPagina() {
-    comenzarMainCargado()
+    comenzarMainCargado();
     obtenerHistorial();
 }
 
-
 function comenzarMainCargado() {
-    $('#mainContainer').attr("style", 'display:none');
+    $("#mainContainer").attr("style", "display:none");
     $("#mainLoader").removeAttr("style");
 }
 
 function terminarMainCargado() {
-    $('#mainLoader').attr("style", 'display:none');
+    $("#mainLoader").attr("style", "display:none");
     $("#mainContainer").removeAttr("style");
 }
 
@@ -25,108 +22,105 @@ function obtenerHistorial() {
     var carreraNombre = localStorage.getItem("carreraNombre");
     var usuario = new Object();
     usuario.pCarreraId = carreraId;
-    $('#carreraNombre').text(carreraNombre);
+    $("#carreraNombre").text(carreraNombre);
     var token = localStorage.getItem("token");
     jQuery.ajax({
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
         },
-        'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
-        'dataType': 'json',
-        'data': JSON.stringify(usuario),
-        'success': cargarHistorial,
-        'error': errorSesion
+        type: "POST",
+        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+        dataType: "json",
+        data: JSON.stringify(usuario),
+        success: cargarHistorial,
+        error: errorSesion
     });
 }
 
 function errorSesion() {
     localStorage.removeItem("token");
-    var url = '../index.html'
+    var url = "../index.html";
     $(location).attr("href", url);
 }
 
 function cargarHistorial(resultado) {
-    var semestre = ' SEMESTRE';
-    var espacio = ' - ';
+    var semestre = " SEMESTRE";
+    var espacio = " - ";
     var arbol = [];
     resultado.Data.CURSADAS.forEach(function(element) {
-        const {
-            MATERIAS,
-            REQUISITOS
-        } = element;
+        const { MATERIAS, REQUISITOS } = element;
         var objMateria = new Object();
         objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
         objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
         objMateria.nombre = MATERIAS.SMATERIA_DSC;
         objMateria.requisitos = REQUISITOS;
         objMateria.cursada = 1;
-        arbol.push(objMateria)
+        arbol.push(objMateria);
     });
     resultado.Data.FALTANTES.forEach(function(element) {
-        const {
-            MATERIAS,
-            REQUISITOS
-        } = element;
+        const { MATERIAS, REQUISITOS } = element;
+        if (!MATERIAS.SPERIODO_DSC.localeCompare("-")) {
+            return;
+        }
         var objMateria = new Object();
         objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
         objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
         objMateria.nombre = MATERIAS.SMATERIA_DSC;
         objMateria.requisitos = REQUISITOS;
         objMateria.cursada = 0;
-        arbol.push(objMateria)
+        arbol.push(objMateria);
     });
     arbol.sort(function(a, b) {
         return a.semestre - b.semestre;
-    })
+    });
     construirTablas(arbol);
 }
 
 function construirTablas(arbol) {
     var semestreAnterior = 0;
-    var trPlantilla = $('#templateTabla').clone();
-    var tableBody = $("<tbody ></tbody>")
+    var trPlantilla = $("#templateTabla").clone();
+    var tableBody = $("<tbody ></tbody>");
     var html = trPlantilla.html();
     for (var i = 0; i < arbol.length; i++) {
-        const {
-            creditos,
-            cursada,
-            nombre,
-            requisitos,
-            semestre
-        } = arbol[i];
+        const { creditos, cursada, nombre, requisitos, semestre } = arbol[i];
         if (semestre != semestreAnterior) {
             semestreAnterior = semestre;
             var html = trPlantilla.html();
-            tablaId = 'tabla' + i;
-            html = html.replace('{Semestre}', obtenerNumerosCardinales(semestre) + ' Semestre');
-            html = html.replace('{tableId}', tablaId);
+            tablaId = "tabla" + i;
+            html = html.replace(
+                "{Semestre}",
+                obtenerNumerosCardinales(semestre) + " Semestre"
+            );
+            html = html.replace("{tableId}", tablaId);
             var div = $("<div ></div>").addClass("col-md-6");
             div.append(html);
-            $('#contentMaster').append(div);
+            $("#contentMaster").append(div);
             var tableBody = document.getElementById(tablaId);
-            var tableBody = $('#' + tablaId);
+            var tableBody = $("#" + tablaId);
         }
-        var tr = $("<tr ></tr>")
-        tr.append($("<td></td>").text(nombre))
+        var tr = $("<tr ></tr>");
+        tr.append($("<td></td>").text(nombre));
 
         if (cursada == 1) {
-            tr.append($("<td></td>").append($("<i ></i>").addClass("fas fa-check-square iconClass")))
+            tr.append(
+                $("<td></td>").append(
+                    $("<i ></i>").addClass("fas fa-check-square iconClass")
+                )
+            );
         } else {
-            tr.append($("<td></td>").text(''))
+            tr.append($("<td></td>").text(""));
         }
-        tr.append($("<td></td>").text(creditos))
-        tr.append($("<td></td>").text(obtenerRequisitos(requisitos)))
-        console.log(requisitos)
+        tr.append($("<td></td>").text(creditos));
+        tr.append($("<td></td>").text(obtenerRequisitos(requisitos)));
         tableBody.append(tr);
     }
     terminarMainCargado();
 }
 
 function obtenerNumerosCardinales(semestre) {
-    var numeroCardinal = '';
+    var numeroCardinal = "";
     switch (semestre) {
         case 1:
             numeroCardinal = "Primer";
@@ -177,12 +171,11 @@ function obtenerNumerosCardinales(semestre) {
 }
 
 function obtenerRequisitos(requisitos) {
-    var requisitosConcatenado = '';
+    var requisitosConcatenado = "";
     requisitos.forEach(function(req) {
-
         var nombreMateria = req.SMATERIA_DSC;
-        if (requisitosConcatenado != '') {
-            requisitosConcatenado += ' ,';
+        if (requisitosConcatenado != "") {
+            requisitosConcatenado += " ,";
         }
         requisitosConcatenado += nombreMateria;
     });

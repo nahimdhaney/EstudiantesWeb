@@ -109,16 +109,16 @@
                                 </a>
                                 <div class="dropdown-menu show" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" onclick="verOferta()" href="javascript:void(0)">
-                                        <p>Ver Oferta</p>
+                                        <p>Ver oferta</p>
                                     </a>
                                     <a class="dropdown-item" id="botonHistorial" href="historial.html">
-                                        <p>Ver Historial</p>
+                                        <p>Ver historial</p>
                                     </a>
                                     <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
-                                        <p>Gráfico Historial</p>
+                                        <p>Gráfico historial</p>
                                     </a>
                                     <a class="dropdown-item" id="botonPerfil" onclick="verPerfil()" href="javascript:void(0)">
-                                        <p>Ver Perfil</p>
+                                        <p>Ver perfil</p>
                                     </a>
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
                                         <p>Cambiar Pin</p>
@@ -127,7 +127,7 @@
                             </li>
                             <li>
                                 <a id="botonImprimir" onclick="mostrarHorario()" href="javascript:void(0)">
-                                    <p>Ver Horario</p>
+                                    <p>Ver horario</p>
                                 </a>
                             </li>
                             <li>
@@ -252,7 +252,7 @@
                     <div class="col-md-6" id='infoPersonal'>
                         <div class="card">
                             <div class="header">
-                                <h4 class="title" style="float: left;">Informacion Personal</h4>
+                                <h4 class="title" style="float: left;">Informacion personal</h4>
                             </div>
                             <br/>
                             <br/>
@@ -291,10 +291,22 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title" style="float: left;">Horas de Servicio</h4>
+                                <h4 class="title">Horas de servicio</h4>
                             </div>
                             <div class="container-fluid" style="height:300px;">
                                 <div id="divCreditos" style="height: 270px;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Promedio</h4>
+                            </div>
+                            <div class="container-fluid" style="height:300px;">
+                                <div id="divPromedio" style="height: 270px;">
 
                                 </div>
                             </div>
@@ -360,15 +372,15 @@
                 <div class="modal-body">
                     <form id="formCambiarPin">
                         <div class="form-group">
-                            <label for="pinAnterior">Pin Anterior</label>
+                            <label for="pinAnterior">Pin anterior</label>
                             <input type="password" class="form-control" id="pinAnterior" required>
                         </div>
                         <div class="form-group">
-                            <label for="nuevoPin">Nuevo Pin</label>
+                            <label for="nuevoPin">Nuevo pin</label>
                             <input type="password" class="form-control" id="nuevoPin" required>
                         </div>
                         <div class="form-group">
-                            <label for="repetirNuevoPin">Vuelve a escribir tu nuevo Pin</label>
+                            <label for="repetirNuevoPin">Vuelve a escribir tu nuevo pin</label>
                             <input type="password" class="form-control" id="repetirNuevoPin" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -386,16 +398,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Oferta de Materias</h4>
+                    <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Oferta de materias</h4>
                     <button type="button" onclick="$('#modalOferta').modal('toggle')" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                 </div>
                 <div class="modal-body">
-                    <label>Selecciona un Periodo</label>
+                    <label>Selecciona un periodo</label>
                     <select id="periodosOferta" style="width:100%;margin:auto;text-align: center;margin-bottom: 15px" class="form-control m-5 " id="selectCarrera">
                                 </select>
-                    <button id='verOferta' type="button" class="btn btn-primary">Ver Oferta</button>
+                    <button id='verOferta' type="button" class="btn btn-primary">Ver oferta</button>
                     <button type="button" onclick="$('#modalOferta').modal('toggle')" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 
                 </div>

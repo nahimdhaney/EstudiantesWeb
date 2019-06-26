@@ -294,8 +294,9 @@ function mostrarHorario() {
             response = false
     });
     if (response)
-        window.location = "oferta.html";
-    swal("Ups!", "Tu horario no esta disponible aún", "info")
+        window.location = "horario.html";
+    else    
+        swal("Ups!", "Tu horario no esta disponible aún", "info")
     $('#bodyClick').click()
 
 }
@@ -642,6 +643,7 @@ $(document).ready(function() {
         $('#containerAsistencia').show();
         var id = parseInt(JSON.parse($(this).attr('data-json')))
         var dperiodoActual = $(this).children("p").text();
+        localStorage.setItem("MasterPeriodoActual", id);
         $('#containerPensul').hide();
         $('#containerPerfil').hide();
         $('#containerHistorial').hide();

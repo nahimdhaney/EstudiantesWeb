@@ -193,11 +193,11 @@ function cargarPromedio()
 
     var label = chart.radarContainer.createChild(am4core.Label);
     label.isMeasured = false;
-    label.fontSize = 25;
+    label.fontSize = 30;
     label.x = am4core.percent(50);
     label.y = am4core.percent(100);
     label.horizontalCenter = "middle";
-    label.verticalCenter = "bottom";
+    label.verticalCenter = "top";
     label.text = "50%";
 
 

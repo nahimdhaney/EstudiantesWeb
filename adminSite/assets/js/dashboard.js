@@ -714,7 +714,7 @@ $(document).ready(function() {
         series.dataFields.category = "country";
         series.slices.template.cornerRadius = 10;
         series.slices.template.innerCornerRadius = 7;
-        series.slices.template.draggable = true;
+        series.slices.template.draggable = false;
         series.slices.template.inert = true;
         series.alignLabels = false;
         series.hiddenState.properties.startAngle = 90;

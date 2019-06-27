@@ -54,7 +54,7 @@ $(document).ready(function($) {
             },
             type: "POST",
             async: false,
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
+            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
             dataType: "json"
         }).done(function(response) {
             var data = response.Data.toLowerCase();

@@ -33,7 +33,7 @@ function InfoCarrera() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoCarreras",
         'dataType': 'json',
         'success': cargarInfoCarrera
     });
@@ -89,7 +89,7 @@ function InfoPersonal() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
         'dataType': 'json',
         'success': cargarInformacionPersonal
     });
@@ -137,7 +137,7 @@ function obtenerOferta() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOferta",
         'dataType': 'json',
         'success': cargarOferta
     });
@@ -272,7 +272,7 @@ function obtenerDocumentos() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoDoc",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoDoc",
         'dataType': 'json',
         'success': cargarDocumentos
     });

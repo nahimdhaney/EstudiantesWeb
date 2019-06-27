@@ -287,7 +287,7 @@ function mostrarHorario() {
         'type': 'POST',
         async: false,
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
         'dataType': 'json'
     }).done(function(resultado) {
         if (resultado.Data.length == 0)
@@ -1222,7 +1222,7 @@ $(document).ready(function() {
             'type': 'POST',
             async: false,
             'data': JSON.stringify(usuario),
-            'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
+            'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOferta",
             'dataType': 'json'
         }).done(function(resultado) {
             if (resultado.Data.length == 0)

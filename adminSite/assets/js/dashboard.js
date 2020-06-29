@@ -607,7 +607,8 @@ $(document).ready(function () {
       var carreraId = $("#carrerasAlumno").find(":selected").val();
       localStorage.setItem("periodoOferta", periodoOferta);
       localStorage.setItem("carreraId", carreraId);
-      window.location = "oferta.html";
+      //window.location = "oferta.html";
+      window.open("oferta.html", "_blank");
     } else {
       $("#modalOferta").hide();
       swal("Ups!", "No tienes ninguna materia ofertada aún", "info");

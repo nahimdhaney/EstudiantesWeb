@@ -602,7 +602,8 @@ $(document).ready(function () {
     return false;
   });
   $("#verOferta").click(function () {
-    if (tieneOferta()) {
+    //if (tieneOferta()) {
+    if (true) {
       var periodoOferta = $("#periodosOferta").find(":selected").val();
       var carreraId = $("#carrerasAlumno").find(":selected").val();
       localStorage.setItem("periodoOferta", periodoOferta);

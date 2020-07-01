@@ -402,7 +402,7 @@ function enviarSolicitudRegistro(){
                     return;                
                 }
             }
-            pPre.push(id);
+            pSemi.push(id);
         }
     });
     

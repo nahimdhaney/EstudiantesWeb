@@ -56,53 +56,79 @@
                                 </tbody>
                             </table>
                             <div class="header" style="padding: 0px;padding-bottom: 1%">
-                                <a class='no-print' id='imprimir' href="#">
-                                    <img id='imgPrint' src="../adminSite/assets//img/print.png" alt="Imprimir">
+                                <a class='no-print' id='imprimir' href="#" title="Imprimir">
+                                    <img id='imgPrint' src="../adminSite/assets//img/print.png">
                                 </a>
-                                <!-- <a class='no-print' id='email' href="#">
-                                    <img id='imgPrint' src="../adminSite/assets//img/email.png" alt="Email">
-                                </a> -->
-                                <h4 class="title" style="text-align: center;">Formulario de Inscripcion</h4>
+                                <a class='no-print' id='registro_btn' href="#" title="Registrar materias">
+                                    <img id='imgPrint' src="../adminSite/assets//img/more.png">
+                                </a>
+                                <a class='no-print' id='retiro_btn' href="#" title="Retirar materias">
+                                    <img id='imgPrint' src="../adminSite/assets//img/minus.png">
+                                </a>
+                                <h4 class="title" style="text-align: center;">Formulario de Inscripción</h4>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="SolicitudDiv" class="row no-print" style="display:none">
+                <div id="SolicitudRegistroDiv" class="row no-print">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h5 class="title noMateriasPresencial">Solicitar Inscripcion</h5>
+                                <h5 class="title noMateriasPresencial">SOLICITUD INSCRIPCION DE MATERIA</h5>
                             </div>
                             <div class="header" style="padding-bottom: 15px;">
-                                <p>
-                                    Asegurate de seleccionar las materias a inscribir (<i class="fas fa-check"></i>) 
-                                        enviaremos las materias marcadas para solicitar tu inscripcion. <br>
-                                    Nos contactaremos contigo, asegurate que los datos sean correctos.
-                                </p>
                                 <div>
-                                    <div>
+                                    <div id="SolicitudDeudorDiv">
+                                        <div class="form-group">
+                                            <div>
+                                            	Para solicitar una inscripción, debera saldar las deudas pendientes. Si desea mas informacion sobre su plan de pago o formas de pago puede contactar a nuestro Dpto. de Cobranza: <br>
+                                            	E-mail: <a href="mailto:nviruez@nur.edu">nviruez@nur.edu</a> <br>
+                                            	Telf movil: <a href="https://api.whatsapp.com/send?phone=+59178017905" target="_blank">78017905</a> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="SolicitudRegistroPendienteDiv">
+                                        <div id="barra1">
+                                        </div>
+                                        <div class="form-group">
+                                            Solicitud pendiente con fecha: <span id="Fecha_SRegistro"></span>
+                                        </div>
+                                        <a id="anular_SRegistro_btn" class="btn btn-danger">Anular solicitud de <b>Inscripción</b></a>
+                                    </div>
+                                    <div id="SolicitudRegistroForm" >
+                                        <div class="form-group">
+                                            Seleccione las materias de su oferta (<input type="checkbox" checked >),
+                                                enviaremos las materias marcadas para <b>solicitar su inscripcion</b>. 
+                                            Nos contactaremos con usted e informaremos sobre su solicitud, verifique que los datos de contacto sean correctos.
+                                        </div>
                                         <div class="form-group input-group">
                                             <span style='padding-right: 40px;' class="input-group-addon">
                                                 <i class="far fa-envelope"></i>
                                             </span>
-                                            <input id='emailContacto' type="email" class="form-control" required placeholder="E-mail"/>
+                                            <input id='emailContacto_SRegistro' type="email" class="emailContacto form-control" required placeholder="E-mail"/>
                                         </div>
                                         <div class="form-group input-group">
                                             <span style='padding-right: 35px;' class="input-group-addon">
                                                 <i class="fas fa-mobile-alt"></i>
                                             </span>
-                                            <input id='telefonoContacto' type="tel" class="form-control" pattern="[0-9]{8}" placeholder="708*****"/>
+                                            <input id='telefonoContacto_SRegistro' type="tel" class="telefonoContacto form-control" pattern="[0-9]{8}" placeholder="708*****"/>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <label for="cuotas_SRegistro" class="input-group-addon">Me gustaría pagar en:</label>
+                                            <select id="cuotas_SRegistro" class="form-control" required>
+                                              <option value="1">1 CUOTA</option>
+                                              <option value="2">2 CUOTAS</option>
+                                              <option value="3">3 CUOTAS</option>
+                                              <option value="4">4 CUOTAS</option>
+                                            </select>
                                         </div>
                                         <div class="form-group form-check">
                                             <label class="form-check-label">
-                                                <input id="beca" class="form-check-input" type="checkbox">  Beca
+                                                <input id="beca_SRegistro" class="form-check-input" type="checkbox"> Tiene algún tipo de Beca
                                             </label>
-                                         </div>
-                                        <div>
-                                            <a id="siEnviar" class="btn btn-primary">Si, enviar</a>
-                                            <a id="emailCerrar" class="btn btn-danger">Cerrar</a>
                                         </div>
+                                        <a id="enviar_SRegistro_btn" class="btn btn-primary">Enviar</a>
                                     </div>
                                 </div>
                             </div>
@@ -110,6 +136,57 @@
                     </div>
                 </div>
 
+                <div id="SolicitudRetiroDiv" class="row no-print">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h5 class="title noMateriasPresencial">SOLICITUD RETIRO DE MATERIA</h5>
+                            </div>
+                            <div class="header" style="padding-bottom: 15px;">
+                                <div>
+                                    <div id="SolicitudRetiroPendienteDiv" >
+                                        <div id="barra2">
+                                        </div>
+                                        <div class="form-group">
+                                            Solicitud pendiente con fecha: <span id="Fecha_SRetiro"></span>
+                                        </div>
+                                        <a id="anular_SRetiro_btn" class="btn btn-danger">Anular solicitud de <b>Retiro</b></a>
+                                    </div>
+                                    <div id="SolicitudRetiroForm" >
+                                        <div class="form-group">
+                                            Seleccione las materias(<input type="checkbox" checked >) para <b>solicitar el retiro</b> de las mismas.
+                                            Nos contactaremos con usted e informaremos sobre su solicitud, verifique que los datos de contacto sean correctos.
+                                        </div>
+                                        <table id="tablaNotas_SRetiro" class="table notas">
+		                                    <thead>
+		                                        <tr>
+		                                            <th scope="col"></th>
+		                                            <th scope="col">CODIGO</th>
+		                                            <th scope="col">MATERIA</th>
+		                                            <th scope="col">GRUPO</th>
+		                                            <th scope="col">DOCENTE</th>
+		                                        </tr>
+		                                    </thead>
+		                                </table>
+                                        <div class="form-group input-group">
+                                            <span style='padding-right: 40px;' class="input-group-addon">
+                                                <i class="far fa-envelope"></i>
+                                            </span>
+                                            <input id='emailContacto_SRetiro' type="email" class="emailContacto form-control" required placeholder="E-mail"/>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span style='padding-right: 35px;' class="input-group-addon">
+                                                <i class="fas fa-mobile-alt"></i>
+                                            </span>
+                                            <input id='telefonoContacto_SRetiro' type="tel" class="telefonoContacto form-control" pattern="[0-9]{8}" placeholder="708*****"/>
+                                        </div>
+                                        <a id="enviar_SRetiro_btn" class="btn btn-primary">Enviar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -129,8 +206,8 @@
                                             <th scope="col">CODIGO</th>
                                             <th scope="col">MR</th>
                                             <th scope="col">GR</th>
-                                            <th scope="col">HORARIO</th>
                                             <th scope="col">DIAS</th>
+                                            <th scope="col">HORARIO</th>
                                             <th scope="col">SE</th>
                                             <th scope="col">OBS</th>
                                         </tr>
@@ -162,8 +239,8 @@
                                             <th scope="col">CODIGO</th>
                                             <th scope="col">MR</th>
                                             <th scope="col">GR</th>
-                                            <th scope="col">HORARIO</th>
                                             <th scope="col">DIAS</th>
+                                            <th scope="col">HORARIO</th>
                                             <th scope="col">SE</th>
                                             <th scope="col">OBS</th>
                                         </tr>
@@ -197,7 +274,7 @@
                     </div>
                 </div>
             </div>
-            <div id="loader" style="z-index: 10;display:none;"></div>
+            <div id="loader" style="display:none;"></div>
         </div>
     </div>
 

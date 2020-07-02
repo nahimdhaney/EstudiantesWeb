@@ -372,7 +372,11 @@ function enviarSolicitudRegistro(){
             var id = $(this).attr('id')
             var obs = $("#"+id+"-obs").html();
             obs = obs.toLowerCase();
-            obs = obs.replace("Lleno", "");
+            if (obs.includes('lleno')) {
+                alertaGrupoLleno = 1;
+                return; 
+            }
+            /*obs = obs.replace("Lleno", "");
             obs = obs.replace("/", ",");
             obs = obs.trim();
             var valores = obs.split(",");
@@ -381,7 +385,7 @@ function enviarSolicitudRegistro(){
                     alertaGrupoLleno = 1;
                     return;                
                 }
-            }
+            }*/
             pPre.push(id);
         }
     });
@@ -392,7 +396,11 @@ function enviarSolicitudRegistro(){
             var id = $(this).attr('id')
             var obs = $("#"+id+"-obs").html();
             obs = obs.toLowerCase();
-            obs = obs.replace("Lleno", "");
+            if (obs.includes('lleno')) {
+                alertaGrupoLleno = 1;
+                return; 
+            }
+            /*obs = obs.replace("Lleno", "");
             obs = obs.replace("/", ",");
             obs = obs.trim();
             var valores = obs.split(",");
@@ -401,7 +409,7 @@ function enviarSolicitudRegistro(){
                     alertaGrupoLleno = 1;
                     return;                
                 }
-            }
+            }*/
             pSemi.push(id);
         }
     });
@@ -690,6 +698,3 @@ function cargarNotas(resultado) {
       $("#tablaNotas_SRetiro").append(tr);
     });
   }
-
-//$("#email").hide();
-//$("#tablaOferta td, #tablaOfertaSemi td").css("padding: 5px;");

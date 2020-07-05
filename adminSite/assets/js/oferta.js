@@ -123,6 +123,9 @@ function cargarInformacionPersonal(resultado) {
 function obtenerOferta() {
     var carreraId = localStorage.getItem("carreraId");
     var periodoOferta = localStorage.getItem("periodoOferta");
+    if (carreraId == 0 || periodoOferta == 0) {
+        window.close();
+    }
     var token = localStorage.getItem("token");
     var usuario = new Object();
     usuario.pCarreraId = carreraId;
@@ -354,9 +357,15 @@ $("#enviar_SRetiro_btn").click(function() {
 $("#anular_SRegistro_btn").click(function() {
     anularSolicitud(1);
 });
+$("#ok_SRegistro_btn").click(function() {
+    enviarVisto(1);
+});
 
 $("#anular_SRetiro_btn").click(function() {
     anularSolicitud(2);
+});
+$("#ok_SRetiro_btn").click(function() {
+    enviarVisto(2);
 });
 
 function validateEmail($email) {
@@ -538,10 +547,17 @@ function enviarSolicitudRetiro(){
 function tieneSolicitudPendiente($tipo){
     $('#SolicitudRegistroDiv, #SolicitudRetiroDiv').hide();
     $('#SolicitudDeudorDiv').hide();
+
     $('#SolicitudRegistroPendienteDiv').hide();
     $('#SolicitudRegistroForm').hide();
+    $('#anular_SRegistro_btn').show();
+    $('#ok_SRegistro_btn').hide();
+
     $('#SolicitudRetiroPendienteDiv').hide();
     $('#SolicitudRetiroForm').hide();
+    $('#anular_SRetiro_btn').show();
+    $('#ok_SRetiro_btn').hide();
+
     var datos = new Object();
     datos.pPeriodoId = localStorage.getItem("periodoOferta");
     datos.pCarreraId = localStorage.getItem("carreraId");
@@ -555,7 +571,6 @@ function tieneSolicitudPendiente($tipo){
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        //'url': "http://wsnotas.nur.edu:8880/api/Registros/GetTieneSolicitudPendiente",
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetTieneSolicitudPendiente",
         'dataType': 'json',
         'success': function(response){
@@ -563,26 +578,30 @@ function tieneSolicitudPendiente($tipo){
             const { LTIPO, 
                 DTFECHSOLICITUD,
                 BOOLAPROBADO,
+                BOOLBECAINGRESADA,
                 BOOLPLANPAGO,
+                BOOLVISTOPORALUMNO,
                 BOOLDEUDOR
             } = obj;
             if (obj.LTIPO == 1) {
                 $('#SolicitudRegistroDiv').show(1000);
                 // REGISTRO
-                if (obj.DTFECHSOLICITUD != null) {
+                if (obj.BOOLVISTOPORALUMNO < 0) {
                     $('#SolicitudRegistroPendienteDiv').show();
                     $('#Fecha_SRegistro').text(obj.DTFECHSOLICITUD);
                     $('#barra1').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">33%</div></div>');
-                    if (BOOLAPROBADO >= 0) {
+                    if (obj.BOOLAPROBADO >= 0) {
+                        $('#anular_SRegistro_btn').hide();
                         $('#barra1').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100">66%</div></div>');
-                        if (BOOLPLANPAGO >= 0) {
+                        if (obj.BOOLPLANPAGO >= 0) {
+                            $('#ok_SRegistro_btn').show();
                             $('#barra1').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div></div>');
                         }
                     }
                 }else{
                     $('#SolicitudRegistroForm').show();
                 }
-                if (BOOLDEUDOR == 1) {
+                if (obj.BOOLDEUDOR == 1) {
                     $('#SolicitudDeudorDiv').show();
                     $('#SolicitudDeudorDiv').siblings().hide();
                 }
@@ -590,13 +609,15 @@ function tieneSolicitudPendiente($tipo){
             }else if (obj.LTIPO == 2) {
                 $('#SolicitudRetiroDiv').show(1000);
                 // RETIRO
-                if (obj.DTFECHSOLICITUD != null) {
+                if (obj.BOOLVISTOPORALUMNO < 0) {
                     $('#SolicitudRetiroPendienteDiv').show();
                     $('#Fecha_SRetiro').text(obj.DTFECHSOLICITUD);
                     $('#barra2').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">33%</div></div>');
-                    if (BOOLAPROBADO >= 0) {
+                    if (obj.BOOLAPROBADO >= 0) {
+                        $('#anular_SRetiro_btn').hide();
                         $('#barra2').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100">66%</div></div>');
-                        if (BOOLPLANPAGO >= 0) {
+                        if (obj.BOOLPLANPAGO >= 0) {
+                            $('#ok_SRetiro_btn').show();
                             $('#barra2').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div></div>');
                         }
                     }
@@ -626,7 +647,6 @@ function anularSolicitud($tipo){
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        //'url': "http://wsnotas.nur.edu:8880/api/Registros/AnularSolicitud",
         'url': "http://wsnotas.nur.edu:8880/api/Registros/AnularSolicitud",
         'dataType': 'json',
         'success': function(response){
@@ -666,7 +686,7 @@ function obtenerTablaNotas(){
 }
 
 function cargarNotas(resultado) {
-    $("#tablaNotas_SRetiro tbody").empty();
+    $("#tablaNotas_SRetiro").empty();
     if (resultado.Data.length == 0) {
         $("#tablaNotas_SRetiro").append("<tr><td colspan='5' class='text-center'>   --    No hay materias para retirar    --  </td></tr>");
     }
@@ -698,3 +718,26 @@ function cargarNotas(resultado) {
       $("#tablaNotas_SRetiro").append(tr);
     });
   }
+
+function enviarVisto($tipo){
+    var datos = new Object();
+    datos.pCarreraId = localStorage.getItem("carreraId");
+    datos.pPeriodoId = localStorage.getItem("periodoOferta");
+    datos.pTipo = $tipo;
+    var token = localStorage.getItem("token");
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(datos),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudVista",
+        'dataType': 'json',
+        'success': function(response){
+            if (response.Status)
+                window.location.reload();
+        }
+    });
+}

@@ -1065,6 +1065,8 @@ $(document).ready(function () {
         FINAL,
         PAR1,
         PAR2,
+        TRABPRACTICOS,
+        CONLECTURA,
         SMATERIA_DSC,
         LCENTRO_ID,
       } = element;
@@ -1077,10 +1079,14 @@ $(document).ready(function () {
       var tdFinal = $("<td></td>").text(FINAL);
       var tdPar1 = $("<td></td>").text(PAR1);
       var tdPar2 = $("<td></td>").text(PAR2);
+      var tdTrab = $("<td></td>").text(TRABPRACTICOS);
+      var tdCont = $("<td></td>").text(CONLECTURA);
       tr.append(tdCodMateria);
       tr.append(tdMateria);
       tr.append(tdCodgrupo);
       tr.append(tdDocente);
+      tr.append(tdTrab);
+      tr.append(tdCont);
       tr.append(tdPar1);
       tr.append(tdPar2);
       tr.append(tdExFinal);

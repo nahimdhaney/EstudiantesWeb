@@ -147,9 +147,9 @@ function obtenerOferta() {
 function cargarOferta(resultado) {
     var haySemi = false;
     if (resultado.Data.length == 0) {
-          //var url = "dashboard.html";
-          //$(location).attr("href", url);
-          swal("", "Sin materias ofertadas");
+        //var url = "dashboard.html";
+        //$(location).attr("href", url);
+        swal("", "Sin materias ofertadas");
 
         $('.materiasSemiPresencial').hide();
         $('.noMateriasSemiPresencial').show();
@@ -179,7 +179,7 @@ function cargarOferta(resultado) {
         } = element;
         if (LCENTRO_ID == 1) {
             var tr = $("<tr ></tr>")
-            var input = $('<input type="checkbox" id="'+LGRUPO_ID+"-"+LMATERIA_ID+'"/>')
+            var input = $('<input type="checkbox" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
             var row = $("<td></td>").append(input);
             var td1 = $("<td></td>").text(SMATERIA_DSC);
             var td2 = $("<td></td>").text(LSEMESTRE);
@@ -191,7 +191,7 @@ function cargarOferta(resultado) {
             var td8 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
             var td9 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
             var td10 = $("<td></td>").text(SSEMANA);
-            var td11 = $("<td id='"+LGRUPO_ID+"-"+LMATERIA_ID+"-obs'></td>").text(SOBS1);
+            var td11 = $("<td id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs'></td>").text(SOBS1);
             tr.append(td1)
             tr.append(td2)
             tr.append(td3)
@@ -247,12 +247,12 @@ function cargarSemi(element) {
     var td5 = $("<td></td>").text(DOCENTE);
     var td6 = $("<td></td>").text(SCODMATERIA);
     var td7 = $("<td></td>").text(SCODGRUPO);
-    var input = $('<input type="checkbox" id="'+LGRUPO_ID+"-"+LMATERIA_ID+'"/>')
+    var input = $('<input type="checkbox" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
     var td12 = $("<td></td>").append(input)
     var td8 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
     var td9 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
     var td10 = $("<td></td>").text(SSEMANA);
-    var td11 = $("<td id='"+LGRUPO_ID+"-"+LMATERIA_ID+"-obs'></td>").text(SOBS1);
+    var td11 = $("<td id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs'></td>").text(SOBS1);
     tr.append(td1)
     tr.append(td2)
     tr.append(td3)
@@ -311,7 +311,7 @@ function getDiasHorario(HORARIO) {
 function getHoraHorario(HORARIO) {
     var hora = ''
     HORARIO.forEach(function(element) {
-        hora += element.DTHRENTRADA+" - "+element.DTHRSALIDA+" <br>";
+        hora += element.DTHRENTRADA + " - " + element.DTHRSALIDA + " <br>";
     })
     return hora;
 }
@@ -324,7 +324,7 @@ $.fn.gparent = function(recursion) {
 
 /* SOLICITUD INSCRIPCION -------------------------------------------------------------- */
 
-$('#SolicitudRegistroDiv, #SolicitudRetiroDiv').hide();
+$('#SolicitudRegistroDiv, #SolicitudRetiroDiv, #SolicitudCambioDiv').hide();
 $('#SolicitudDeudorDiv').hide();
 $('#SolicitudRegistroPendienteDiv').hide();
 $('#SolicitudRegistroForm').hide();
@@ -337,21 +337,33 @@ $("#registro_btn").click(function() {
 $("#retiro_btn").click(function() {
     tieneSolicitudPendiente(2);
 });
+$("#cambio_btn").click(function() {
+    tieneSolicitudPendiente(3);
+        $("#tablaAdicion_SCambio tbody").empty();
+        $("#tablaRetiro_SCambio tbody").empty();
+});
 
 $("#enviar_SRegistro_btn").click(function() {
     var email = $('#emailContacto_SRegistro').val().trim();
-    if(email == '' || !validateEmail(email))
-        swal('','Necesitamos un email válido.');
+    if (email == '' || !validateEmail(email))
+        swal('', 'Necesitamos un email válido.');
     else
         enviarSolicitudRegistro();
 });
-
 $("#enviar_SRetiro_btn").click(function() {
     var email = $('#emailContacto_SRetiro').val().trim();
-    if(email == '' || !validateEmail(email))
-        swal('','Necesitamos un email válido.');
+    if (email == '' || !validateEmail(email))
+        swal('', 'Necesitamos un email válido.');
     else
         enviarSolicitudRetiro();
+});
+$("#enviar_SCambio_btn").click(function() {
+    var email = $('#emailContacto_SCambio').val().trim();
+    if (email == '' || !validateEmail(email))
+        swal('', 'Necesitamos un email válido.');
+    else{
+        enviarSolicitudCambio();
+    }
 });
 
 $("#anular_SRegistro_btn").click(function() {
@@ -369,67 +381,44 @@ $("#ok_SRetiro_btn").click(function() {
 });
 
 function validateEmail($email) {
-  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  return emailReg.test( $email );
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailReg.test($email);
 }
 
-function enviarSolicitudRegistro(){
+function enviarSolicitudRegistro() {
     var alertaGrupoLleno = 0;
-    var pPre = [];
+    var pMatRegistro = [];
     $("#tablaOferta input[type=checkbox]").each(function() {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
-            var obs = $("#"+id+"-obs").html();
+            var obs = $("#" + id + "-obs").html();
             obs = obs.toLowerCase();
             if (obs.includes('lleno')) {
                 alertaGrupoLleno = 1;
-                return; 
+                return;
             }
-            /*obs = obs.replace("Lleno", "");
-            obs = obs.replace("/", ",");
-            obs = obs.trim();
-            var valores = obs.split(",");
-            if (obs != '0,0') {
-                if (valores[0] == valores[1]) {
-                    alertaGrupoLleno = 1;
-                    return;                
-                }
-            }*/
-            pPre.push(id);
+            pMatRegistro.push(id);
         }
     });
-
-    var pSemi = [];
     $("#tablaOfertaSemi input[type=checkbox]").each(function() {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
-            var obs = $("#"+id+"-obs").html();
+            var obs = $("#" + id + "-obs").html();
             obs = obs.toLowerCase();
             if (obs.includes('lleno')) {
                 alertaGrupoLleno = 1;
-                return; 
+                return;
             }
-            /*obs = obs.replace("Lleno", "");
-            obs = obs.replace("/", ",");
-            obs = obs.trim();
-            var valores = obs.split(",");
-            if (obs != '0,0') {
-                if (valores[0] == valores[1]) {
-                    alertaGrupoLleno = 1;
-                    return;                
-                }
-            }*/
-            pSemi.push(id);
+            pMatRegistro.push(id);
         }
     });
-    
-    if (alertaGrupoLleno == 1){
+
+    if (alertaGrupoLleno == 1) {
         swal("", "No se permite agregar grupos llenos");
         return;
     }
-    
-    if (pPre.length == 0 && pSemi.length == 0) {
-        swal('','Selecciona materias para tu inscripción.');
+    if (pMatRegistro.length == 0) {
+        swal('', 'Selecciona materias para tu inscripción.');
         return;
     }
     var pNombre = $('#nombreCodigo').html();
@@ -449,8 +438,7 @@ function enviarSolicitudRegistro(){
     datos.pNroCuotas = pNroCuotas;
     datos.pBeca = pBeca;
     datos.pTipo = 1;
-    datos.pPre = pPre;
-    datos.pSemi = pSemi;
+    datos.pMatRegistro = pMatRegistro;
 
     $("#mainLoader").css("z-index", "5");
     $("#mainLoader").show();
@@ -465,7 +453,7 @@ function enviarSolicitudRegistro(){
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
         'dataType': 'json',
-        'success': function(response){
+        'success': function(response) {
             if (response.Status) {
                 $('#tablaOferta input[type=checkbox]').gparent(2).css("background-color", "white");
                 $('#tablaOfertaSemi input[type=checkbox]').gparent(2).css("background-color", "white");
@@ -473,19 +461,19 @@ function enviarSolicitudRegistro(){
                 $('#tablaOfertaSemi input[type=checkbox]:checked').gparent(2).css("background-color", "lightgray");
                 swal("Solicitud enviada", "", "success");
                 tieneSolicitudPendiente(1);
-            }else{
+            } else {
                 swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
             }
             $("#mainLoader").hide();
         },
-        'error': function(){
+        'error': function() {
             swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
             $("#mainLoader").hide();
-        } 
+        }
     });
 }
 
-function enviarSolicitudRetiro(){
+function enviarSolicitudRetiro() {
     var pMatRetiro = [];
     $("#tablaNotas_SRetiro input[type=checkbox]").each(function() {
         if ($(this).is(":checked")) {
@@ -493,8 +481,9 @@ function enviarSolicitudRetiro(){
         }
     });
     if (pMatRetiro.length == 0) {
-        swal('','Selecciona materias para el retiro.');
-    } else{
+        swal('', 'Selecciona materias para el retiro.');
+        return;
+    } else {
         var pNombre = $('#nombreCodigo').html();
         var pCarreraId = localStorage.getItem("carreraId");
         var pPeriodoId = localStorage.getItem("periodoOferta");
@@ -508,7 +497,7 @@ function enviarSolicitudRetiro(){
         datos.pPeriodoId = pPeriodoId;
         datos.pemailContacto = pemailContacto;
         datos.ptelefonoContacto = ptelefonoContacto;
-        datos.pNroCuotas = pNroCuotas;
+        datos.pNroCuotas = 0;
         datos.pBeca = 0;
         datos.pTipo = 2;
         datos.pMatRetiro = pMatRetiro;
@@ -527,25 +516,25 @@ function enviarSolicitudRetiro(){
             //'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
-            'success': function(response){
+            'success': function(response) {
                 if (response.Status) {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
-                }else{
+                } else {
                     swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
                 }
                 $("#mainLoader").hide();
             },
-            'error': function(){
+            'error': function() {
                 swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
-            } 
+            }
         });
-    }    
+    }
 }
 
-function tieneSolicitudPendiente($tipo){
-    $('#SolicitudRegistroDiv, #SolicitudRetiroDiv').hide();
+function tieneSolicitudPendiente($tipo) {
+    $('#SolicitudRegistroDiv, #SolicitudRetiroDiv, #SolicitudCambioDiv').hide();
     $('#SolicitudDeudorDiv').hide();
 
     $('#SolicitudRegistroPendienteDiv').hide();
@@ -557,6 +546,11 @@ function tieneSolicitudPendiente($tipo){
     $('#SolicitudRetiroForm').hide();
     $('#anular_SRetiro_btn').show();
     $('#ok_SRetiro_btn').hide();
+
+    $('#SolicitudCambioPendienteDiv').hide();
+    $('#SolicitudCambioForm').hide();
+    $('#anular_SCambio_btn').show();
+    $('#ok_SCambio_btn').hide();
 
     var datos = new Object();
     datos.pPeriodoId = localStorage.getItem("periodoOferta");
@@ -573,9 +567,10 @@ function tieneSolicitudPendiente($tipo){
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetTieneSolicitudPendiente",
         'dataType': 'json',
-        'success': function(response){
+        'success': function(response) {
             var obj = response.Data;
-            const { LTIPO, 
+            const {
+                LTIPO,
                 DTFECHSOLICITUD,
                 BOOLAPROBADO,
                 BOOLBECAINGRESADA,
@@ -598,7 +593,7 @@ function tieneSolicitudPendiente($tipo){
                             $('#barra1').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div></div>');
                         }
                     }
-                }else{
+                } else {
                     $('#SolicitudRegistroForm').show();
                 }
                 if (obj.BOOLDEUDOR == 1) {
@@ -606,7 +601,7 @@ function tieneSolicitudPendiente($tipo){
                     $('#SolicitudDeudorDiv').siblings().hide();
                 }
 
-            }else if (obj.LTIPO == 2) {
+            } else if (obj.LTIPO == 2) {
                 $('#SolicitudRetiroDiv').show(1000);
                 // RETIRO
                 if (obj.BOOLVISTOPORALUMNO < 0) {
@@ -621,19 +616,39 @@ function tieneSolicitudPendiente($tipo){
                             $('#barra2').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div></div>');
                         }
                     }
-                }else{
+                } else {
                     $('#SolicitudRetiroForm').show();
+                    obtenerTablaNotas();
+                }
+            } else if (obj.LTIPO == 3) {
+                $('#SolicitudCambioDiv').show(1000);
+                // CAMBIO
+                if (obj.BOOLVISTOPORALUMNO < 0) {
+                    $('#SolicitudCambioPendienteDiv').show();
+                    $('#Fecha_SCambio').text(obj.DTFECHSOLICITUD);
+                    $('#barra3').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">33%</div></div>');
+                    if (obj.BOOLAPROBADO >= 0) {
+                        $('#anular_SCambio_btn').hide();
+                        $('#barra3').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100">66%</div></div>');
+                        if (obj.BOOLPLANPAGO >= 0) {
+                            $('#ok_SCambio_btn').show();
+                            $('#barra3').html('<div class="progress"> <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div></div>');
+                        }
+                    }
+                } else {
+                    $('#SolicitudCambioForm').show();
+                    cargarOfertaSolicitud();
                     obtenerTablaNotas();
                 }
             }
         },
-        error: function (){
+        error: function() {
             swal("Upps", "El servicio esta temporalmente inactivo");
         }
     });
 }
 
-function anularSolicitud($tipo){
+function anularSolicitud($tipo) {
     var datos = new Object();
     datos.pCarreraId = localStorage.getItem("carreraId");
     datos.pPeriodoId = localStorage.getItem("periodoOferta");
@@ -649,21 +664,21 @@ function anularSolicitud($tipo){
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/AnularSolicitud",
         'dataType': 'json',
-        'success': function(response){
+        'success': function(response) {
             if (response.Status) {
                 swal("", "Solicitud anulada.");
-                    tieneSolicitudPendiente(response.Data.LTIPO);
-            }else{
+                tieneSolicitudPendiente(response.Data.LTIPO);
+            } else {
                 swal("", "Su solicitud no pudo ser anulada.");
             }
         },
-        'error': function(){
+        'error': function() {
             swal("", "Su solicitud no pudo ser anulada.");
-        } 
+        }
     });
 }
 
-function obtenerTablaNotas(){
+function obtenerTablaNotas() {
     var datos = new Object();
     datos.pCarreraId = localStorage.getItem("carreraId");
     datos.pPeriodoId = localStorage.getItem("periodoOferta");
@@ -678,19 +693,19 @@ function obtenerTablaNotas(){
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
         'dataType': 'json',
-        'success': cargarNotas,
-        'error': function(){
+        'success': cargarNotasSolicitud,
+        'error': function() {
             swal("Upps", "Hubo un problema al obtener materias");
-        } 
+        }
     });
 }
 
-function cargarNotas(resultado) {
-    $("#tablaNotas_SRetiro").empty();
+function cargarNotasSolicitud(resultado) {
+    $("#tablaNotas_SRetiro tbody, #tablaNotas_SRetiroCambio tbody").empty();
     if (resultado.Data.length == 0) {
-        $("#tablaNotas_SRetiro").append("<tr><td colspan='5' class='text-center'>   --    No hay materias para retirar    --  </td></tr>");
+        $("#tablaNotas_SRetiro, #tablaNotas_SRetiroCambio").append("<tr><td colspan='5' class='text-center'>   --    No hay materias para retirar    --  </td></tr>");
     }
-    resultado.Data.forEach(function (element) {
+    resultado.Data.forEach(function(element) {
         const {
             LGRUPO_ID,
             LCENTRO_ID,
@@ -704,22 +719,22 @@ function cargarNotas(resultado) {
             SCODGRUPO,
             DOCENTE,
         } = element;
-      var tr = $("<tr></tr>");
-      var tdcheck = $("<td></td>").html('<input type="checkbox" id="'+LGRUPO_ID+"-"+LMATERIA_ID+'"/>')
-      var tdCodMateria = $("<td></td>").text(SCODMATERIA);
-      var tdMateria = $("<td></td>").text(SMATERIA_DSC);
-      var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
-      var tdDocente = $("<td></td>").text(DOCENTE);
-      tr.append(tdcheck);
-      tr.append(tdCodMateria);
-      tr.append(tdMateria);
-      tr.append(tdCodgrupo);
-      tr.append(tdDocente);
-      $("#tablaNotas_SRetiro").append(tr);
+        var tr = $("<tr></tr>");
+        var tdcheck = $("<td></td>").html('<input type="checkbox" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
+        var tdCodMateria = $("<td></td>").text(SCODMATERIA);
+        var tdMateria = $("<td></td>").text(SMATERIA_DSC);
+        var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
+        var tdDocente = $("<td></td>").text(DOCENTE);
+        tr.append(tdcheck);
+        tr.append(tdCodMateria);
+        tr.append(tdMateria);
+        tr.append(tdCodgrupo);
+        tr.append(tdDocente);
+        $("#tablaNotas_SRetiro, #tablaNotas_SRetiroCambio").append(tr);
     });
-  }
+}
 
-function enviarVisto($tipo){
+function enviarVisto($tipo) {
     var datos = new Object();
     datos.pCarreraId = localStorage.getItem("carreraId");
     datos.pPeriodoId = localStorage.getItem("periodoOferta");
@@ -735,9 +750,175 @@ function enviarVisto($tipo){
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudVista",
         'dataType': 'json',
-        'success': function(response){
+        'success': function(response) {
             if (response.Status)
                 window.location.reload();
         }
     });
+}
+
+function cargarOfertaSolicitud(resultado) {
+    var carreraId = localStorage.getItem("carreraId");
+    var periodoOferta = localStorage.getItem("periodoOferta");
+    if (carreraId == 0 || periodoOferta == 0) {
+        window.close();
+    }
+    var token = localStorage.getItem("token");
+    var usuario = new Object();
+    usuario.pCarreraId = carreraId;
+    usuario.pPeriodoId = periodoOferta;
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(usuario),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOferta",
+        'dataType': 'json',
+        'success': function(resultado) {
+            $("#tablaNotas_SOfertaCambio tbody").empty();
+            var lista = resultado.Data;
+            lista.forEach(function(element) {
+                const {
+                    LGRUPO_ID,
+                    LCENTRO_ID,
+                    LMATERIA_ID,
+                    SMATERIA_DSC,
+                    LSEMESTRE,
+                    LCREDITOS,
+                    LLABORATORIO,
+                    DOCENTE,
+                    SCODMATERIA,
+                    CASILLA,
+                    SCODGRUPO,
+                    SSEMANA,
+                    LESTADOGRUPO_ID,
+                    SESTADOGRUPO_DSC,
+                    SOBS1,
+                    HORARIO
+                } = element;
+                var tr = $("<tr ></tr>")
+                var input = $('<input type="checkbox" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
+                var row = $("<td></td>").append(input);
+                var td1 = $("<td></td>").text(LCENTRO_ID == 1 ? "PRE" : "SEMI");
+                var td2 = $("<td></td>").text(SCODMATERIA);
+                var td3 = $("<td></td>").text(SMATERIA_DSC);
+                var td4 = $("<td></td>").text(SCODGRUPO);
+                var td5 = $("<td></td>").text(LCREDITOS);
+                var td6 = $("<td></td>").text(DOCENTE);
+                var td7 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
+                var td8 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
+                var td9 = $("<td id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs'></td>").text(SOBS1);
+                tr.append(row);
+                tr.append(td1);
+                tr.append(td2);
+                tr.append(td3);
+                tr.append(td4);
+                tr.append(td5);
+                tr.append(td6);
+                tr.append(td7);
+                tr.append(td8);
+                tr.append(td9);
+                if (!SOBS1.toLowerCase().includes('lleno'))
+                    $('#tablaNotas_SOfertaCambio').append(tr);
+            });
+        }
+    });
+}
+
+function marcadoAdicion(){
+    var pMatAdicion = [];
+    $("#tablaNotas_SOfertaCambio input[type=checkbox]").each(function() {
+        if ($(this).is(":checked")){
+            var myrow = $(this).gparent(2);
+            pMatAdicion.push(myrow[0].outerHTML);
+            $(this).gparent(2).remove();
+        }
+    });
+    pMatAdicion.forEach(function(element) {
+        $('#tablaAdicion_SCambio').append(element);
+    });
+    $('#tablaAdicion_SCambio input[type=checkbox]').prop( "checked", true ).prop( "disabled", true );
+}
+
+function marcadoRetiro(){
+    var pMatAdicion = [];
+    $("#tablaNotas_SRetiroCambio input[type=checkbox]").each(function() {
+        if ($(this).is(":checked")){
+            var myrow = $(this).gparent(2);
+            pMatAdicion.push(myrow[0].outerHTML);
+            $(this).gparent(2).remove();
+        }
+    });
+    pMatAdicion.forEach(function(element) {
+        $('#tablaRetiro_SCambio').append(element);
+    });
+    $('#tablaRetiro_SCambio input[type=checkbox]').prop( "checked", true ).prop( "disabled", true );
+}
+
+function enviarSolicitudCambio() {
+    var pMatAdicion = [];
+    $("#tablaAdicion_SCambio input[type=checkbox]").each(function() {
+        if ($(this).is(":checked"))
+            pMatAdicion.push($(this).attr('id'));
+    });
+    var pMatRetiro = [];
+    $("#tablaRetiro_SCambio input[type=checkbox]").each(function() {
+        if ($(this).is(":checked"))
+            pMatRetiro.push($(this).attr('id'));
+    });
+    if (pMatAdicion.length == 0 || pMatRetiro.length == 0) {
+        swal('', 'Selecciona materias para la solicitud de Cambio.');
+        return;
+    } else {
+        var pNombre = $('#nombreCodigo').html();
+        var pCarreraId = localStorage.getItem("carreraId");
+        var pPeriodoId = localStorage.getItem("periodoOferta");
+        var pemailContacto = $('#emailContacto_SRetiro').val();
+        var ptelefonoContacto = $('#telefonoContacto_SRetiro').val();
+        var pNroCuotas = $('#cuotas_SRegistro').val();
+
+        var datos = new Object();
+        datos.pNombre = pNombre;
+        datos.pCarreraId = pCarreraId;
+        datos.pPeriodoId = pPeriodoId;
+        datos.pemailContacto = pemailContacto;
+        datos.ptelefonoContacto = ptelefonoContacto;
+        datos.pNroCuotas = 0;
+        datos.pBeca = 0;
+        datos.pTipo = 3;
+        datos.pMatAdicion = pMatAdicion;
+        datos.pMatRetiro = pMatRetiro;
+
+        $("#mainLoader").css("z-index", "5");
+        $("#mainLoader").show();
+        var token = localStorage.getItem("token");
+        jQuery.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            'data': JSON.stringify(datos),
+            //'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
+            'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
+            'dataType': 'json',
+            'success': function(response) {
+                if (response.Status) {
+                    swal("Solicitud enviada", "", "success");
+                    tieneSolicitudPendiente(2);
+                } else {
+                    swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                }
+                $("#mainLoader").hide();
+            },
+            'error': function() {
+                swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                $("#mainLoader").hide();
+            }
+        });
+    }
 }

@@ -127,6 +127,9 @@
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
                                         <p>Cambiar Pin</p>
                                     </a>
+                                    <a id="otrosSitio_btn" class="dropdown-item" data-toggle="modal" data-target="#modalLinks">
+                                        <p>Otros sitios</p>
+                                    </a>
                                 </div>
                             </li>
                             <li>
@@ -390,7 +393,6 @@
         </div>
     </div>
 
-
     <div id="modalCambiarPin" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -416,14 +418,11 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <div id="modalOferta" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -441,6 +440,22 @@
                     <button id='verOferta' type="button" class="btn btn-primary">Ver oferta</button>
                     <button type="button" onclick="$('#modalOferta').modal('toggle')" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalLinks" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Otros sitios Nur</h4>
+                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="ListaLinks_ul"></ul>
                 </div>
             </div>
         </div>

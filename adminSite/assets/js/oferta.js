@@ -922,3 +922,5 @@ function enviarSolicitudCambio() {
         });
     }
 }
+
+$('#cambio_btn').hide();

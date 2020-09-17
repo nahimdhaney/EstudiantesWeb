@@ -1414,7 +1414,7 @@ function cargarLinks() {
                         TITULO,
                         LINK
                     } = element;
-                    var input = $('<a href="'+LINK+'">'+TITULO+'</a>')
+                    var input = $('<a target="_blank" href="'+LINK+'">'+TITULO+'</a>')
                     var li = $("<li></li>").append(input);
                     $('#ListaLinks_ul').append(li);
                 });

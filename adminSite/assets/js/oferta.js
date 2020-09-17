@@ -923,4 +923,4 @@ function enviarSolicitudCambio() {
     }
 }
 
-$('#cambio_btn').hide();
+$('#registro_btn, #retiro_btn, #cambio_btn').hide();

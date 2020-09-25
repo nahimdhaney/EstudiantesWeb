@@ -1393,14 +1393,13 @@ $("#SaveEmail").click(function () {
     }
 });
 
-$('#inputTelefono, #inputCelular ').keypress(function (){
+$('#inputTelefono, #inputCelular ').keyup(function (){
  this.value = (this.value + '').replace(/[^0-9]/g, '');
 });
 function validateEmail(email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     return emailReg.test(email);
 }
-
 
 $("#otrosSitio_btn").click(function() {
     cargarLinks();

@@ -1357,8 +1357,13 @@ $("#SaveEmail").click(function () {
     var pCelular = $("#inputCelular").val().trim();
     var pEmail = $("#inputEmail").val().trim();
     if (pTelefono == "" || pCelular == "" || pEmail == "") {
-        swal("Completa tus datos", "Ayudanos a mantenernos en contacto contigo.", "info");
+        swal("Existen espacios vacios", "Complete sus datos por favor.", "info");
+        return;
     } else {
+        if (!validateEmail(pEmail)) {
+            swal("Email inválido", "Ingrese una dirección de e-mail válido por favor.", "info");
+            return;
+        }
         var token = localStorage.getItem("token");
         var datos = new Object();
         datos.pTelefono = pTelefono;
@@ -1377,8 +1382,7 @@ $("#SaveEmail").click(function () {
                 data: JSON.stringify(datos),
                 success: function (response) {
                     if (response.Status) {
-                        swal("Guardado", "", "success");
-                        location.reload();
+                        swal("Guardado exitoso", "", "success");
                     } else swal("Ups!", "Algo anda mal, tus datos no se guardaron.", "info");
                 },
                 error: function () {
@@ -1388,6 +1392,14 @@ $("#SaveEmail").click(function () {
         }
     }
 });
+
+$('#inputTelefono, #inputCelular ').keypress(function (){
+ this.value = (this.value + '').replace(/[^0-9]/g, '');
+});
+function validateEmail(email) {
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailReg.test(email);
+}
 
 
 $("#otrosSitio_btn").click(function() {

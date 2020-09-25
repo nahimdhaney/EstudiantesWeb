@@ -380,9 +380,9 @@ $("#ok_SRetiro_btn").click(function() {
     enviarVisto(2);
 });
 
-function validateEmail($email) {
+function validateEmail(email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-    return emailReg.test($email);
+    return emailReg.test(email);
 }
 
 function enviarSolicitudRegistro() {

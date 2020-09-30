@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -30,30 +30,29 @@
                 <div class="row" style="margin-top:2%">
                     <div class="col-md-12">
                         <div class="card" style="padding: 1%;padding-bottom: 0px">
-                            <table id='infoAlumno' class="table">
-                                <thead>
-                                    <tr>
-                                        <td id='nombreCodigo'></td>
-                                        <td id='horasServicio'></td>
-                                        <td id='semestreActual'></td>
-                                    </tr>
-                                    <tr>
-                                        <td id='carrera'></td>
-                                        <td id='semestreIngreso'></td>
-                                        <td id='tipoColegio'></td>
-                                    </tr>
-                                    <tr>
-                                        <td id='Pensul'></td>
-                                        <td id='codigoCentro'></td>
-                                        <td id='creditosVencidos'></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <div class="contenedor-info">
+                                <div class="contenedor-izq">
+                                    <p id="nombreCodigo"></p>
+                                    <p id="carrera"></p>
+                                    <p id="pensum"></p>
+                                </div>
+                                <div class="contenedor-centro">
+                                    <p id="semestreActual"></p>
+                                    <p id="semestreIngreso"></p>
+                                    <p id="codigoCentro"></p>
+                                </div>
+                                <div class="contenedor-der">
+                                    <p id="horasServicio"></p>
+                                    <p id="tipoColegio"></p>
+                                    <p id="creditosVencidos"></p>
+                                </div>
+                            </div>
+
+
                             <div class="header" style="padding: 0px;padding-bottom: 1%">
                                 <a class='no-print' id='imprimir' href="#" title="Imprimir">
                                     <img id='imgPrint' src="../adminSite/assets//img/print.png">
+                                    <!-- <i id='iPrint' class="fas fa-print"></i> -->
                                 </a>
                                 <a class='no-print' id='registro_btn' href="#" title="Registrar materias">
                                     <img id='imgPrint' src="../adminSite/assets//img/more.png">
@@ -64,7 +63,7 @@
                                 <a class='no-print' id='cambio_btn' href="#" title="Cambio materias">
                                     <img id='imgPrint' src="../adminSite/assets//img/cambio.png">
                                 </a>
-                                <h4 class="title" style="text-align: center;">Formulario de Inscripción</h4>
+                                <h4 class="title" style="text-align: center; font-weight: bold;">FORMULARIO DE INSCRIPCIÓN</h4>
                             </div>
                         </div>
                     </div>
@@ -278,8 +277,8 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h5 class="title noMateriasPresencial">Materias Ofertdas en Presencial</h5>
-                                <h5 style='display: none' class="title noMateriasPresencial">No tiene Materias Ofertdas en Presencial</h5>
+                                <h5 class="title noMateriasPresencial" style="font-weight: bold;">MATERIAS OFERTADAS EN PRESENCIAL</h5>
+                                <h5 style='display: none; font-weight: bold;' class="title noMateriasPresencial">NO TIENE MATERIAS OFERTADAS EN PRESENCIAL</h5>
                             </div>
                             <div class="content table-responsive table-full-width materiasPresencial">
                                 <table id="tablaOferta" class="table table-hover notas">
@@ -296,7 +295,8 @@
                                             <th scope="col">DIAS</th>
                                             <th scope="col">HORARIO</th>
                                             <th scope="col">SE</th>
-                                            <th scope="col">OBS</th>
+                                            <th scope="col">INS</th>
+                                            <th scope="col">TOPE</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -310,8 +310,8 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h5 class="title materiasSemiPresencial">Materias Ofertdas en SemiPresencial</h5>
-                                <h5 style='display: none;' class="title noMateriasSemiPresencial">No tiene Materias Ofertdas en SemiPresencial</h5>
+                                <h5 class="title materiasSemiPresencial" style="font-weight: bold;">MATERIAS OFERTADAS EN SEMIPRESENCIAL</h5>
+                                <h5 style='display: none; font-weight: bold;' class="title noMateriasSemiPresencial">NO TIENE MATERIAS OFERTADAS EN SEMIPRESENCIAL</h5>
                             </div>
                             <div class="content table-responsive table-full-width materiasSemiPresencial">
                                 <table id="tablaOfertaSemi" class="table table-hover notas">
@@ -328,7 +328,8 @@
                                             <th scope="col">DIAS</th>
                                             <th scope="col">HORARIO</th>
                                             <th scope="col">SE</th>
-                                            <th scope="col">OBS</th>
+                                            <th scope="col">INS</th>
+                                            <th scope="col">TOPE</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -339,10 +340,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <div class="card">
                             <div class="header">
-                                <h5 class="title">Documentos que debe Presentar</h5>
+                                <h5 class="title" style="font-weight: bold;">DOCUMENTOS QUE DEBE PRESENTAR</h5>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table id="tablaDocumentos" class="table notas">

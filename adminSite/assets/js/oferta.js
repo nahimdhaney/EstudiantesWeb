@@ -63,14 +63,14 @@ function cargarInfoCarrera(resultado) {
             LPERIODOACTUAL_ID
         } = element;
         var carrera = pad(LCARRERA_ID, 4) + '    ' + SCARRERA_DSC;
-        var pensul = 'Cod. Pensum: ' + LCODPENSUM
+        var pensum = 'Cod. Pensum: ' + LCODPENSUM
         var semestreActual = 'Semestre Act.:  ' + LPERIODOACTUAL
         var semestreIngreso = 'Sem. Ingreso:    ' + LPERIODOINICIO
         var codigoCentro = 'Cod. Centro:    ' + SCODCENTRO
         var fechaPeriodo = LPERIODOACTUAL
         var creditosVencidos = 'Cred. Vencidos:     ' + LCREDVENCIDOS
         $('#carrera').text(carrera)
-        $('#Pensul').text(pensul)
+        $('#pensum').text(pensum)
         $('#idsemestreActual').text(semestreActual)
         $('#semestreIngreso').text(semestreIngreso)
         $('#codigoCentro').text(codigoCentro)
@@ -138,7 +138,8 @@ function obtenerOferta() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOferta",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta",
+        // 'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOferta",
         'dataType': 'json',
         'success': cargarOferta
     });
@@ -155,6 +156,8 @@ function cargarOferta(resultado) {
         $('.noMateriasSemiPresencial').show();
         $('.materiasPresencial').hide();
         $('.MateriasSemiPresencial').show();
+        $('.noMateriasPresencial').show();
+        $('.noMateriasPresencial').parent().css({"padding":"15px"});
         terminarMainCargado()
         return;
     }
@@ -174,12 +177,14 @@ function cargarOferta(resultado) {
             SSEMANA,
             LESTADOGRUPO_ID,
             SESTADOGRUPO_DSC,
+            LCANTMAXIMA,
+            LTOTAL,
             SOBS1,
             HORARIO
         } = element;
         if (LCENTRO_ID == 1) {
             var tr = $("<tr ></tr>")
-            var input = $('<input type="checkbox" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
+            var input = $('<input type="checkbox" class="chkRow" name="' + LMATERIA_ID + '" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
             var row = $("<td></td>").append(input);
             var td1 = $("<td></td>").text(SMATERIA_DSC);
             var td2 = $("<td></td>").text(LSEMESTRE);
@@ -191,7 +196,9 @@ function cargarOferta(resultado) {
             var td8 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
             var td9 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
             var td10 = $("<td></td>").text(SSEMANA);
-            var td11 = $("<td id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs'></td>").text(SOBS1);
+            var td11 = $("<td name='ins'></td>").text(LTOTAL);
+            var td12 = $("<td name='tope'></td>").text(LCANTMAXIMA);
+            var td13 = $("<input id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs' type='hidden'>").val(SOBS1);
             tr.append(td1)
             tr.append(td2)
             tr.append(td3)
@@ -205,6 +212,14 @@ function cargarOferta(resultado) {
 
             tr.append(td10)
             tr.append(td11)
+            tr.append(td12)
+            tr.append(td13)
+
+            if(LTOTAL == 'Lleno'){
+                tr.css({'pointer-events':'none'});
+                tr.find('td[name ="ins"]').css({'font-weight':'bold'});
+            }
+
             $('#tablaOferta').append(tr);
         }
         if (LCENTRO_ID == 2) {
@@ -215,6 +230,7 @@ function cargarOferta(resultado) {
     if (haySemi == false) {
         $('.materiasSemiPresencial').hide();
         $('.noMateriasSemiPresencial').show();
+        $('.noMateriasSemiPresencial').parent().css({"padding":"15px"});
     }
     terminarMainCargado()
 }
@@ -235,6 +251,8 @@ function cargarSemi(element) {
         SSEMANA,
         LESTADOGRUPO_ID,
         SESTADOGRUPO_DSC,
+        LCANTMAXIMA,
+        LTOTAL,
         SOBS1,
         HORARIO
     } = element;
@@ -247,12 +265,14 @@ function cargarSemi(element) {
     var td5 = $("<td></td>").text(DOCENTE);
     var td6 = $("<td></td>").text(SCODMATERIA);
     var td7 = $("<td></td>").text(SCODGRUPO);
-    var input = $('<input type="checkbox" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
+    var input = $('<input type="checkbox" class="chkRow" name="' + LMATERIA_ID + '" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
     var td12 = $("<td></td>").append(input)
     var td8 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
     var td9 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
     var td10 = $("<td></td>").text(SSEMANA);
-    var td11 = $("<td id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs'></td>").text(SOBS1);
+    var td11 = $("<td name='ins'></td>").text(LTOTAL);
+    var td13 = $("<td name='tope'></td>").text(LCANTMAXIMA);
+    var td14 = $("<input id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs' type='hidden'>").val(SOBS1);
     tr.append(td1)
     tr.append(td2)
     tr.append(td3)
@@ -266,6 +286,12 @@ function cargarSemi(element) {
 
     tr.append(td10)
     tr.append(td11)
+    tr.append(td13)
+    tr.append(td14)
+    if(LTOTAL == 'Lleno'){
+        tr.css({'pointer-events':'none'});
+        tr.find('td[name ="ins"]').css({'font-weight':'bold'});
+    }
     $('#tablaOfertaSemi').append(tr);
 }
 
@@ -302,8 +328,9 @@ function cargarDocumentos(resultado) {
 
 function getDiasHorario(HORARIO) {
     var dias = ''
+    
     HORARIO.forEach(function(element) {
-        dias += element.SDIA_DSC.substring(0, 2).toUpperCase() + " <br>";
+        dias += element.DIA + " <br>";
     })
     return dias;
 }
@@ -311,7 +338,7 @@ function getDiasHorario(HORARIO) {
 function getHoraHorario(HORARIO) {
     var hora = ''
     HORARIO.forEach(function(element) {
-        hora += element.DTHRENTRADA + " - " + element.DTHRSALIDA + " <br>";
+        hora += formatearHora(element.DTHRENTRADA) + " - " + formatearHora(element.DTHRSALIDA) + " <br>";
     })
     return hora;
 }
@@ -924,3 +951,28 @@ function enviarSolicitudCambio() {
 }
 
 $('#registro_btn, #retiro_btn, #cambio_btn').hide();
+
+function formatearHora(fecha) {
+    if (isEmpty(fecha)) {
+        return "";
+    }
+    var fechaFormat = new Date(fecha);
+    return ('0' + fechaFormat.getHours()).slice(-2) + ":" + ('0' + fechaFormat.getMinutes()).slice(-2);
+}
+
+function isEmpty(value){
+    return (value == null || value === '');
+}
+
+$(document).on("change", ".chkRow", function() {
+//$("input:checkbox").on('click', function() {
+    var $box = $(this);
+    if ($box.is(":checked")) {
+      var group = "input:checkbox[name='" + $box.attr("name") + "']";
+      $(group).prop("checked", false);
+      $box.prop("checked", true);
+
+    } else {
+      $box.prop("checked", false);
+    }
+  });

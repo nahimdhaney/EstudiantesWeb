@@ -149,3 +149,32 @@
         width: 50px;
     }
 }
+
+.contenedor-info{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.contenedor-info p{
+    font-size: 13px;
+    margin: 0;
+}
+
+#horasServicio{
+    font-weight: bold;
+}
+
+.chkRow{
+    width: 22px;
+    height: 22px;
+}
+
+.card{
+    box-shadow: 0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
+}
+
+#iPrint{
+    font-size: 35px;
+    color: black;
+}

@@ -895,8 +895,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                //url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOferta",
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOferta",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOferta",
                 dataType: "json",
                 data: JSON.stringify(usuario),
                 success: periodosOfertas,
@@ -1163,7 +1162,7 @@ $(document).ready(function () {
                 type: "POST",
                 async: false,
                 data: JSON.stringify(usuario),
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOferta",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOfertaa",
                 dataType: "json",
             })
             .done(function (resultado) {

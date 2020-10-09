@@ -389,7 +389,7 @@ function realizarAjaxHistorial() {
 }
 
 function carrgarHistorial(resultado) {
-    promedio = resultado.Data.PROMEDIOAPROBADAS;
+    promedio = resultado.Data.PROMEDIOAPROBADAS??0;
     if (!isPageLoaded) {
         isPageLoaded = true;
         return;
@@ -651,7 +651,7 @@ $(document).ready(function () {
         obtenerNombre(token);
         obtenerImagen(token);
         getCarreraInfo(token);
-        GetPeriodosOfertas();
+        //GetPeriodosOfertas();
         if (tieneBloqueo == 0) {
             GetPeriodosCursados();
         } else {
@@ -801,6 +801,7 @@ $(document).ready(function () {
         });
         realizarAjaxHistorial();
         $("#carreraPerfil").text(carreras);
+        GetPeriodosOfertas();
     }
 
     function GetPeriodosCursados() {
@@ -884,8 +885,8 @@ $(document).ready(function () {
 
     function GetPeriodosOfertas() {
         var carreraId = $("#carrerasAlumno").find(":selected").val();
-        var usuario = new Object();
-        usuario.pCarreraId = carreraId;
+        var obj = new Object();
+        obj.pCarreraId = carreraId;
         var token = localStorage.getItem("token");
         if (token != "") {
             jQuery.ajax({
@@ -895,9 +896,9 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOferta",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOfertaCarrera",
                 dataType: "json",
-                data: JSON.stringify(usuario),
+                data: JSON.stringify(obj),
                 success: periodosOfertas,
                 error: errorSesion,
             });
@@ -905,6 +906,7 @@ $(document).ready(function () {
     }
 
     function periodosOfertas(resultado) {
+        $("#periodosOferta").find("option").remove();
         for (i in resultado.Data) {
             var element = resultado.Data[i];
             const { SPERIODO_DSC, LPERIODO_ID } = element;

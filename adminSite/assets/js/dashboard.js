@@ -1005,11 +1005,11 @@ $(document).ready(function () {
             return;
         }
         resultado.Data.forEach(function (element) {
-            const { SCODMATERIA, SSIGLA, DOCENTE, EXFINAL, FINAL, PAR1, PAR2, TRABPRACTICOS, CONLECTURA, SMATERIA_DSC, LCENTRO_ID } = element;
+            const { SCODMATERIA, SCODGRUPO, DOCENTE, EXFINAL, FINAL, PAR1, PAR2, TRABPRACTICOS, CONLECTURA, SMATERIA_DSC, LCENTRO_ID } = element;
             var tr = $("<tr ></tr>");
             var tdCodMateria = $("<td></td>").text(SCODMATERIA);
             var tdMateria = $("<td></td>").text(SMATERIA_DSC);
-            var tdCodgrupo = $("<td></td>").text(SSIGLA);
+            var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
             var tdDocente = $("<td></td>").text(DOCENTE);
             var tdExFinal = $("<td></td>").text(EXFINAL);
             var tdFinal = $("<td></td>").text(FINAL);
@@ -1033,11 +1033,11 @@ $(document).ready(function () {
     }
 
     function cargarAsistencias(element) {
-        const { SCODMATERIA, SSIGLA, DOCENTE, SMATERIA_DSC, LCENTRO_ID } = element;
+        const { SCODMATERIA, SCODGRUPO, DOCENTE, SMATERIA_DSC, LCENTRO_ID } = element;
         var tr = $("<tr ></tr>");
         var tdCodMateria = $("<td></td>").text(SCODMATERIA);
         var tdMateria = $("<td></td>").text(SMATERIA_DSC);
-        var tdCodgrupo = $("<td></td>").text(SSIGLA);
+        var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
         var tdDocente = $("<td></td>").text(DOCENTE);
         tr.append(tdCodMateria);
         tr.append(tdMateria);

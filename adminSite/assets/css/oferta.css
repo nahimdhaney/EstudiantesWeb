@@ -178,3 +178,63 @@
     font-size: 35px;
     color: black;
 }
+
+.primeraFila{
+    border-top: hidden;
+}
+
+.table-der{
+    text-align: right;
+}
+
+#titulo-modal{
+    font-weight: bold;
+}
+
+.spCantidad{
+    font-size: 12px;
+    /* font-weight: bold; */
+}
+
+.itemCosto{
+    font-weight: bold;
+}
+
+.filaTotal{
+    border-top: 2px solid black;
+}
+
+/* #pagoContado */
+.chkDesc{
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-top: 0;
+}
+
+.labelCheckbox {
+    margin-left: 3px;
+    margin-top: 2px;
+    color: black;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.divCuotas{
+    padding: 0;
+}
+
+#cbCuotas{
+    margin-left: 5px;
+    padding: 0;
+    height: 28px;
+    width: 45px;
+}
+
+.div-chk{
+    margin-bottom: 20px;
+}
+
+#modalCostos input[type=checkbox]{
+    margin: 0;
+}

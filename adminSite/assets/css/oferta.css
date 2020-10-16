@@ -238,3 +238,9 @@
 #modalCostos input[type=checkbox]{
     margin: 0;
 }
+
+#contabilizar{
+    background-image: linear-gradient(to right, #00396f, #013e78, #024380, #034889, #044d92);
+    color: white;
+    border: none;
+}

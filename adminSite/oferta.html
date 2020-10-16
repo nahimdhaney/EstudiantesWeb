@@ -275,7 +275,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h5 class="title noMateriasPresencial" style="font-weight: bold;">MATERIAS OFERTADAS EN PRESENCIAL</h5>
+                                <h5 class="title materiasPresencial" style="font-weight: bold;">MATERIAS OFERTADAS EN PRESENCIAL</h5>
                                 <h5 style='display: none; font-weight: bold;' class="title noMateriasPresencial">NO TIENE MATERIAS OFERTADAS EN PRESENCIAL</h5>
                             </div>
                             <div class="content table-responsive table-full-width materiasPresencial">
@@ -357,6 +357,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-8">
+                        <input id="contabilizar" type="button" class="btn btn-primary" value="Contabilizar materias">
+                        <input type="hidden" name="cmp" id="cmp">
+                        <input type="hidden" name="cms" id="cms">
+                        <input type="hidden" name="cga" id="cga">
+                        <input type="hidden" name="cce" id="cce">
+                        <input type="hidden" name="csu" id="csu">
+                        <input type="hidden" name="cl" id="cl">
+                        <input type="hidden" name="prd" id="prd">
+                        <input type="hidden" name="aia" id="aia">
+                    </div>
                 </div>
             </div>
             <div id="loader" style="display:none;"></div>
@@ -434,6 +445,95 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalCostos" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title" id="titulo-modal">Costos semestre <span id="spPeriodoDsc"></span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-7 div-izq">
+                                <table id="tableCostosMaterias" class="table">
+                                    <tbody>
+                                        <tr class="primeraFila">
+                                            <td class="itemCosto">Materias Presencial <span class="spCantidad">x<span id="cantMatPre"></span></span></td>
+                                            <td id="spMatPresencial" class="table-der"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="itemCosto">Materias Semipresencial <span class="spCantidad">x<span id="cantMatSemi"></span></span></td>
+                                            <td id="spMatSemipresencial" class="table-der"></td>
+                                        </tr>
+                                        <tr class="filaPagoContado" style="display: none;">
+                                            <td class="itemCosto">Pago al contado</td>
+                                            <td id="descPagoContado" class="table-der">-10%</td>
+                                        </tr>
+                                        <tr class="filaTotal">
+                                            <td class="itemCosto">Total</td>
+                                            <td id="totalCostMaterias" class="table-der"><span id="spTotalCostMaterias"></span> Bs.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table id="tableCostosFijos" class="table">
+                                    <tbody>
+                                        <tr class="primeraFila">
+                                            <td class="itemCosto">Costo Materias</td>
+                                            <td id="costoFinalMat" class="table-der"><span id="spCostoFinalMat"></span> Bs.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="itemCosto">Carnet Estudiantil</td>
+                                            <td class="table-der"><span id="spCarnetEst"></span> Bs.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="itemCosto">Seguro Estudiantil</td>
+                                            <td class="table-der"><span id="spSeguroEst"></span> Bs.</td>
+                                        </tr>
+                                        <tr style="display: none;">
+                                            <td class="itemCosto">Gastos Administrativos</td>
+                                            <td class="table-der"><span id="spGastoAdm"></span> Bs.</td>
+                                        </tr>
+                                        <tr style="display: none;" id="trLaboratorio">
+                                            <td class="itemCosto">Laboratorio</td>
+                                            <td class="table-der"><span id="spCostLab"></span> Bs.</td>
+                                        </tr>
+                                        <tr class="filaTotal">
+                                            <td class="itemCosto">Total</td>
+                                            <td class="table-der"><span id="totalCost"></span> Bs.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-5 div-der">
+                                <div class="form-check div-chk">
+                                    <input type="checkbox" name="pagoContado" id="pagoContado" class="form-check-input chkDesc">
+                                    <label class="form-check-label labelCheckbox" for="pagoContado">Pago al contado</label>
+                                </div>
+                                <div class="form-check div-chk" style="display: none;">
+                                    <input type="checkbox" name="ultimaBeca" id="ultimaBeca" class="form-check-input chkDesc">
+                                    <label class="form-check-label labelCheckbox" for="ultimaBeca">Ultima beca</label>
+                                </div>
+                                <div class="col-md-12 form-inline divCuotas">
+                                    <label for="cbCuotas">Cuotas:</label>
+                                    <select class="form-control" id="cbCuotas" name="cbCuotas">
+                                        <option></option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 

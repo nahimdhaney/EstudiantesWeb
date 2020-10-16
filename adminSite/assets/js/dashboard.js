@@ -778,8 +778,9 @@ $(document).ready(function () {
             localStorage.setItem("MasterPeriodoActual", LPERIODOACTUAL_ID);
             $("#hperiodoActual").val(LPERIODOACTUAL_ID);
             $("#dperiodoActual").val(LPERIODOACTUAL);
-            $("#periodoActual").text(LPERIODOACTUAL);
+            
             if (count == 0) {
+                $("#periodoActual").text(LPERIODOACTUAL);
                 localStorage.setItem("corrPeActId", LPERIODOACTUAL_ID);
                 obtenerNotas(LPERIODOACTUAL_ID);
                 if ($("#firstLoad").val() == 1) {

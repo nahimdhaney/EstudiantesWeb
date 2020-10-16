@@ -1211,6 +1211,7 @@ function mostrarResultado(response) {
     var planes = response.Data;
     var carrera = "";
     var centro = "";
+    var periodo = "";
     var datos = [];
 
     for (let index = 0; index < planes.length; index++) {
@@ -1243,6 +1244,7 @@ function mostrarResultado(response) {
             carrera = datosPlanAlumno.SCARRERA_DSC;
             centro = datosPlanAlumno.SCENTRO_DSC;
             centro = titleCase(centro);
+            periodo = datosPlanAlumno.SPERIODO_DSC;
 
             var items = {
                 carrera,
@@ -1252,6 +1254,7 @@ function mostrarResultado(response) {
                 saldoTotal,
                 pagadoTotal,
                 cuotaTotal,
+                periodo
             };
 
             if (saldoTotal > 0) {
@@ -1267,7 +1270,7 @@ function mostrarResultado(response) {
         var planRow = datos[index].arrayPlanes;
         var detalleRow = "";
         var html =
-            `<div class="row"><div class="col-md-12"><div class="card"><div class="header"><h4 class="title"><strong>Plan de pagos</strong></h4>
+            '<div class="row"><div class="col-md-12"><div class="card"><div class="header"><h4 class="title"><strong>Plan de pagos ' + datos[index].periodo + `</strong></h4>
               <h5 class="title">` +
             datos[index].carrera +
             `</h5><h5 class="title">` +
@@ -1278,11 +1281,11 @@ function mostrarResultado(response) {
               </thead><tbody>`;
         var htmlEnd =
             `<tr class="filaFinal"><td colspan="2"><strong>Total</strong></td><td><strong>` +
-            fnDosDigitos(cuotaTotal) +
+            fnDosDigitos(datos[index].cuotaTotal) +
             `</strong></td><td><strong>` +
-            fnDosDigitos(pagadoTotal) +
+            fnDosDigitos(datos[index].pagadoTotal) +
             `</strong></td><td><strong>` +
-            fnDosDigitos(saldoTotal) +
+            fnDosDigitos(datos[index].saldoTotal) +
             `</strong></td><td></td></tr></tbody></table></div></div></div></div>`;
         for (let aux = 0; aux < planRow.length; aux++) {
             detalleRow +=

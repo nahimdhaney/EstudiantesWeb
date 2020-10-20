@@ -1222,44 +1222,43 @@ function mostrarResultado(response) {
         var saldoTotal = 0;
         var pagadoTotal = 0;
         var cuotaTotal = 0;
-        if (cuotas > 1) {
-            for (let aux = 0; aux < detalles.length; aux++) {
-                var rowDetalles = detalles[aux];
-                var nroCuota = rowDetalles.LNROCUOTA;
-                var fecha = rowDetalles.DTFECHAVENC;
-                fecha = formatearFecha(fecha);
-                var cuota = rowDetalles.DMONTO;
-                var pagado = rowDetalles.DPAGADO;
-                var saldo = rowDetalles.SALDO;
-                var estado = rowDetalles.SESTCUOTA_DSC;
-                saldoTotal = saldo + saldoTotal;
-                pagadoTotal = pagado + pagadoTotal;
-                cuotaTotal = cuota + cuotaTotal;
+        
+        for (let aux = 0; aux < detalles.length; aux++) {
+            var rowDetalles = detalles[aux];
+            var nroCuota = rowDetalles.LNROCUOTA;
+            var fecha = rowDetalles.DTFECHAVENC;
+            fecha = formatearFecha(fecha);
+            var cuota = rowDetalles.DMONTO;
+            var pagado = rowDetalles.DPAGADO;
+            var saldo = rowDetalles.SALDO;
+            var estado = rowDetalles.SESTCUOTA_DSC;
+            saldoTotal = saldo + saldoTotal;
+            pagadoTotal = pagado + pagadoTotal;
+            cuotaTotal = cuota + cuotaTotal;
 
-                rowPlan = { nroCuota, fecha, cuota, pagado, saldo, estado };
-                arrayPlanes.push(rowPlan);
-            }
+            rowPlan = { nroCuota, fecha, cuota, pagado, saldo, estado };
+            arrayPlanes.push(rowPlan);
+        }
 
-            var datosPlanAlumno = planes[index].PLAN;
-            carrera = datosPlanAlumno.SCARRERA_DSC;
-            centro = datosPlanAlumno.SCENTRO_DSC;
-            centro = titleCase(centro);
-            periodo = datosPlanAlumno.SPERIODO_DSC;
+        var datosPlanAlumno = planes[index].PLAN;
+        carrera = datosPlanAlumno.SCARRERA_DSC;
+        centro = datosPlanAlumno.SCENTRO_DSC;
+        centro = titleCase(centro);
+        periodo = datosPlanAlumno.SPERIODO_DSC;
 
-            var items = {
-                carrera,
-                centro,
-                cuotas,
-                arrayPlanes,
-                saldoTotal,
-                pagadoTotal,
-                cuotaTotal,
-                periodo
-            };
+        var items = {
+            carrera,
+            centro,
+            cuotas,
+            arrayPlanes,
+            saldoTotal,
+            pagadoTotal,
+            cuotaTotal,
+            periodo
+        };
 
-            if (saldoTotal > 0) {
-                datos.push(items);
-            }
+        if (saldoTotal > 0) {
+            datos.push(items);
         }
     }
 

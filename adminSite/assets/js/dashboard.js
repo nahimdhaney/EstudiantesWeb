@@ -382,13 +382,14 @@ function realizarAjaxHistorial() {
             url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
             dataType: "json",
             data: JSON.stringify(usuario),
-            success: carrgarHistorial,
+            success: cargarHistorial,
             error: errorSesion,
         });
     }
 }
 
-function carrgarHistorial(resultado) {
+function cargarHistorial(resultado) {
+    if (resultado.Data == null) return;
     promedio = resultado.Data.PROMEDIOAPROBADAS??0;
     if (!isPageLoaded) {
         isPageLoaded = true;
@@ -481,12 +482,22 @@ function carrgarHistorial(resultado) {
     $("#isHistorialCargado").val(1);
 }
 $(document).ready(function () {
+
     var esconderPeriodos = false;
+
+    var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
+    if (tieneBloqueo == 1) {
+        $("#titlePeriodos").remove();
+        $("#containerNotas").remove();
+        $("#containerAsistencia").remove();
+        $("#containerDeuda").removeAttr("style");
+        $("#containerDeuda").fadeIn();
+    }
     cargarPagina();
+
     $("#carrerasAlumno").change(function () {
         localStorage.setItem("carreraId", this.value);
         localStorage.setItem("carreraNombre", $(this).find("option:selected").text());
-
         if ($("#containerPensul").is(":visible")) {
             $("#isHistorialCargado").val(0);
             verHistorial();
@@ -495,7 +506,19 @@ $(document).ready(function () {
         $(".periodosInvisibles").remove();
         comenzarMainCargado();
         $("#firstLoad").val("1");
-        cargarPagina();
+        //cargarPagina();
+
+        var arrayCarPer = JSON.parse(localStorage.getItem("arrayCarPer"));
+        arrayCarPer.forEach(function (element) {
+            var carreraIdStorage = localStorage.getItem("carreraId");  
+            if (element.LCARRERA_ID == carreraIdStorage) {
+                localStorage.setItem("corrPeActId", element.LPERIODOACTUAL_ID);
+                $("#periodoActual").text(element.LPERIODOACTUAL);
+                cargarPeriodoYNotas();
+                GetPeriodosOfertas();
+                return;
+            }
+        });
     });
 
     function errorSesion() {
@@ -647,20 +670,12 @@ $(document).ready(function () {
 
     function cargarPagina() {
         var token = localStorage.getItem("token");
-        var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
+        obtenerBloqueo(token)
         obtenerNombre(token);
         obtenerImagen(token);
         getCarreraInfo(token);
-        //GetPeriodosOfertas();
-        if (tieneBloqueo == 0) {
-            GetPeriodosCursados();
-        } else {
-            $("#titlePeriodos").remove();
-            $("#containerNotas").remove();
-            $("#containerAsistencia").remove();
-            $("#containerDeuda").removeAttr("style");
-            $("#containerDeuda").fadeIn();
-        }
+
+        cargarPeriodoYNotas();
     }
 
     function resultadoBloqueo(resultado) {
@@ -772,17 +787,17 @@ $(document).ready(function () {
         //$('#carrerasAlumno').empty();
         var carreras = "";
         var correcionId = 0;
+        var arrayCarPer = [];
         resultado.Data.forEach(function (element) {
             const { LCARRERA_ID, SCARRERA_DSC, LPERIODOACTUAL, LPERIODOACTUAL_ID } = element;
             $("#MasterPeriodoActual").val(LPERIODOACTUAL_ID);
             localStorage.setItem("MasterPeriodoActual", LPERIODOACTUAL_ID);
             $("#hperiodoActual").val(LPERIODOACTUAL_ID);
             $("#dperiodoActual").val(LPERIODOACTUAL);
-            
             if (count == 0) {
                 $("#periodoActual").text(LPERIODOACTUAL);
                 localStorage.setItem("corrPeActId", LPERIODOACTUAL_ID);
-                obtenerNotas(LPERIODOACTUAL_ID);
+                //obtenerNotas(LPERIODOACTUAL_ID);
                 if ($("#firstLoad").val() == 1) {
                     return;
                 }
@@ -798,11 +813,19 @@ $(document).ready(function () {
             } else {
                 carreras += " , " + SCARRERA_DSC;
             }
+            arrayCarPer.push({LCARRERA_ID,LPERIODOACTUAL_ID, LPERIODOACTUAL});
             count++;
         });
+        localStorage.setItem("arrayCarPer",JSON.stringify(arrayCarPer));
         realizarAjaxHistorial();
         $("#carreraPerfil").text(carreras);
         GetPeriodosOfertas();
+    }
+
+    function cargarPeriodoYNotas(){
+        var pPeriodoId = localStorage.getItem("corrPeActId");
+        obtenerNotas(pPeriodoId);
+        GetPeriodosCursados();
     }
 
     function GetPeriodosCursados() {
@@ -1438,3 +1461,20 @@ function cargarLinks() {
         });
     }
 }
+
+  function obtenerBloqueo(token) {
+    $.ajax({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      type: "POST",
+      async: false,
+      url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
+      dataType: "json",
+    }).done(function (response) {
+      var data = response.Data.toLowerCase();
+      localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
+    });
+  }

@@ -174,3 +174,92 @@
  .alinear {
     text-align: center;
  }
+
+ .menuMasOpciones a{
+     cursor: pointer;
+ }
+
+ .sim-div, .divSelCantMat{
+     display: flex;
+     justify-content: space-between;
+ }
+ 
+ .divSelCantMat{
+     align-items: center;
+     margin-bottom: 20px;
+ }
+ 
+ .divSelCantMat select{
+     margin-left: 15px;
+ }
+
+ .primeraFila{
+    border-top: hidden;
+}
+
+.itemCosto{
+    font-weight: bold;
+}
+
+.filaTotal{
+    border-top: 2px solid black;
+}
+
+.div-chk{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.chkDesc{
+    width: 20px;
+    height: 20px;
+    /* margin-top: 0; */
+}
+
+.div-chk label{
+    margin-bottom: 0;
+    margin-left: 5px;
+    font-weight: normal;
+}
+
+/* Eliminar cuando ya esté listo, sólo durante tiempo de desarrollo */
+.btnSimulador{
+    cursor: pointer;
+}
+
+.div-chk input[type=checkbox]{
+    margin: 0;
+}
+
+.div-btns{
+    display: flex;
+    justify-content: center;
+}
+
+#btnSimular{
+    margin-right: 10px;
+}
+
+#btnCancelarSim{
+    margin-left: 10px;
+}
+
+.table-der{
+    text-align: right;
+}
+
+.spCantidad{
+    font-size: 12px;
+    /* font-weight: bold; */
+}
+
+.itemCosto{
+    font-weight: bold;
+}
+
+#tableCostosMaterias>tbody>tr>td,
+#tableCostosFijos>tbody>tr>td{
+    padding-left: 0;
+    padding-right: 0;
+}

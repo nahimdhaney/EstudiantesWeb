@@ -28,8 +28,6 @@ function getCostosSemestre() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        // 'url': "http://localhost:5000/api/Registros/GetCostosSemestre",
-        // 'url': "http://sisnur.nur.edu:8885/api/Registros/GetCostosSemestre",
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
@@ -37,6 +35,10 @@ function getCostosSemestre() {
 }
 
 function cargarCostos(resultado) {
+    if (!resultado.Status) {
+        $("#tc").val(1);
+        return;
+    }
     var costos = resultado.Data;
     var cmp = 0;
     var cms = 0;
@@ -91,7 +93,6 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        // 'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
         'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
@@ -294,12 +295,12 @@ function cargarOferta(resultado) {
             var td11 = $("<td name='ins'></td>").text(LTOTAL);
             var td12 = $("<td name='tope'></td>").text(LCANTMAXIMA);
             var td13 = $("<input id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs' type='hidden'>").val(SOBS1);
+            tr.append(td6)
             tr.append(td1)
             tr.append(td2)
             tr.append(td3)
             tr.append(td4)
             tr.append(td5)
-            tr.append(td6)
             tr.append(row)
             tr.append(td7)
             tr.append(td8)
@@ -368,12 +369,12 @@ function cargarSemi(element) {
     var td11 = $("<td name='ins'></td>").text(LTOTAL);
     var td13 = $("<td name='tope'></td>").text(LCANTMAXIMA);
     var td14 = $("<input id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs' type='hidden'>").val(SOBS1);
+    tr.append(td6)
     tr.append(td1)
     tr.append(td2)
     tr.append(td3)
     tr.append(td4)
     tr.append(td5)
-    tr.append(td6)
     tr.append(td12)
     tr.append(td7)
     tr.append(td8)
@@ -1060,7 +1061,6 @@ function isEmpty(value){
 }
 
 $(document).on("change", ".chkRow", function() {
-//$("input:checkbox").on('click', function() {
     var $box = $(this);
     if ($box.is(":checked")) {
       var group = "input:checkbox[name='" + $box.attr("name") + "']";
@@ -1074,6 +1074,10 @@ $(document).on("change", ".chkRow", function() {
 
 $("#contabilizar").click(function() {
     $('#modalCostos').modal('show');
+    var hayCosto = $("#tc").val();
+    if (hayCosto == 1) {
+        swal("Lo sentimos!", "Aún no existen costos para las materias", "info");
+    }
     var periodoDsc = $("#prd").val();
     $("#spPeriodoDsc").text(periodoDsc);
     var auxPresencial = 0;
@@ -1100,6 +1104,13 @@ $("#contabilizar").click(function() {
     var costoSeguro = $("#csu").val();
     var costoLaboratorio = $("#cl").val();
     //costoLaboratorio = isEmpty(costoLaboratorio) ? 0 : costoLaboratorio;
+
+    costoPresencial = isEmpty(costoPresencial) ? 0 : parseFloat(costoPresencial);
+    costoSemi = isEmpty(costoSemi) ? 0 : parseFloat(costoSemi);
+    costoCarnet = isEmpty(costoCarnet) ? 0 : parseFloat(costoCarnet);
+    costoAdm = isEmpty(costoAdm) ? 0 : parseFloat(costoAdm);
+    costoSeguro = isEmpty(costoSeguro) ? 0 : parseFloat(costoSeguro);
+    costoLaboratorio = isEmpty(costoLaboratorio) ? 0 : parseFloat(costoLaboratorio);
 
     var totalMatPres = auxPresencial * costoPresencial;
     var totalMatSemi = auxSemipresencial * costoSemi;
@@ -1171,7 +1182,7 @@ $('#spCostoFinalMat').on('change', function() {
     var costoCarnet = $("#spCarnetEst").text();
     var costoSeguro = $("#spSeguroEst").text();
     // var costoAdm = $("#spGastoAdm").text();
-     var costoLab = $("#spCostLab").text();
+    var costoLab = $("#spCostLab").text();
     var totales = parseFloat(costoFinalMat) + parseFloat(costoCarnet) + parseFloat(costoSeguro);
     
     if ($("#trLaboratorio").css("display") != "none") {

@@ -153,20 +153,24 @@ function cargarInfoCarrera(resultado) {
             LCREDVENCIDOS,
             LPERIODOACTUAL_ID
         } = element;
-        var carrera = pad(LCARRERA_ID, 4) + '    ' + SCARRERA_DSC;
-        var pensum = 'Cod. Pensum: ' + LCODPENSUM
-        var semestreActual = 'Semestre Act.:  ' + LPERIODOACTUAL
-        var semestreIngreso = 'Sem. Ingreso:    ' + LPERIODOINICIO
-        var codigoCentro = 'Cod. Centro:    ' + SCODCENTRO
-        var fechaPeriodo = LPERIODOACTUAL
-        var creditosVencidos = 'Cred. Vencidos:     ' + LCREDVENCIDOS
-        $('#carrera').text(carrera)
-        $('#pensum').text(pensum)
-        $('#idsemestreActual').text(semestreActual)
-        $('#semestreIngreso').text(semestreIngreso)
-        $('#codigoCentro').text(codigoCentro)
-        $('#creditosVencidos').text(creditosVencidos)
-        $('#semestreActual').text(semestreActual)
+        var carreraId = parseInt(localStorage.getItem("carreraId"));
+        if (carreraId == LCARRERA_ID) {
+            var carrera = pad(LCARRERA_ID, 4) + '    ' + SCARRERA_DSC;
+            var pensum = 'Cod. Pensum: ' + LCODPENSUM
+            var semestreActual = 'Semestre Act.:  ' + LPERIODOACTUAL
+            var semestreIngreso = 'Sem. Ingreso:    ' + LPERIODOINICIO
+            var codigoCentro = 'Cod. Centro:    ' + SCODCENTRO
+            var fechaPeriodo = LPERIODOACTUAL
+            var creditosVencidos = 'Cred. Vencidos:     ' + LCREDVENCIDOS
+            $('#carrera').text(carrera)
+            $('#pensum').text(pensum)
+            $('#idsemestreActual').text(semestreActual)
+            $('#semestreIngreso').text(semestreIngreso)
+            $('#codigoCentro').text(codigoCentro)
+            $('#creditosVencidos').text(creditosVencidos)
+            $('#semestreActual').text(semestreActual)
+            return;
+        }
     });
 }
 

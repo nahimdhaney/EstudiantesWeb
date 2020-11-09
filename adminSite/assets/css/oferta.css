@@ -157,8 +157,71 @@
 }
 
 .contenedor-info p{
-    font-size: 13px;
+    font-size: 9px;
     margin: 0;
+}
+
+@media (min-width: 425px){
+    .contenedor-info p{
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 768px){
+    .contenedor-info p{
+        font-size: 13px;
+    }
+}
+
+.titulo{
+    font-size: 16px;
+}
+
+@media (min-width: 425px){
+    .titulo{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 768px){
+    .titulo{
+        font-size: 30px;
+    }
+}
+
+
+.header-sub>h5{
+    font-size: 14px;
+}
+
+@media (min-width: 425px){
+    .header-sub>h5{
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 768px){
+    .header-sub>h5{
+        font-size: 18px;
+    }
+}
+
+.card .header-sub{
+    padding: 15px 15px;
+}
+
+#tablaOferta td,
+#tablaOfertaSemi td,
+#tablaDocumentos td{
+    font-size: 12px;
+}
+
+@media (min-width: 768px){
+    #tablaOferta td,
+    #tablaOfertaSemi td,
+    #tablaDocumentos td{
+        font-size: 14px;
+    }
 }
 
 #horasServicio{
@@ -239,8 +302,32 @@
     margin: 0;
 }
 
-#contabilizar{
+#contabilizar, #confirmar, #comprobante{
     background-image: linear-gradient(to right, #00396f, #013e78, #024380, #034889, #044d92);
+    color: white;
+    border: none;
+}
+
+.divModalFooter{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.div-parrafo, .div-fichero{
+    text-align: center;
+}
+
+.div-fichero{
+    margin: 35px 0;
+}
+
+#fichero{
+    display: none;
+}
+
+#btnSubir{
+    background: rgb(46,106,100);
+    background: linear-gradient(94deg, rgba(46,106,100,1) 0%, rgba(44,97,92,1) 100%);
     color: white;
     border: none;
 }

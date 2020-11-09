@@ -498,6 +498,8 @@ $(document).ready(function () {
     }
     cargarPagina();
 
+    tieneLaboratorio();
+
     $("#carrerasAlumno").change(function () {
         localStorage.setItem("carreraId", this.value);
         localStorage.setItem("carreraNombre", $(this).find("option:selected").text());
@@ -924,6 +926,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
+                // url: "http://localhost:5000/api/Registros/GetPeriodosOfertaCarrera",
                 url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOfertaCarrera",
                 dataType: "json",
                 data: JSON.stringify(obj),
@@ -1493,14 +1496,23 @@ function cargarLinks() {
     });
   }
 
-$("#btnSimulador").click(function() {
+function PeriodosSimular() {
     var periodosOferta = document.getElementById("periodosOferta").options.length;
     if (periodosOferta > 0) {
         $("#modalOfertaSimulador").show();
     } else {
         swal("Humm!", "No tienes periodos ofertados", "info");
     }
-});
+};
+
+$(document).on("change", "input[type=number]", function() {
+    if ($(this).val() ==  "" || $(this).val() < 0) {
+        $(this).val(0);
+    } else if ($(this).val() > 100) {
+        $(this).val(100);
+    }
+
+  });
 
 $("#btnSimular").click(function() {
     $("#containerNotas").hide();
@@ -1527,6 +1539,9 @@ $("#btnSimular").click(function() {
         var costoAdm = $("#cga").val();
         var costoSeguro = $("#csu").val();
         var costoLaboratorio = $("#cl").val();
+        var periodoDsc = $("#prd").val();
+
+        $("#periodoDsc").text(periodoDsc);
 
 
         costoPresencial = isEmpty(costoPresencial) ? 0 : parseFloat(costoPresencial);
@@ -1580,6 +1595,34 @@ function getCostosSemestre(periodoId, carreraId) {
         'dataType': 'json',
         'success': cargarCostos
     });
+}
+
+function tieneLaboratorio() {
+    var periodoId = parseInt(localStorage.getItem("periodoOferta"));
+    var carreraId = parseInt(localStorage.getItem("carreraId"));
+    var token = localStorage.getItem("token");
+    var usuario = new Object();
+    usuario.periodoId = periodoId;
+    usuario.carreraId = carreraId;
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(usuario),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
+        // 'url': "http://localhost:5000/api/Registros/TieneLaboratorio",
+        'dataType': 'json',
+        'success': cargarCostosLaboratorio
+    });
+}
+
+function cargarCostosLaboratorio(resultado) {
+    if (resultado.Status) {
+        $("#trLaboratorio").show();
+    }
 }
 
 function cargarCostos(resultado) {
@@ -1652,6 +1695,27 @@ $('input[name=pagoContado]').on('change', function() {
     }
 });
 
+$("input[name=otrosDesc]").on("change", function() {
+    if($(this).prop("checked") == true){
+        $(".otrosDesc").fadeIn(1000);
+        $(".filaOtrosDesc").fadeIn(1000);
+        $("#spOtrosDescuentos").text("0");
+        $("#descPrese").val(0);
+        $("#descSemip").val(0);
+
+        var otrosDesc = $("#spOtrosDescuentos").text();
+        if (otrosDesc != "0") {
+            $("#spSigno").show();
+        } else{
+            $("#spSigno").hide();
+        }
+    } else if($(this).prop("checked") == false){
+        $(".otrosDesc").fadeOut();
+        $(".filaOtrosDesc").fadeOut();
+        recalcular();
+    }
+});
+
 function resetComboCuotas() {
     $("#cbCuotas").val($("#cbCuotas option:first").val()).trigger('change');
     $("#tableCuotas").remove();
@@ -1659,6 +1723,17 @@ function resetComboCuotas() {
 
 function calcularPagoContado(costoMaterias) {
     return costoMaterias - (costoMaterias * 0.1);
+}
+
+function calcularOtrosDesc(costoMaterias, porcDescuento) {
+    if (porcDescuento < 0) {
+        porcDescuento = 0;
+    }
+    if (porcDescuento > 100) {
+        porcDescuento = 100;
+    }
+    var porcDes = porcDescuento / 100;
+    return costoMaterias * porcDes;
 }
 
 function mostrarCostosTotales(costo) {
@@ -1688,30 +1763,42 @@ $('#spCostoFinalMat').on('change', function() {
 
 $("#cbCantMatPres").on('change', function() {
     var cantMatPresencial =  $("#cbCantMatPres").find(":selected").val();
+    resetearDescuento(cantMatPresencial, "descPrese");
     $("#cantMatPre").text(cantMatPresencial);
     var costoPresencial = $("#cmp").val();
     var totalMatPres = parseFloat(cantMatPresencial) * costoPresencial;
     $("#spMatPresencial").text(fnDosDigitos(totalMatPres)).trigger('change');
+    otrosDescuentos();
 
 });
 
 $("#cbCantMatSem").on('change', function() {
     var cantMatSemipresencial =  $("#cbCantMatSem").find(":selected").val();
+    resetearDescuento(cantMatSemipresencial, "descSemip");
     $("#cantMatSemi").text(cantMatSemipresencial);
     var costoSemi = $("#cms").val();
     var totalMatSemi = parseFloat(cantMatSemipresencial) * costoSemi;
     $("#spMatSemipresencial").text(fnDosDigitos(totalMatSemi)).trigger('change');
+    otrosDescuentos();
 });
 
 $('.spMaterias').on('change', function() {
     var cambio = false;
+
     if ($(".filaPagoContado").css("display") != "none") {
         $("#pagoContado").prop("checked", false).trigger('change');
         cambio = true;
     }
+
     var costoFinalSemi = $("#spMatSemipresencial").text();
     var costoFinalPres = $("#spMatPresencial").text();
     var totales = parseFloat(costoFinalSemi) + parseFloat(costoFinalPres);
+
+    if ($(".filaOtrosDesc").css("display") != "none") {
+        var otrosDes = $("#spOtrosDescuentos").text();
+        otrosDes = parseFloat(otrosDes);
+        totales = totales - otrosDes;
+    }
 
     if ($(".filaPagoContado").css("display") != "none" && !cambio) {
         totales = calcularPagoContado(totales);
@@ -1752,10 +1839,12 @@ $('#cbCuotas').on('change', function() {
     var costoFinalMat = $("#spCostoFinalMat").text();
     var costoCarnet = $("#spCarnetEst").text();
     var costoSeguro = $("#spSeguroEst").text();
+    var costoLab = $("#spCostLab").text();
 
     costoFinalMat = parseFloat(costoFinalMat);
     costoCarnet = parseFloat(costoCarnet);
     costoSeguro = parseFloat(costoSeguro);
+    costoLab = parseFloat(costoLab);
 
     var divDer = $("#div-der");
     var montoCuotas = costoFinalMat / nroCuotas;
@@ -1767,7 +1856,7 @@ $('#cbCuotas').on('change', function() {
         if (index == 0) {
             table += `<tr class="primeraFila">
             <td class="itemCosto">` + aux + 'º Cuota' + `</td>
-            <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro)) + ` Bs.</td>
+            <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
             </tr>`;
         }
         else{
@@ -1789,10 +1878,12 @@ $('#totalCost').on('change', function() {
         var costoFinalMat = $("#spCostoFinalMat").text();
         var costoCarnet = $("#spCarnetEst").text();
         var costoSeguro = $("#spSeguroEst").text();
+        var costoLab = $("#spCostLab").text();
 
         costoFinalMat = parseFloat(costoFinalMat);
         costoCarnet = parseFloat(costoCarnet);
         costoSeguro = parseFloat(costoSeguro);
+        costoLab = parseFloat(costoLab);
 
         var divDer = $("#div-der");
         var montoCuotas = costoFinalMat / nroCuotas;
@@ -1804,7 +1895,7 @@ $('#totalCost').on('change', function() {
             if (index == 0) {
                 table += `<tr class="primeraFila">
                 <td class="itemCosto">` + aux + 'º Cuota' + `</td>
-                <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro)) + ` Bs.</td>
+                <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
                 </tr>`;
             }
             else{
@@ -1818,3 +1909,65 @@ $('#totalCost').on('change', function() {
         divDer.append('<table id="tableCuotas" class="table"><tbody>' + table + '</tbody></table>');
     }
 });
+
+$(".descuentos").on("change", function() {
+    otrosDescuentos();
+});
+
+// $("input[name=descSemip]").on("change", function() {
+//     otrosDescuentos();
+// });
+
+function otrosDescuentos() {
+    var descPres = $("#descPrese").val();
+    var totalPres = $("#spMatPresencial").text();
+    var descSemi = $("#descSemip").val();
+    var totalSemi = $("#spMatSemipresencial").text();
+    
+    descPres = parseFloat(descPres);
+    totalPres = parseFloat(totalPres);
+    descSemi = parseFloat(descSemi);
+    totalSemi = parseFloat(totalSemi);
+
+    var totalOtrosDesc = calcularOtrosDesc(totalPres, descPres) + calcularOtrosDesc(totalSemi, descSemi);
+    $("#spOtrosDescuentos").text(fnDosDigitos(totalOtrosDesc)).trigger('change');
+}
+
+$("#spOtrosDescuentos").on("change", function() {
+    var otrosDesc = $("#spOtrosDescuentos").text();
+    if (otrosDesc != "0") {
+        $("#spSigno").show();
+    } else{
+        $("#spSigno").hide();
+    }
+});
+
+function resetearDescuento(monto, id) {
+    if (monto == "0") {
+        $("#" + id).val(0);
+    }
+}
+
+function recalcular() {
+    var cambio = false;
+    var totalPres = $("#spMatPresencial").text();
+    var totalSemi = $("#spMatSemipresencial").text();
+
+    if ($(".filaPagoContado").css("display") != "none") {
+        $("#pagoContado").prop("checked", false).trigger('change');
+        cambio = true;
+    }
+    
+    totalPres = parseFloat(totalPres);
+    totalSemi = parseFloat(totalSemi);
+
+    var totales = totalPres + totalSemi;
+
+    if ($(".filaPagoContado").css("display") != "none" && !cambio) {
+        totales = calcularPagoContado(totales);
+    }
+
+    $("#spTotalCostMaterias").hide();
+    $("#spTotalCostMaterias").text(fnDosDigitos(totales)).trigger('change');
+    $("#spTotalCostMaterias").fadeIn(1000);
+}

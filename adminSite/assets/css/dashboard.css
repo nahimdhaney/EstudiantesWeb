@@ -179,9 +179,35 @@
      cursor: pointer;
  }
 
- .sim-div, .divSelCantMat{
+ .divSelCantMat{
      display: flex;
      justify-content: space-between;
+ }
+
+ .sim-div{
+     font-size: 13px;
+ }
+
+ .panel-heading h4{
+    font-weight: bold;
+    font-size: 19px;
+}
+
+ @media (min-width: 350px){
+    .sim-div{
+        font-size: 14px;
+    }
+
+    .panel-heading h4{
+        font-size: 22px;
+    }
+ }
+
+ @media (min-width: 768px){
+    .sim-div{
+        display: flex;
+        justify-content: space-between;
+    }   
  }
  
  .divSelCantMat{
@@ -262,4 +288,27 @@
 #tableCostosFijos>tbody>tr>td{
     padding-left: 0;
     padding-right: 0;
+}
+
+.div-opciones select,
+.div-opciones input[type=number]{
+    width: 50px;
+}
+
+@media (max-width: 768px){
+    .div-opciones select,
+    .div-opciones input[type=number]{
+        padding: 0 5px;
+    }
+}
+
+@media (min-width: 769px){
+    .div-opciones select,
+    .div-opciones input[type=number]{
+        width: 67px !important;
+    }   
+}
+
+.footerSimulador{
+    font-size: 14px;
 }

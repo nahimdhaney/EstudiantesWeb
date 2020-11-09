@@ -94,6 +94,7 @@ function tieneLaboratorio() {
         'type': 'POST',
         'data': JSON.stringify(usuario),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
+        // 'url': "http://localhost:5000/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -1206,10 +1207,12 @@ $('#cbCuotas').on('change', function() {
     var costoFinalMat = $("#spCostoFinalMat").text();
     var costoCarnet = $("#spCarnetEst").text();
     var costoSeguro = $("#spSeguroEst").text();
+    var costoLab = $("#spCostLab").text();
 
     costoFinalMat = parseFloat(costoFinalMat);
     costoCarnet = parseFloat(costoCarnet);
     costoSeguro = parseFloat(costoSeguro);
+    costoLab = parseFloat(costoLab);
 
     var divDer = $(".div-der");
     var montoCuotas = costoFinalMat / nroCuotas;
@@ -1221,7 +1224,7 @@ $('#cbCuotas').on('change', function() {
         if (index == 0) {
             table += `<tr class="primeraFila">
             <td class="itemCosto">` + aux + 'º Cuota' + `</td>
-            <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro)) + ` Bs.</td>
+            <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
             </tr>`;
         }
         else{
@@ -1246,3 +1249,13 @@ function fnDosDigitos(numero) {
     }
     return Number(numero).toFixed(2);
 }
+
+$("#comprobante").click(function() {
+    $('#modalComprobante').modal('show');
+})
+
+$('#btnSubir').click(function(e){
+    e.preventDefault();
+    $('#fichero').click();
+});
+

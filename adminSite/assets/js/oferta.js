@@ -1072,8 +1072,15 @@ $(document).on("change", ".chkRow", function () {
     }
 });
 
-$("#contabilizar, #selMateria_btn").click(function () {
+$("#selMateria_btn").click(function () {
     cargaMateriaSelecionada();
+});
+
+$("#contabilizar").click(function () {
+    contabilizar();
+});
+
+function contabilizar() {
     var hayCosto = $("#tc").val();
     if (hayCosto == 1) {
         swal("Lo sentimos!", "Aún no existen costos para las materias", "info");
@@ -1141,8 +1148,7 @@ $("#contabilizar, #selMateria_btn").click(function () {
     }
 
     $("#totalCost").text(fnDosDigitos(total));
-});
-
+}
 
 $('input[name=pagoContado]').on('change', function () {
     if ($(this).prop("checked") == true) {
@@ -1296,7 +1302,7 @@ function cargaMateriaSelecionada() {
     if (matLista.length > 0) {
         localStorage.setItem("selMateria_lista", matLista);
         //swal("","Materias seleccionadas guardadas", "success");
-        $('#modalCostos').modal('show');
+        $('#Paso1_modal').modal('show');
     } else {
         localStorage.removeItem("selMateria_lista");
         swal("", "Seleccione materias para proceder con su inscripción.");

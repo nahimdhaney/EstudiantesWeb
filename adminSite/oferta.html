@@ -446,18 +446,17 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modalCostos" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
+    
+    <div class="modal fade" id="Paso1_modal" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title" id="titulo-modal">Costos semestre <span id="spPeriodoDsc"></span></h5>
+                    <h5 class="modal-title" id="titulo-modal">Materias Selecccionadas</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <p>MATERIAS SELECCIONADAS</p>
                             <div class="content table-responsive table-full-width">
                                 <table id="tablaSelMateria" class="table table-hover notas">
                                     <thead>
@@ -482,6 +481,26 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="divModalFooter">
+                        <input type="button" class="boton-siguiente" value="Siguiente" onclick="$('.modal').modal('hide'); contabilizar();">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCostos" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="titulo-modal">Costos semestre <span id="spPeriodoDsc"></span></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
                         <div class="col-md-7 col-sm-7 col-xs-7 div-izq">
                             <table id="tableCostosMaterias" class="table">
                                 <tbody>
@@ -555,7 +574,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="divModalFooter">
-                        <input id="confirmar" type="button" class="btn btn-primary" value="Confirmar">
+                        <input id="confirmar" type="button" class="boton-siguiente" value="Confirmar">
                     </div>
                 </div>
             </div>
@@ -584,7 +603,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="divModalFooter">
-                        <input id="confirmar" type="button" class="btn btn-primary" value="Saltar">
+                        <input id="confirmar" type="button" class="boton-siguiente" value="Saltar">
                     </div>
                 </div>
             </div>

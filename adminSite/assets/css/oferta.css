@@ -36,6 +36,7 @@
     0% {
         -webkit-transform: rotate(0deg);
     }
+
     100% {
         -webkit-transform: rotate(360deg);
     }
@@ -45,6 +46,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -66,6 +68,7 @@
         bottom: -100px;
         opacity: 0
     }
+
     to {
         bottom: 0px;
         opacity: 1
@@ -77,6 +80,7 @@
         bottom: -100px;
         opacity: 0
     }
+
     to {
         bottom: 0;
         opacity: 1
@@ -94,20 +98,25 @@
     .no-print * {
         display: none !important;
     }
+
     body {
         overflow-x: hidden;
     }
+
     .content {
         overflow: hidden !important;
         font-size: 5px !important;
         ;
     }
+
     .card {
         margin-bottom: 1px;
     }
+
     .table {
         margin-bottom: 2px;
     }
+
     .notas td {
         padding: 0.4% !important;
         padding-left: 0.8% !important;
@@ -139,6 +148,7 @@
     #infoAlumno * {
         font-size: 8px
     }
+
     #imgPrint {
         width: 10%;
     }
@@ -150,125 +160,125 @@
     }
 }
 
-.contenedor-info{
+.contenedor-info {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.contenedor-info p{
-    font-size: 9px;
-    margin: 0;
-}
+    .contenedor-info p {
+        font-size: 9px;
+        margin: 0;
+    }
 
-@media (min-width: 425px){
-    .contenedor-info p{
+@media (min-width: 425px) {
+    .contenedor-info p {
         font-size: 11px;
     }
 }
 
-@media (min-width: 768px){
-    .contenedor-info p{
+@media (min-width: 768px) {
+    .contenedor-info p {
         font-size: 13px;
     }
 }
 
-.titulo{
+.titulo {
     font-size: 16px;
 }
 
-@media (min-width: 425px){
-    .titulo{
+@media (min-width: 425px) {
+    .titulo {
         font-size: 20px;
     }
 }
 
-@media (min-width: 768px){
-    .titulo{
+@media (min-width: 768px) {
+    .titulo {
         font-size: 30px;
     }
 }
 
 
-.header-sub>h5{
+.header-sub > h5 {
     font-size: 14px;
 }
 
-@media (min-width: 425px){
-    .header-sub>h5{
+@media (min-width: 425px) {
+    .header-sub > h5 {
         font-size: 15px;
     }
 }
 
-@media (min-width: 768px){
-    .header-sub>h5{
+@media (min-width: 768px) {
+    .header-sub > h5 {
         font-size: 18px;
     }
 }
 
-.card .header-sub{
+.card .header-sub {
     padding: 15px 15px;
 }
 
 #tablaOferta td,
 #tablaOfertaSemi td,
-#tablaDocumentos td{
+#tablaDocumentos td {
     font-size: 12px;
 }
 
-@media (min-width: 768px){
+@media (min-width: 768px) {
     #tablaOferta td,
     #tablaOfertaSemi td,
-    #tablaDocumentos td{
+    #tablaDocumentos td {
         font-size: 14px;
     }
 }
 
-#horasServicio{
+#horasServicio {
     font-weight: bold;
 }
 
-.chkRow{
+.chkRow {
     width: 22px;
     height: 22px;
 }
 
-.card{
+.card {
     box-shadow: 0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
 }
 
-#iPrint{
+#iPrint {
     font-size: 35px;
     color: black;
 }
 
-.primeraFila{
+.primeraFila {
     border-top: hidden;
 }
 
-.table-der{
+.table-der {
     text-align: right;
 }
 
-#titulo-modal{
+#titulo-modal {
     font-weight: bold;
 }
 
-.spCantidad{
+.spCantidad {
     font-size: 12px;
     /* font-weight: bold; */
 }
 
-.itemCosto{
+.itemCosto {
     font-weight: bold;
 }
 
-.filaTotal{
+.filaTotal {
     border-top: 2px solid black;
 }
 
 /* #pagoContado */
-.chkDesc{
+.chkDesc {
     width: 20px;
     height: 20px;
     vertical-align: middle;
@@ -283,54 +293,55 @@
     font-size: 15px;
 }
 
-.divCuotas{
+.divCuotas {
     padding: 0;
 }
 
-#cbCuotas{
+#cbCuotas {
     margin-left: 5px;
     padding: 0;
     height: 28px;
     width: 45px;
 }
 
-.div-chk{
+.div-chk {
     margin-bottom: 20px;
 }
 
-#modalCostos input[type=checkbox]{
+#modalCostos input[type=checkbox] {
     margin: 0;
 }
 
-#contabilizar, #confirmar, #comprobante{
+#contabilizar, #confirmar, #comprobante {
     background-image: linear-gradient(to right, #00396f, #013e78, #024380, #034889, #044d92);
     color: white;
     border: none;
 }
 
-.divModalFooter{
+.divModalFooter {
     display: flex;
     justify-content: flex-end;
 }
 
-.div-parrafo, .div-fichero{
+.div-parrafo, .div-fichero {
     text-align: center;
 }
 
-.div-fichero{
+.div-fichero {
     margin: 35px 0;
 }
 
-#fichero{
+#fichero {
     display: none;
 }
 
-#btnSubir{
+#btnSubir {
     background: rgb(46,106,100);
     background: linear-gradient(94deg, rgba(46,106,100,1) 0%, rgba(44,97,92,1) 100%);
     color: white;
     border: none;
 }
+
 .boton-subir {
     display: block;
     position: fixed;
@@ -347,3 +358,18 @@
     border-color: initial;
     border-image: initial;
 }
+    .boton-subir:hover {
+        color: black;
+    }
+
+.boton-siguiente {
+    background-color: rgb(45, 189, 166) !important;
+    color: white;
+    border-radius: 100px;
+    border-style: none;
+    padding: 10px 20px;
+}
+
+    .boton-siguiente:hover {
+        color: black;
+    }

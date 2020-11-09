@@ -1,9 +1,9 @@
-$(document).ready(function() {
+$(document).ready(function () {
     cargarPagina();
     getCostosSemestre();
     tieneLaboratorio();
 })
-$("#imprimir").click(function() {
+$("#imprimir").click(function () {
     window.print();
 });
 
@@ -46,7 +46,7 @@ function cargarCostos(resultado) {
     var csu = 0;
     var cga = 0;
     var cl = 0;
-    
+
     for (var item in costos) {
         if (costos[item].LTIPOCOSTO_ID == 2) {
             cce = costos[item].DMONTO;
@@ -94,7 +94,6 @@ function tieneLaboratorio() {
         'type': 'POST',
         'data': JSON.stringify(usuario),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
-        // 'url': "http://localhost:5000/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -144,7 +143,7 @@ function pad(number, length) {
 }
 
 function cargarInfoCarrera(resultado) {
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             LCARRERA_ID,
             SCARRERA_DSC,
@@ -253,12 +252,12 @@ function cargarOferta(resultado) {
         $('.materiasPresencial').hide();
         //$('.MateriasSemiPresencial').show();
         $('.noMateriasPresencial').show();
-        $('.noMateriasPresencial').parent().css({"padding":"15px"});
-        $('.noMateriasSemiPresencial').parent().css({"padding":"15px"});
+        $('.noMateriasPresencial').parent().css({ "padding": "15px" });
+        $('.noMateriasSemiPresencial').parent().css({ "padding": "15px" });
         terminarMainCargado()
         return;
     }
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             LGRUPO_ID,
             LCENTRO_ID,
@@ -282,19 +281,19 @@ function cargarOferta(resultado) {
         if (LCENTRO_ID == 1) {
             var tr = $("<tr ></tr>")
             var input = $('<input type="checkbox" class="chkRow" name="' + LMATERIA_ID + '" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
-            var row = $("<td></td>").append(input);
+            var row = $("<td class='no'></td>").append(input);
             var td1 = $("<td></td>").text(SMATERIA_DSC);
-            var td2 = $("<td></td>").text(LSEMESTRE);
-            var td3 = $("<td></td>").text(LCREDITOS);
-            var td4 = $("<td></td>").text(LLABORATORIO == 1 ? "*" : "");
+            var td2 = $("<td class='no'></td>").text(LSEMESTRE);
+            var td3 = $("<td class='no'></td>").text(LCREDITOS);
+            var td4 = $("<td class='no'></td>").text(LLABORATORIO == 1 ? "*" : "");
             var td5 = $("<td></td>").text(DOCENTE);
-            var td6 = $("<td></td>").text(SCODMATERIA);
+            var td6 = $("<td class='no'></td>").text(SCODMATERIA);
             var td7 = $("<td></td>").text(SCODGRUPO);
             var td8 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
             var td9 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
-            var td10 = $("<td></td>").text(SSEMANA);
-            var td11 = $("<td name='ins'></td>").text(LTOTAL);
-            var td12 = $("<td name='tope'></td>").text(LCANTMAXIMA);
+            var td10 = $("<td class='no'></td>").text(SSEMANA);
+            var td11 = $("<td class='no' name='ins'></td>").text(LTOTAL);
+            var td12 = $("<td class='no' name='tope'></td>").text(LCANTMAXIMA);
             var td13 = $("<input id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs' type='hidden'>").val(SOBS1);
             tr.append(td6)
             tr.append(td1)
@@ -312,9 +311,9 @@ function cargarOferta(resultado) {
             tr.append(td12)
             tr.append(td13)
 
-            if(LTOTAL == 'Lleno'){
-                tr.css({'pointer-events':'none'});
-                tr.find('td[name ="ins"]').css({'font-weight':'bold'});
+            if (LTOTAL == 'Lleno') {
+                tr.css({ 'pointer-events': 'none' });
+                tr.find('td[name ="ins"]').css({ 'font-weight': 'bold' });
             }
 
             $('#tablaOferta').append(tr);
@@ -327,7 +326,7 @@ function cargarOferta(resultado) {
     if (haySemi == false) {
         $('.materiasSemiPresencial').hide();
         $('.noMateriasSemiPresencial').show();
-        $('.noMateriasSemiPresencial').parent().css({"padding":"15px"});
+        $('.noMateriasSemiPresencial').parent().css({ "padding": "15px" });
     }
     terminarMainCargado()
 }
@@ -356,19 +355,19 @@ function cargarSemi(element) {
     var tr = $("<tr ></tr>")
 
     var td1 = $("<td></td>").text(SMATERIA_DSC);
-    var td2 = $("<td></td>").text(LSEMESTRE);
-    var td3 = $("<td></td>").text(LCREDITOS);
-    var td4 = $("<td></td>").text(LLABORATORIO == 1 ? "*" : "");
-    var td5 = $("<td></td>").text(DOCENTE);
-    var td6 = $("<td></td>").text(SCODMATERIA);
+    var td2 = $("<td class='no'></td>").text(LSEMESTRE);
+    var td3 = $("<td class='no'></td>").text(LCREDITOS);
+    var td4 = $("<td class='no'></td>").text(LLABORATORIO == 1 ? "*" : "");
+    var td5 = $("<td class='no'></td>").text(DOCENTE);
+    var td6 = $("<td class='no'></td>").text(SCODMATERIA);
     var td7 = $("<td></td>").text(SCODGRUPO);
     var input = $('<input type="checkbox" class="chkRow" name="' + LMATERIA_ID + '" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
-    var td12 = $("<td></td>").append(input)
+    var td12 = $("<td class='no'></td>").append(input)
     var td8 = $("<td></td>").html(HORARIO == null ? "" : getDiasHorario(HORARIO));
     var td9 = $("<td></td>").html(HORARIO == null ? "" : getHoraHorario(HORARIO));
-    var td10 = $("<td></td>").text(SSEMANA);
-    var td11 = $("<td name='ins'></td>").text(LTOTAL);
-    var td13 = $("<td name='tope'></td>").text(LCANTMAXIMA);
+    var td10 = $("<td class='no'></td>").text(SSEMANA);
+    var td11 = $("<td class='no' name='ins'></td>").text(LTOTAL);
+    var td13 = $("<td class='no' name='tope'></td>").text(LCANTMAXIMA);
     var td14 = $("<input id='" + LGRUPO_ID + "-" + LMATERIA_ID + "-obs' type='hidden'>").val(SOBS1);
     tr.append(td6)
     tr.append(td1)
@@ -385,9 +384,9 @@ function cargarSemi(element) {
     tr.append(td11)
     tr.append(td13)
     tr.append(td14)
-    if(LTOTAL == 'Lleno'){
-        tr.css({'pointer-events':'none'});
-        tr.find('td[name ="ins"]').css({'font-weight':'bold'});
+    if (LTOTAL == 'Lleno') {
+        tr.css({ 'pointer-events': 'none' });
+        tr.find('td[name ="ins"]').css({ 'font-weight': 'bold' });
     }
     $('#tablaOfertaSemi').append(tr);
 }
@@ -409,7 +408,7 @@ function obtenerDocumentos() {
 
 function cargarDocumentos(resultado) {
 
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             STIPODOCUMENTO_DSC,
             SESTADODOC_DSC
@@ -425,8 +424,8 @@ function cargarDocumentos(resultado) {
 
 function getDiasHorario(HORARIO) {
     var dias = ''
-    
-    HORARIO.forEach(function(element) {
+
+    HORARIO.forEach(function (element) {
         dias += element.DIA + " <br>";
     })
     return dias;
@@ -434,13 +433,13 @@ function getDiasHorario(HORARIO) {
 
 function getHoraHorario(HORARIO) {
     var hora = ''
-    HORARIO.forEach(function(element) {
+    HORARIO.forEach(function (element) {
         hora += formatearHora(element.DTHRENTRADA) + " - " + formatearHora(element.DTHRSALIDA) + " <br>";
     })
     return hora;
 }
 
-$.fn.gparent = function(recursion) {
+$.fn.gparent = function (recursion) {
     //console.log('recursion: ' + recursion);
     if (recursion > 1) return $(this).parent().gparent(recursion - 1);
     return $(this).parent();
@@ -455,52 +454,52 @@ $('#SolicitudRegistroForm').hide();
 $('#SolicitudRetiroPendienteDiv').hide();
 $('#SolicitudRetiroForm').hide();
 
-$("#registro_btn").click(function() {
+$("#registro_btn").click(function () {
     tieneSolicitudPendiente(1);
 });
-$("#retiro_btn").click(function() {
+$("#retiro_btn").click(function () {
     tieneSolicitudPendiente(2);
 });
-$("#cambio_btn").click(function() {
+$("#cambio_btn").click(function () {
     tieneSolicitudPendiente(3);
-        $("#tablaAdicion_SCambio tbody").empty();
-        $("#tablaRetiro_SCambio tbody").empty();
+    $("#tablaAdicion_SCambio tbody").empty();
+    $("#tablaRetiro_SCambio tbody").empty();
 });
 
-$("#enviar_SRegistro_btn").click(function() {
+$("#enviar_SRegistro_btn").click(function () {
     var email = $('#emailContacto_SRegistro').val().trim();
     if (email == '' || !validateEmail(email))
         swal('', 'Necesitamos un email válido.');
     else
         enviarSolicitudRegistro();
 });
-$("#enviar_SRetiro_btn").click(function() {
+$("#enviar_SRetiro_btn").click(function () {
     var email = $('#emailContacto_SRetiro').val().trim();
     if (email == '' || !validateEmail(email))
         swal('', 'Necesitamos un email válido.');
     else
         enviarSolicitudRetiro();
 });
-$("#enviar_SCambio_btn").click(function() {
+$("#enviar_SCambio_btn").click(function () {
     var email = $('#emailContacto_SCambio').val().trim();
     if (email == '' || !validateEmail(email))
         swal('', 'Necesitamos un email válido.');
-    else{
+    else {
         enviarSolicitudCambio();
     }
 });
 
-$("#anular_SRegistro_btn").click(function() {
+$("#anular_SRegistro_btn").click(function () {
     anularSolicitud(1);
 });
-$("#ok_SRegistro_btn").click(function() {
+$("#ok_SRegistro_btn").click(function () {
     enviarVisto(1);
 });
 
-$("#anular_SRetiro_btn").click(function() {
+$("#anular_SRetiro_btn").click(function () {
     anularSolicitud(2);
 });
-$("#ok_SRetiro_btn").click(function() {
+$("#ok_SRetiro_btn").click(function () {
     enviarVisto(2);
 });
 
@@ -512,7 +511,7 @@ function validateEmail(email) {
 function enviarSolicitudRegistro() {
     var alertaGrupoLleno = 0;
     var pMatRegistro = [];
-    $("#tablaOferta input[type=checkbox]").each(function() {
+    $("#tablaOferta input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
             var obs = $("#" + id + "-obs").html();
@@ -524,7 +523,7 @@ function enviarSolicitudRegistro() {
             pMatRegistro.push(id);
         }
     });
-    $("#tablaOfertaSemi input[type=checkbox]").each(function() {
+    $("#tablaOfertaSemi input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
             var obs = $("#" + id + "-obs").html();
@@ -577,7 +576,7 @@ function enviarSolicitudRegistro() {
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status) {
                 $('#tablaOferta input[type=checkbox]').gparent(2).css("background-color", "white");
                 $('#tablaOfertaSemi input[type=checkbox]').gparent(2).css("background-color", "white");
@@ -590,7 +589,7 @@ function enviarSolicitudRegistro() {
             }
             $("#mainLoader").hide();
         },
-        'error': function() {
+        'error': function () {
             swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
             $("#mainLoader").hide();
         }
@@ -599,7 +598,7 @@ function enviarSolicitudRegistro() {
 
 function enviarSolicitudRetiro() {
     var pMatRetiro = [];
-    $("#tablaNotas_SRetiro input[type=checkbox]").each(function() {
+    $("#tablaNotas_SRetiro input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             pMatRetiro.push($(this).attr('id'));
         }
@@ -640,7 +639,7 @@ function enviarSolicitudRetiro() {
             //'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
-            'success': function(response) {
+            'success': function (response) {
                 if (response.Status) {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
@@ -649,7 +648,7 @@ function enviarSolicitudRetiro() {
                 }
                 $("#mainLoader").hide();
             },
-            'error': function() {
+            'error': function () {
                 swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
             }
@@ -691,7 +690,7 @@ function tieneSolicitudPendiente($tipo) {
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetTieneSolicitudPendiente",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             var obj = response.Data;
             const {
                 LTIPO,
@@ -766,7 +765,7 @@ function tieneSolicitudPendiente($tipo) {
                 }
             }
         },
-        error: function() {
+        error: function () {
             swal("Upps", "El servicio esta temporalmente inactivo");
         }
     });
@@ -788,7 +787,7 @@ function anularSolicitud($tipo) {
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/AnularSolicitud",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status) {
                 swal("", "Solicitud anulada.");
                 tieneSolicitudPendiente(response.Data.LTIPO);
@@ -796,7 +795,7 @@ function anularSolicitud($tipo) {
                 swal("", "Su solicitud no pudo ser anulada.");
             }
         },
-        'error': function() {
+        'error': function () {
             swal("", "Su solicitud no pudo ser anulada.");
         }
     });
@@ -818,7 +817,7 @@ function obtenerTablaNotas() {
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
         'dataType': 'json',
         'success': cargarNotasSolicitud,
-        'error': function() {
+        'error': function () {
             swal("Upps", "Hubo un problema al obtener materias");
         }
     });
@@ -829,7 +828,7 @@ function cargarNotasSolicitud(resultado) {
     if (resultado.Data.length == 0) {
         $("#tablaNotas_SRetiro, #tablaNotas_SRetiroCambio").append("<tr><td colspan='5' class='text-center'>   --    No hay materias para retirar    --  </td></tr>");
     }
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             LGRUPO_ID,
             LCENTRO_ID,
@@ -874,7 +873,7 @@ function enviarVisto($tipo) {
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudVista",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status)
                 window.location.reload();
         }
@@ -901,10 +900,10 @@ function cargarOfertaSolicitud(resultado) {
         'data': JSON.stringify(usuario),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOfertaa",
         'dataType': 'json',
-        'success': function(resultado) {
+        'success': function (resultado) {
             $("#tablaNotas_SOfertaCambio tbody").empty();
             var lista = resultado.Data;
-            lista.forEach(function(element) {
+            lista.forEach(function (element) {
                 const {
                     LGRUPO_ID,
                     LCENTRO_ID,
@@ -952,44 +951,44 @@ function cargarOfertaSolicitud(resultado) {
     });
 }
 
-function marcadoAdicion(){
+function marcadoAdicion() {
     var pMatAdicion = [];
-    $("#tablaNotas_SOfertaCambio input[type=checkbox]").each(function() {
-        if ($(this).is(":checked")){
+    $("#tablaNotas_SOfertaCambio input[type=checkbox]").each(function () {
+        if ($(this).is(":checked")) {
             var myrow = $(this).gparent(2);
             pMatAdicion.push(myrow[0].outerHTML);
             $(this).gparent(2).remove();
         }
     });
-    pMatAdicion.forEach(function(element) {
+    pMatAdicion.forEach(function (element) {
         $('#tablaAdicion_SCambio').append(element);
     });
-    $('#tablaAdicion_SCambio input[type=checkbox]').prop( "checked", true ).prop( "disabled", true );
+    $('#tablaAdicion_SCambio input[type=checkbox]').prop("checked", true).prop("disabled", true);
 }
 
-function marcadoRetiro(){
+function marcadoRetiro() {
     var pMatAdicion = [];
-    $("#tablaNotas_SRetiroCambio input[type=checkbox]").each(function() {
-        if ($(this).is(":checked")){
+    $("#tablaNotas_SRetiroCambio input[type=checkbox]").each(function () {
+        if ($(this).is(":checked")) {
             var myrow = $(this).gparent(2);
             pMatAdicion.push(myrow[0].outerHTML);
             $(this).gparent(2).remove();
         }
     });
-    pMatAdicion.forEach(function(element) {
+    pMatAdicion.forEach(function (element) {
         $('#tablaRetiro_SCambio').append(element);
     });
-    $('#tablaRetiro_SCambio input[type=checkbox]').prop( "checked", true ).prop( "disabled", true );
+    $('#tablaRetiro_SCambio input[type=checkbox]').prop("checked", true).prop("disabled", true);
 }
 
 function enviarSolicitudCambio() {
     var pMatAdicion = [];
-    $("#tablaAdicion_SCambio input[type=checkbox]").each(function() {
+    $("#tablaAdicion_SCambio input[type=checkbox]").each(function () {
         if ($(this).is(":checked"))
             pMatAdicion.push($(this).attr('id'));
     });
     var pMatRetiro = [];
-    $("#tablaRetiro_SCambio input[type=checkbox]").each(function() {
+    $("#tablaRetiro_SCambio input[type=checkbox]").each(function () {
         if ($(this).is(":checked"))
             pMatRetiro.push($(this).attr('id'));
     });
@@ -1030,7 +1029,7 @@ function enviarSolicitudCambio() {
             //'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
-            'success': function(response) {
+            'success': function (response) {
                 if (response.Status) {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
@@ -1039,7 +1038,7 @@ function enviarSolicitudCambio() {
                 }
                 $("#mainLoader").hide();
             },
-            'error': function() {
+            'error': function () {
                 swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
             }
@@ -1057,24 +1056,24 @@ function formatearHora(fecha) {
     return ('0' + fechaFormat.getHours()).slice(-2) + ":" + ('0' + fechaFormat.getMinutes()).slice(-2);
 }
 
-function isEmpty(value){
+function isEmpty(value) {
     return (value == null || value === '');
 }
 
-$(document).on("change", ".chkRow", function() {
+$(document).on("change", ".chkRow", function () {
     var $box = $(this);
     if ($box.is(":checked")) {
-      var group = "input:checkbox[name='" + $box.attr("name") + "']";
-      $(group).prop("checked", false);
-      $box.prop("checked", true);
+        var group = "input:checkbox[name='" + $box.attr("name") + "']";
+        $(group).prop("checked", false);
+        $box.prop("checked", true);
 
     } else {
-      $box.prop("checked", false);
+        $box.prop("checked", false);
     }
-  });
+});
 
-$("#contabilizar").click(function() {
-    $('#modalCostos').modal('show');
+$("#contabilizar, #selMateria_btn").click(function () {
+    cargaMateriaSelecionada();
     var hayCosto = $("#tc").val();
     if (hayCosto == 1) {
         swal("Lo sentimos!", "Aún no existen costos para las materias", "info");
@@ -1083,17 +1082,22 @@ $("#contabilizar").click(function() {
     $("#spPeriodoDsc").text(periodoDsc);
     var auxPresencial = 0;
     var auxSemipresencial = 0;
-    $("#tablaOferta .chkRow").each(function() {
+    $("#tablaOferta .chkRow").each(function () {
         if ($(this).is(":checked")) {
             auxPresencial++;
         }
     });
 
-    $("#tablaOfertaSemi .chkRow").each(function() {
+    $("#tablaOfertaSemi .chkRow").each(function () {
         if ($(this).is(":checked")) {
             auxSemipresencial++;
         }
     });
+
+    if (auxPresencial + auxSemipresencial == 0) {
+        return;
+    }
+    $('#modalCostos').modal('show');
 
     $("#cantMatPre").text(auxPresencial);
     $("#cantMatSemi").text(auxSemipresencial);
@@ -1135,16 +1139,16 @@ $("#contabilizar").click(function() {
     if ($("#trLaboratorio").css("display") != "none") {
         total = parseFloat(costoLaboratorio) + total;
     }
-    
+
     $("#totalCost").text(fnDosDigitos(total));
 });
 
 
-$('input[name=pagoContado]').on('change', function() {
-    if($(this).prop("checked") == true){
+$('input[name=pagoContado]').on('change', function () {
+    if ($(this).prop("checked") == true) {
         resetComboCuotas();
         $('#cbCuotas').prop('disabled', true);
-        
+
         $(".filaPagoContado").fadeIn(1000);
         var totalMat = $("#spTotalCostMaterias").text();
         $("#tableCostosMaterias").find("tbody").append(`<tr>
@@ -1154,7 +1158,7 @@ $('input[name=pagoContado]').on('change', function() {
         totalMat = calcularPagoContado(totalMat);
         mostrarCostosTotales(totalMat);
     }
-    else if($(this).prop("checked") == false){
+    else if ($(this).prop("checked") == false) {
         $('#cbCuotas').prop('disabled', false);
         $(".filaPagoContado").fadeOut();
         var costoMatFijo = $("#totalCostMat").val();
@@ -1172,20 +1176,20 @@ function mostrarCostosTotales(costo) {
     $("#spCostoFinalMat").fadeIn(2000);
 }
 
-$('#modalCostos').on('hidden.bs.modal', function() {
+$('#modalCostos').on('hidden.bs.modal', function () {
     $('#pagoContado').prop("checked", false);
     $('#pagoContado').change();
     resetComboCuotas();
 });
 
-$('#spCostoFinalMat').on('change', function() {
+$('#spCostoFinalMat').on('change', function () {
     var costoFinalMat = $("#spCostoFinalMat").text();
     var costoCarnet = $("#spCarnetEst").text();
     var costoSeguro = $("#spSeguroEst").text();
     // var costoAdm = $("#spGastoAdm").text();
     var costoLab = $("#spCostLab").text();
     var totales = parseFloat(costoFinalMat) + parseFloat(costoCarnet) + parseFloat(costoSeguro);
-    
+
     if ($("#trLaboratorio").css("display") != "none") {
         totales = parseFloat(costoLab) + totales;
     }
@@ -1198,7 +1202,7 @@ function calcularPagoContado(costoMaterias) {
     return costoMaterias - (costoMaterias * 0.1);
 }
 
-$('#cbCuotas').on('change', function() {
+$('#cbCuotas').on('change', function () {
     $("#tableCuotas").remove();
     var nroCuotas = $("#cbCuotas").find("option:selected").val();
     if (isEmpty(nroCuotas)) {
@@ -1227,7 +1231,7 @@ $('#cbCuotas').on('change', function() {
             <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
             </tr>`;
         }
-        else{
+        else {
             table += `<tr>
             <td class="itemCosto">` + aux + 'º Cuota' + `</td>
             <td class="table-der">` + fnDosDigitos(montoCuotas) + ` Bs.</td>
@@ -1250,12 +1254,52 @@ function fnDosDigitos(numero) {
     return Number(numero).toFixed(2);
 }
 
-$("#comprobante").click(function() {
+$("#comprobante").click(function () {
     $('#modalComprobante').modal('show');
 })
 
-$('#btnSubir').click(function(e){
+$('#btnSubir').click(function (e) {
     e.preventDefault();
     $('#fichero').click();
 });
 
+function cargaMateriaSelecionada() {
+    var matLista = [];
+    $('#tablaSelMateria tbody').empty();
+    $("#tablaOferta input[type=checkbox]").each(function () {
+        if ($(this).is(":checked")) {
+            var id = $(this).attr('id')
+            var obs = $("#" + id + "-obs").html();
+            obs = obs.toLowerCase();
+            if (obs.includes('lleno')) {
+                alertaGrupoLleno = 1;
+                return;
+            }
+            matLista.push(id);
+            $('#tablaSelMateria tbody').append($(this).gparent(2)[0].outerHTML);
+        }
+    });
+    $("#tablaOfertaSemi input[type=checkbox]").each(function () {
+        if ($(this).is(":checked")) {
+            var id = $(this).attr('id')
+            var obs = $("#" + id + "-obs").html();
+            obs = obs.toLowerCase();
+            if (obs.includes('lleno')) {
+                alertaGrupoLleno = 1;
+                return;
+            }
+            matLista.push(id);
+            $('#tablaSelMateria tbody').append($(this).gparent(2)[0].outerHTML);
+        }
+    });
+    $('#tablaSelMateria .no').remove();
+    if (matLista.length > 0) {
+        localStorage.setItem("selMateria_lista", matLista);
+        //swal("","Materias seleccionadas guardadas", "success");
+        $('#modalCostos').modal('show');
+    } else {
+        localStorage.removeItem("selMateria_lista");
+        swal("", "Seleccione materias para proceder con su inscripción.");
+        return;
+    }
+};

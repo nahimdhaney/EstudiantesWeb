@@ -331,3 +331,19 @@
     color: white;
     border: none;
 }
+.boton-subir {
+    display: block;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999;
+    background-color: rgb(45, 189, 166);
+    color: white;
+    font-size: 16px;
+    border-radius: 100px;
+    padding: 0px 20px 0px 0px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+}

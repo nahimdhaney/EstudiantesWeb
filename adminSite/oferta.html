@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -448,7 +448,7 @@
     </div>
 
     <div class="modal fade" id="modalCostos" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -456,6 +456,32 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-md-12">
+                            <p>MATERIAS SELECCIONADAS</p>
+                            <div class="content table-responsive table-full-width">
+                                <table id="tablaSelMateria" class="table table-hover notas">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="no">CODIGO</th>
+                                            <th scope="col">MATERIA</th>
+                                            <th scope="col" class="no">SEM</th>
+                                            <th scope="col" class="no">CR</th>
+                                            <th scope="col" class="no">LAB</th>
+                                            <th scope="col">DOCENTE</th>
+                                            <th scope="col" class="no">MR</th>
+                                            <th scope="col">GR</th>
+                                            <th scope="col">DIAS</th>
+                                            <th scope="col">HORARIO</th>
+                                            <th scope="col" class="no">SE</th>
+                                            <th scope="col" class="no">INS</th>
+                                            <th scope="col" class="no">TOPE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <div class="col-md-7 col-sm-7 col-xs-7 div-izq">
                             <table id="tableCostosMaterias" class="table">
                                 <tbody>
@@ -552,7 +578,7 @@
                             <input type="file" name="fichero" id="fichero">
                             <input type="button" value="Seleccionar foto" id="btnSubir" class="btn btn-info">
                             <button id="btnCamara" class="btn btn-secondary"><i class="fas fa-camera"></i></button>
-                            <input id="imgHdn" type="hidden" name="imgHdn"/>
+                            <input id="imgHdn" type="hidden" name="imgHdn" />
                         </div>
                     </div>
                 </div>
@@ -565,12 +591,14 @@
         </div>
     </div>
 
+    <a id="selMateria_btn" href="#" title="Cambio materias" class="boton-subir no-print">
+        <img src="../adminSite/assets/img/inscribir.png" width="70"> INSCRÍBASE
+    </a>
 
+    <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../assets/sweetalert2/sweetalert2.min.js"></script>
+    <script src="assets/js/site.js"></script>
+    <script src="assets/js/oferta.js"></script>
 </body>
-<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../assets/sweetalert2/sweetalert2.min.js"></script>
-<script src="assets/js/site.js"></script>
-<script src="assets/js/oferta.js"></script>
-
 </html>

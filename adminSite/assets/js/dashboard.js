@@ -926,7 +926,6 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                // url: "http://localhost:5000/api/Registros/GetPeriodosOfertaCarrera",
                 url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOfertaCarrera",
                 dataType: "json",
                 data: JSON.stringify(obj),
@@ -1613,7 +1612,6 @@ function tieneLaboratorio() {
         'type': 'POST',
         'data': JSON.stringify(usuario),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
-        // 'url': "http://localhost:5000/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });

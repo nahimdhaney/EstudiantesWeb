@@ -358,7 +358,7 @@ function cargarSemi(element) {
     var td2 = $("<td class='no'></td>").text(LSEMESTRE);
     var td3 = $("<td class='no'></td>").text(LCREDITOS);
     var td4 = $("<td class='no'></td>").text(LLABORATORIO == 1 ? "*" : "");
-    var td5 = $("<td class='no'></td>").text(DOCENTE);
+    var td5 = $("<td></td>").text(DOCENTE);
     var td6 = $("<td class='no'></td>").text(SCODMATERIA);
     var td7 = $("<td></td>").text(SCODGRUPO);
     var input = $('<input type="checkbox" class="chkRow" name="' + LMATERIA_ID + '" id="' + LGRUPO_ID + "-" + LMATERIA_ID + '"/>')
@@ -1314,3 +1314,46 @@ $("#btnAtras").on("click", function() {
     $("#modalCostos").modal('hide');
     $("#Paso1_modal").modal('show');
 })
+
+function enviarInscripcion() {
+    var matLista = localStorage.getItem("selMateria_lista").split(",");
+    var pPeriodoId = parseInt(localStorage.getItem("periodoOferta"));
+    var pCarreraId = parseInt(localStorage.getItem("carreraId"));
+    var token = localStorage.getItem("token");
+    var datos = new Object();
+    datos.pPeriodoId = pPeriodoId;
+    datos.pCarreraId = pCarreraId;
+    datos.pMatRegistro = matLista;
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(datos),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/InscripcionOnline",
+        'dataType': 'json',
+        'success': function (response) {
+            if (!response.Status) {
+                swal("Hubo un problema al registrar sus datos", titleCase(response.Message), "info");
+            } else {
+                swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+            }
+            $("#mainLoader").hide();
+        },
+        'error': function () {
+            swal("", "Los datos no se enviaron correctamente, intente de nuevo.", "info");
+            $("#mainLoader").hide();
+        }
+    });
+
+}
+
+function titleCase(str) {
+    str = str.toLowerCase().split(' ');
+    for (var i = 0; i < str.length; i++) {
+        str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+    }
+    return str.join(' ');
+}

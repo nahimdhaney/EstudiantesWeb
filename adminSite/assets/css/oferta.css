@@ -260,6 +260,10 @@
     text-align: right;
 }
 
+/* #tableCostosMaterias td{
+    font-size: 13px;
+} */
+
 #titulo-modal {
     font-weight: bold;
 }
@@ -295,6 +299,11 @@
 
 .divCuotas {
     padding: 0;
+    display: flex;
+}
+
+.lbCuotas{
+    align-self: flex-end;
 }
 
 #cbCuotas {
@@ -322,6 +331,12 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.divModalCostoFooter{
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .div-parrafo, .div-fichero {
     text-align: center;
@@ -362,7 +377,9 @@
         color: black;
     }
 
-.boton-siguiente {
+.boton-siguiente,
+.btnAtras,
+.btnConfirmar {
     background-color: rgb(45, 189, 166) !important;
     color: white;
     border-radius: 100px;
@@ -370,6 +387,8 @@
     padding: 10px 20px;
 }
 
-    .boton-siguiente:hover {
+    .boton-siguiente:hover,
+    .btnAtras:hover,
+    .btnConfirmar:hover {
         color: black;
     }

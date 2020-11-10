@@ -1309,3 +1309,8 @@ function cargaMateriaSelecionada() {
         return;
     }
 };
+
+$("#btnAtras").on("click", function() {
+    $("#modalCostos").modal('hide');
+    $("#Paso1_modal").modal('show');
+})

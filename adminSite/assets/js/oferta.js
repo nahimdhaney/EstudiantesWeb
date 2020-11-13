@@ -2,6 +2,7 @@ $(document).ready(function () {
     cargarPagina();
     getCostosSemestre();
     tieneLaboratorio();
+    $(".modal-carga").hide();
 })
 $("#imprimir").click(function () {
     window.print();
@@ -170,6 +171,8 @@ function cargarInfoCarrera(resultado) {
             $('#codigoCentro').text(codigoCentro)
             $('#creditosVencidos').text(creditosVencidos)
             $('#semestreActual').text(semestreActual)
+
+            $("#hdnSemestre").val(LPERIODOACTUAL);
             return;
         }
     });
@@ -214,6 +217,10 @@ function cargarInformacionPersonal(resultado) {
     $('#horasServicio').text('Horas de Servicio: ' + LHORASERVICIO);
     $('.emailContacto').val(SEMAIL);
     $('.telefonoContacto').val(SCELULAR);
+
+    $("#hdnRegistro").val(SREGISTRO);
+    var nombreAlumno = SAPELLIDOP + ' ' + SAPELLIDOM + ' ' + SNOMBRES;
+    $("#hdnNombreCompleto").val(nombreAlumno);
 }
 
 function obtenerOferta() {
@@ -1357,3 +1364,80 @@ function titleCase(str) {
     }
     return str.join(' ');
 }
+
+// $("#formComprobante").on("submit", function(e) {
+$("#btnEnviar").click(function() {
+    // e.preventDefault();
+    
+    // var fd = new FormData();
+    // var files = $("#fichero")[0].files[0];
+    // fd.append('fichero', files);
+
+    var formData = new FormData(document.getElementById("formComprobante"));
+
+    $.ajax({
+        type: 'POST',
+        url: "http://phpnur.nur.edu:8099/mensajerocomprobante/index.php",
+        dataType: "html",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $('#modalComprobante').modal('hide');
+            $(".modal-carga").show();
+        }
+    }).done(function(response) {
+        $(".modal-carga").hide();
+        var respuesta = "";
+        switch (response) {
+        case "1":
+            respuesta = "Enviado correctamente."
+            break;
+        case "2":
+            respuesta = "No se pudo enviar correctamente. Por favor, intente más tarde."
+            break;
+        case "3":
+            respuesta = "Imagen muy grande. Por favor, intente cargar una imagen más pequeña."
+            break;
+        case "4":
+            respuesta = "Error al subir la imagen. Por favor, vuelva a intentar."
+            break;
+        case "5":
+            respuesta = "Formato no válido. Por favor, intente cargar una imagen PNG, JPG o JPEG."
+            break;
+        }
+
+        // console.log(respuesta);
+        $("#msgConfirmacion").text(respuesta);
+
+        $('#modalConfirmacion').modal('show');
+        
+    }).fail(function(response) {
+        
+    });
+    // var formData = new FormData(document.getElementById("formComprobante"));
+
+})
+
+function getBase64(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      console.log(reader.result);
+    //   return reader.result;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+ }
+
+ function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+  }

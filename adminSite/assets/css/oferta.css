@@ -247,9 +247,17 @@
     box-shadow: 0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
 }
 
-#iPrint {
-    font-size: 35px;
-    color: black;
+#iPrint, #iCompPago{
+    font-size: 30px;
+    color: gray;
+    margin-left: 10px;
+    float: left;
+}
+
+@media (min-width: 768px){
+    #iCompPago{
+        font-size: 35px;
+    }
 }
 
 .primeraFila {
@@ -321,7 +329,7 @@
     margin: 0;
 }
 
-#contabilizar, #confirmar, #comprobante {
+#contabilizar{
     background-image: linear-gradient(to right, #00396f, #013e78, #024380, #034889, #044d92);
     color: white;
     border: none;
@@ -379,7 +387,8 @@
 
 .boton-siguiente,
 .btnAtras,
-.btnConfirmar {
+.btnConfirmar,
+.btnEnviar {
     background-color: rgb(45, 189, 166) !important;
     color: white;
     border-radius: 100px;
@@ -387,8 +396,80 @@
     padding: 10px 20px;
 }
 
-    .boton-siguiente:hover,
-    .btnAtras:hover,
-    .btnConfirmar:hover {
-        color: black;
+.boton-siguiente:hover,
+.btnAtras:hover,
+.btnConfirmar:hover,
+.btnEnviar:hover {
+    color: black;
+}
+
+.modal-carga{
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba( 0, 0, 0, .8 ) ;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading{
+    width: 200px;
+    height: 200px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border-top: 10px solid #002e91;
+    position: relative;
+    animation: a1 2s linear infinite;
+}
+
+.loading::before, .loading::after{
+    content: '';
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    left: 0;
+    top: -10px;
+    box-sizing: border-box;
+    border-radius: 50%;
+}
+
+.loading::before{
+    border-top: 10px solid #c5a11f;
+    transform: rotate(120deg);
+
+}
+
+.loading::after{
+    border-top: 10px solid #fff;
+    transform: rotate(240deg);
+}
+
+.loading span{
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    color: #fff;
+    text-align: center;
+    line-height: 200px;
+    animation: a2 2s linear infinite;
+}
+
+@keyframes a1{
+    to{
+        transform: rotate(360deg);
     }
+}
+
+@keyframes a2{
+    to{
+        transform: rotate(-360deg);
+    }
+}
+
+

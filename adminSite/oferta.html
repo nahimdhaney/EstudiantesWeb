@@ -61,6 +61,10 @@
                                 <a class='no-print' id='cambio_btn' href="#" title="Cambio materias">
                                     <img id='imgPrint' src="../adminSite/assets//img/cambio.png">
                                 </a>
+                                <a class='no-print' id='comprobante' href="#" title="Enviar comprobante de pago">
+                                    <!-- <img id='imgPrint' src="../adminSite/assets//img/cambio.png"> -->
+                                    <i id='iCompPago' class="fas fa-file-invoice-dollar"></i>
+                                </a>
                                 <h4 class="title titulo" style="text-align: center; font-weight: bold;">FORMULARIO DE INSCRIPCIÓN</h4>
                             </div>
                         </div>
@@ -357,20 +361,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <input id="comprobante" type="button" class="btn btn-primary" value="Enviar comprobante">
-                        <input type="hidden" name="cmp" id="cmp">
-                        <input type="hidden" name="cms" id="cms">
-                        <input type="hidden" name="cga" id="cga">
-                        <input type="hidden" name="cce" id="cce">
-                        <input type="hidden" name="csu" id="csu">
-                        <input type="hidden" name="cl" id="cl">
-                        <input type="hidden" name="prd" id="prd">
-                        <input type="hidden" name="tc" id="tc" value="0">
-                    </div>
                 </div>
             </div>
             <div id="loader" style="display:none;"></div>
+            <input type="hidden" name="cmp" id="cmp">
+            <input type="hidden" name="cms" id="cms">
+            <input type="hidden" name="cga" id="cga">
+            <input type="hidden" name="cce" id="cce">
+            <input type="hidden" name="csu" id="csu">
+            <input type="hidden" name="cl" id="cl">
+            <input type="hidden" name="prd" id="prd">
+            <input type="hidden" name="tc" id="tc" value="0">
         </div>
     </div>
 
@@ -583,30 +584,55 @@
 
     <div class="modal fade" id="modalComprobante" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
+            <form id="formComprobante" action="" method="post" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title" id="titulo-modal">Comprobante de pago</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 div-parrafo">
+                                <p><strong>Nota:</strong> Si ya realizó el pago, por favor envíe el comprobante de pago del banco que realizó a la cuenta de la Universidad. Puede ser una foto, captura de pantalla o la imagen del comprobante de pago.</p>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 div-fichero">
+                                <input type="file" name="fichero" id="fichero">
+                                <input type="button" value="Seleccionar imagen" id="btnSubir" class="btn btn-info">
+                                <input type="hidden" name="hdnRegistro" id="hdnRegistro">
+                                <input type="hidden" name="hdnNombreCompleto" id="hdnNombreCompleto">
+                                <input type="hidden" name="hdnSemestre" id="hdnSemestre">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="divModalFooter">
+                            <input id="btnEnviar" type="button" class="btnEnviar" value="Enviar">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title" id="titulo-modal">Comprobante de pago</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="titulo-modal">Mensaje de confirmación</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12 div-parrafo">
-                            <p><strong>Nota:</strong> Si ya realizó el pago, por favor envíe el comprobante de pago del banco que realizó a la cuenta de la Universidad. Puede ser una foto, captura de pantalla o la imagen del comprobante de pago.</p>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12 div-fichero">
-                            <input type="file" name="fichero" id="fichero">
-                            <input type="button" value="Seleccionar foto" id="btnSubir" class="btn btn-info">
-                            <button id="btnCamara" class="btn btn-secondary"><i class="fas fa-camera"></i></button>
-                            <input id="imgHdn" type="hidden" name="imgHdn" />
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="divModalFooter">
-                        <input id="confirmar" type="button" class="boton-siguiente" value="Saltar">
-                    </div>
+                    <h3 id="msgConfirmacion"></h3>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal-carga" style="display: none;">
+        <div class="loading">
+            <span>Cargando..</span>
         </div>
     </div>
 

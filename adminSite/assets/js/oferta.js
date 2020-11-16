@@ -153,7 +153,8 @@ function cargarInfoCarrera(resultado) {
             LPERIODOINICIO,
             SCODCENTRO,
             LCREDVENCIDOS,
-            LPERIODOACTUAL_ID
+            LPERIODOACTUAL_ID,
+            LALUMINFOACAD_ID
         } = element;
         var carreraId = parseInt(localStorage.getItem("carreraId"));
         if (carreraId == LCARRERA_ID) {
@@ -173,6 +174,7 @@ function cargarInfoCarrera(resultado) {
             $('#semestreActual').text(semestreActual)
 
             $("#hdnSemestre").val(LPERIODOACTUAL);
+            $("#hdnAia").val(LALUMINFOACAD_ID);
             return;
         }
     });
@@ -427,6 +429,41 @@ function cargarDocumentos(resultado) {
         tr.append(td2)
         $('#tablaDocumentos').append(tr);
     });
+}
+
+function obtenerComprobantePago() {
+    var token = localStorage.getItem("token");
+    var periodoOferta = localStorage.getItem("periodoOferta");
+    var aia = $("#hdnAia").val();
+
+    var usuario = new Object();
+    usuario.pAia = aia;
+    usuario.pPeriodoId = periodoOferta;
+
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(usuario),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneComprobantePago",
+        'dataType': 'json',
+        'success': comprobantePago
+    });
+}
+
+function comprobantePago(response) {
+    if (response.Status) {
+        $("#hdnTcp").val(response.Data);
+        $("#btnSubir").attr("disabled", true);
+        $("#msgComprobante").show();
+    } else{
+        $("#hdnTcp").val(0);
+        $("#btnSubir").attr("disabled", false);
+        $("#msgComprobante").hide();
+    }
 }
 
 function getDiasHorario(HORARIO) {
@@ -1268,6 +1305,12 @@ function fnDosDigitos(numero) {
 }
 
 $("#comprobante").click(function () {
+    obtenerComprobantePago();
+
+    // setTimeout(function() {
+    //     obtenerComprobantePago();
+    // }, 2500);
+
     $('#modalComprobante').modal('show');
 })
 
@@ -1365,14 +1408,7 @@ function titleCase(str) {
     return str.join(' ');
 }
 
-// $("#formComprobante").on("submit", function(e) {
 $("#btnEnviar").click(function() {
-    // e.preventDefault();
-    
-    // var fd = new FormData();
-    // var files = $("#fichero")[0].files[0];
-    // fd.append('fichero', files);
-
     var formData = new FormData(document.getElementById("formComprobante"));
 
     $.ajax({
@@ -1392,52 +1428,61 @@ $("#btnEnviar").click(function() {
         var respuesta = "";
         switch (response) {
         case "1":
-            respuesta = "Enviado correctamente."
+            respuesta = "Enviado correctamente.";
+            insertarComprobante();
             break;
         case "2":
-            respuesta = "No se pudo enviar correctamente. Por favor, intente más tarde."
+            respuesta = "No se pudo enviar correctamente. Por favor, intente más tarde.";
             break;
         case "3":
-            respuesta = "Imagen muy grande. Por favor, intente cargar una imagen más pequeña."
+            respuesta = "Imagen muy grande. Por favor, intente cargar una imagen más pequeña.";
             break;
         case "4":
-            respuesta = "Error al subir la imagen. Por favor, vuelva a intentar."
+            respuesta = "Error al subir la imagen. Por favor, vuelva a intentar.";
             break;
         case "5":
-            respuesta = "Formato no válido. Por favor, intente cargar una imagen PNG, JPG o JPEG."
+            respuesta = "Formato no válido. Por favor, intente cargar una imagen PNG, JPG o JPEG.";
             break;
         }
 
-        // console.log(respuesta);
-        $("#msgConfirmacion").text(respuesta);
-
-        $('#modalConfirmacion').modal('show');
+        setTimeout(function() {
+            $("#msgConfirmacion").text(respuesta);
+            $('#modalConfirmacion').modal('show');
+        }, 1500);
         
     }).fail(function(response) {
-        
+        $("#msgConfirmacion").text("Error al enviar el comprobante de pago. Intente nuevamente por favor.");
+    
+        $('#modalConfirmacion').modal('show');
     });
-    // var formData = new FormData(document.getElementById("formComprobante"));
+});
 
-})
+function insertarEnvioComprobante(response) {
+    if (response.Status) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-function getBase64(file) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-    //   return reader.result;
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
- }
+function insertarComprobante() {
+    var aia = $("#hdnAia").val();
+    var periodoOferta = localStorage.getItem("periodoOferta");
+    var token = localStorage.getItem("token");
 
- function getBase64Image(img) {
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-  }
+    var usuario = new Object();
+    usuario.pAia = aia;
+    usuario.pPeriodoId = periodoOferta;
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(usuario),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/InsertarComprobantePago",
+        'dataType': 'json',
+        'success': insertarEnvioComprobante
+    });
+}

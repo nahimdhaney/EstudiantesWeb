@@ -477,3 +477,36 @@
     font-size: 13px;
     display: none;
 }
+
+.div-email-comp{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+#txtEmailComprobante{
+    width: 350px;
+}
+
+.btn-disabled{
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#txtEstadoComp{
+    align-self: center;
+    margin: 0;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: left;
+}
+
+@media (min-width: 515px){
+    #txtEstadoComp{
+        font-size: 16px;
+    }
+}
+
+#spEstadoComp{
+    font-weight: normal;
+}

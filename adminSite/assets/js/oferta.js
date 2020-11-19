@@ -173,7 +173,6 @@ function cargarInfoCarrera(resultado) {
             $('#creditosVencidos').text(creditosVencidos)
             $('#semestreActual').text(semestreActual)
 
-            $("#hdnSemestre").val(LPERIODOACTUAL);
             $("#hdnAia").val(LALUMINFOACAD_ID);
             return;
         }
@@ -221,6 +220,7 @@ function cargarInformacionPersonal(resultado) {
     $('.telefonoContacto').val(SCELULAR);
 
     $("#hdnRegistro").val(SREGISTRO);
+    $("#hdnCorreo").val(SEMAIL);
     var nombreAlumno = SAPELLIDOP + ' ' + SAPELLIDOM + ' ' + SNOMBRES;
     $("#hdnNombreCompleto").val(nombreAlumno);
 }
@@ -266,6 +266,9 @@ function cargarOferta(resultado) {
         terminarMainCargado()
         return;
     }
+    var periodoDsc = resultado.Data[0].SPERIODO_DSC;
+    $("#hdnSemestre").val(periodoDsc);
+
     resultado.Data.forEach(function (element) {
         const {
             LGRUPO_ID,
@@ -429,41 +432,6 @@ function cargarDocumentos(resultado) {
         tr.append(td2)
         $('#tablaDocumentos').append(tr);
     });
-}
-
-function obtenerComprobantePago() {
-    var token = localStorage.getItem("token");
-    var periodoOferta = localStorage.getItem("periodoOferta");
-    var aia = $("#hdnAia").val();
-
-    var usuario = new Object();
-    usuario.pAia = aia;
-    usuario.pPeriodoId = periodoOferta;
-
-    jQuery.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        'type': 'POST',
-        'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneComprobantePago",
-        'dataType': 'json',
-        'success': comprobantePago
-    });
-}
-
-function comprobantePago(response) {
-    if (response.Status) {
-        $("#hdnTcp").val(response.Data);
-        $("#btnSubir").attr("disabled", true);
-        $("#msgComprobante").show();
-    } else{
-        $("#hdnTcp").val(0);
-        $("#btnSubir").attr("disabled", false);
-        $("#msgComprobante").hide();
-    }
 }
 
 function getDiasHorario(HORARIO) {
@@ -1307,11 +1275,9 @@ function fnDosDigitos(numero) {
 $("#comprobante").click(function () {
     obtenerComprobantePago();
 
-    // setTimeout(function() {
-    //     obtenerComprobantePago();
-    // }, 2500);
-
-    $('#modalComprobante').modal('show');
+    setTimeout(function() {
+        $('#modalComprobante').modal('show');
+    }, 1000);
 })
 
 $('#btnSubir').click(function (e) {
@@ -1409,6 +1375,13 @@ function titleCase(str) {
 }
 
 $("#btnEnviar").click(function() {
+
+    if ($("#fichero")[0].files.length <= 0) {
+        $("#msgConfirmacion").text("Debe cargar la imagen del comprobante.");
+        $('#modalConfirmacion').modal('show');
+        return;
+    }
+
     var formData = new FormData(document.getElementById("formComprobante"));
 
     $.ajax({
@@ -1448,7 +1421,7 @@ $("#btnEnviar").click(function() {
         setTimeout(function() {
             $("#msgConfirmacion").text(respuesta);
             $('#modalConfirmacion').modal('show');
-        }, 1500);
+        }, 1000);
         
     }).fail(function(response) {
         $("#msgConfirmacion").text("Error al enviar el comprobante de pago. Intente nuevamente por favor.");
@@ -1485,4 +1458,70 @@ function insertarComprobante() {
         'dataType': 'json',
         'success': insertarEnvioComprobante
     });
+}
+
+
+function obtenerComprobantePago() {
+    var token = localStorage.getItem("token");
+    var periodoOferta = localStorage.getItem("periodoOferta");
+    var aia = $("#hdnAia").val();
+
+    var usuario = new Object();
+    usuario.pAia = aia;
+    usuario.pPeriodoId = periodoOferta;
+
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(usuario),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneComprobantePago",
+        'dataType': 'json',
+        'success': comprobantePago
+    });
+}
+
+function comprobantePago(response) {
+    var respuesta = response;
+    $("#modalComprobante .modal-footer").children().removeClass("divModalFooter");
+    $("#modalComprobante .modal-footer").children().removeClass("divModalCostoFooter");
+    if (respuesta.Status) {
+        var datos = respuesta.Data
+        if (datos == null) {
+            $("#modalComprobante .modal-footer").children().addClass("divModalFooter");
+            $("#hdnTcp").val(0);
+            $("#btnSubir").attr("disabled", false);
+            $("#btnEnviar").attr("disabled", false);
+            $("#btnEnviar").removeClass("btn-disabled");
+            $("#msgComprobante").hide();
+        } else{
+            $("#txtEstadoComp").show();
+            $("#modalComprobante .modal-footer").children().addClass("divModalCostoFooter");
+            $("#spEstadoComp").text(datos.SESTADOCOMPROBANTE_DSC);
+            $("#hdnTcp").val(1);
+            
+            if (datos.LESTADOCOMPROBANTE_ID == 4) {
+                $("#spEstadoComp").append(". Intente nuevamente por favor.")
+                $("#btnSubir").attr("disabled", false);
+                $("#btnEnviar").attr("disabled", false);
+                $("#btnEnviar").removeClass("btn-disabled");
+                $("#msgComprobante").hide();
+            } else {
+                $("#btnSubir").attr("disabled", true);
+                $("#btnEnviar").attr("disabled", true);
+                $("#btnEnviar").addClass("btn-disabled");
+                $("#msgComprobante").show();
+            }
+        }
+    } else{
+        $("#modalComprobante .modal-footer").addClass("divModalFooter");
+        $("#hdnTcp").val(0);
+        $("#btnSubir").attr("disabled", false);
+        $("#btnEnviar").attr("disabled", false);
+        $("#btnEnviar").removeClass("btn-disabled");
+        $("#msgComprobante").hide();
+    }
 }

@@ -648,7 +648,6 @@ function enviarSolicitudRetiro() {
             },
             'type': 'POST',
             'data': JSON.stringify(datos),
-            //'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
             'success': function (response) {
@@ -1038,7 +1037,6 @@ function enviarSolicitudCambio() {
             },
             'type': 'POST',
             'data': JSON.stringify(datos),
-            //'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'url': "http://wsnotas.nur.edu:8880/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
             'success': function (response) {
@@ -1326,20 +1324,20 @@ function cargaMateriaSelecionada() {
     }
 };
 
-$("#btnAtras").on("click", function() {
+$("#btnAtras").on("click", function () {
     $("#modalCostos").modal('hide');
     $("#Paso1_modal").modal('show');
 })
 
 function enviarInscripcion() {
-    var matLista = localStorage.getItem("selMateria_lista").split(",");
     var pPeriodoId = parseInt(localStorage.getItem("periodoOferta"));
     var pCarreraId = parseInt(localStorage.getItem("carreraId"));
+    var pGruposIds = localStorage.getItem("selMateria_lista").split(",");
     var token = localStorage.getItem("token");
     var datos = new Object();
     datos.pPeriodoId = pPeriodoId;
     datos.pCarreraId = pCarreraId;
-    datos.pMatRegistro = matLista;
+    datos.pGruposIds = pGruposIds;
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -1354,7 +1352,8 @@ function enviarInscripcion() {
             if (!response.Status) {
                 swal("Hubo un problema al registrar sus datos", titleCase(response.Message), "info");
             } else {
-                swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                $("#modalCostos").modal('hide');
+                swal("Finalizado", "Su inscripción se ha completado.", "success");
             }
             $("#mainLoader").hide();
         },

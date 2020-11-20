@@ -354,6 +354,11 @@
     margin: 35px 0;
 }
 
+#subtitulo-comp{
+    text-align: left;
+    margin-top: 25px;
+}
+
 #fichero {
     display: none;
 }
@@ -478,14 +483,14 @@
     display: none;
 }
 
-.div-email-comp{
+.div-email-comp, .div-telefono-comp{
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
-#txtEmailComprobante{
-    width: 350px;
+.inputComp{
+    width: 300px;
 }
 
 .btn-disabled{
@@ -509,4 +514,16 @@
 
 #spEstadoComp{
     font-weight: normal;
+}
+
+.linea-divisoria{
+    height: 1px;
+    border-width: 0;
+    color: gray;
+    background-color: gray;
+}
+
+#msg{
+    color: red;
+    font-size: 13px;
 }

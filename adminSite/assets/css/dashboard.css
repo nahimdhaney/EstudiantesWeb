@@ -312,3 +312,10 @@
 .footerSimulador{
     font-size: 14px;
 }
+
+.linea-divisoria{
+    height: 1px;
+    border-width: 0;
+    color: gray;
+    background-color: gray;
+}

@@ -1525,3 +1525,20 @@ function comprobantePago(response) {
         $("#msgComprobante").hide();
     }
 }
+
+$(document).on("change", "#txtEmailComprobante", function() {
+    if($("#divError-email").find(".msgError").length > 0){
+      $("#divError-email").find("p").remove();
+    }
+    var correo = $(this).val();
+    if (!isEmail(correo)) {
+      $('#divError-email').append(`<p id="msg" class="msgError">Correo inválido.</p>`);
+    } else {
+      $("#divError-email").find("p").remove();
+    }
+  });
+
+  function isEmail(email) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+  }

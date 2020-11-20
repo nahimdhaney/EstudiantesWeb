@@ -398,10 +398,7 @@
                                                     <option>7</option>
                                                 </select>
                                             </div>
-                                            <div id="div-descPres" class="form-inline divSelCantMat otrosDesc" style="display: none;">
-                                                <label for="descPrese" class="col-form-label">Descuento Presencial (%):</label>
-                                                <input type="number" class="form-control descuentos" id="descPrese" name="descPrese" value="0">
-                                            </div>
+                                            
                                             <div class="form-inline divSelCantMat">
                                                 <label for="cbCantMatSem">Materias Semipresencial:</label>
                                                 <select class="form-control" id="cbCantMatSem" name="cbCantMatSem">
@@ -415,10 +412,7 @@
                                                     <option>7</option>
                                                 </select>
                                             </div>
-                                            <div id="div-descSemi" class="form-inline divSelCantMat otrosDesc" style="display: none;">
-                                                <label for="descSemip" class="col-form-label">Descuento Semipresencial (%):</label>
-                                                <input type="number" class="form-control descuentos" id="descSemip" name="descSemip">
-                                            </div>
+                                            
                                             <div class="form-inline divCuotas divSelCantMat">
                                                 <label for="cbCuotas">Cantidad de cuotas:</label>
                                                 <select class="form-control" id="cbCuotas" name="cbCuotas">
@@ -436,9 +430,18 @@
                                                 <input type="checkbox" name="otrosDesc" id="otrosDesc" class="form-check-input chkDesc">
                                                 <label class="form-check-label labelCheckbox" for="otrosDesc">Otros descuentos</label>
                                             </div>
+                                            <div id="div-descPres" class="form-inline divSelCantMat otrosDesc" style="display: none;">
+                                                <label for="descPrese" class="col-form-label">Descuento Presencial (%):</label>
+                                                <input type="number" class="form-control descuentos" id="descPrese" name="descPrese" value="0">
+                                            </div>
+                                            <div id="div-descSemi" class="form-inline divSelCantMat otrosDesc" style="display: none;">
+                                                <label for="descSemip" class="col-form-label">Descuento Semipresencial (%):</label>
+                                                <input type="number" class="form-control descuentos" id="descSemip" name="descSemip">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr class="linea-divisoria">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="sim-div">
@@ -514,7 +517,7 @@
                                 <input type="hidden" name="aia" id="aia">
                             </div>
                             <div class="panel-footer footerSimulador">
-                                <p>*Datos referenciales, comuníquese con el Dpto. de Cuentas por Cobrar para que le realicen el ajuste de su plan de pagos.</p>
+                                <p>*Datos referenciales.</p>
                             </div>
                         </div>
                     </div>

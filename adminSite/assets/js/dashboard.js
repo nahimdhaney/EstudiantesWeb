@@ -498,7 +498,7 @@ $(document).ready(function () {
     }
     cargarPagina();
 
-    tieneLaboratorio();
+    //tieneLaboratorio();
 
     $("#carrerasAlumno").change(function () {
         localStorage.setItem("carreraId", this.value);
@@ -1521,9 +1521,11 @@ $("#btnSimular").click(function() {
     $("#containerPlanPagos").hide();
     $("#containerHistorial").hide();
     $("#modalOfertaSimulador").hide();
-    $("#containerSimulador").fadeIn();
     var periodoId = $("#periodosSimulador").find(":selected").val();
     var carreraId = $("#carrerasAlumno").find(":selected").val();
+    localStorage.setItem("periodoOferta", periodoId);
+
+    tieneLaboratorio();
     getCostosSemestre(periodoId, carreraId);
     setTimeout(function() {
         var auxPresencial = $("#cbCantMatPres").find(":selected").val();
@@ -1575,7 +1577,8 @@ $("#btnSimular").click(function() {
         }
         
         $("#totalCost").text(fnDosDigitos(total));
-    }, 100);
+        $("#containerSimulador").fadeIn();
+    }, 1000);
 })
 
 function getCostosSemestre(periodoId, carreraId) {

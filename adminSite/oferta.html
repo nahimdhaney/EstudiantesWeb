@@ -606,17 +606,18 @@
                                 <p id="subtitulo-comp"><strong>Necesitamos su correo y teléfono para ponernos en contacto con usted:</strong></p>
                                 <div class="div-email-comp">
                                     <div id="divError-email">
-                                        <input id='txtEmailComprobante' type="email" class="emailContacto form-control inputComp" required placeholder="E-mail" />
+                                        <label for="txtEmailComprobante">Email</label>
+                                        <input id='txtEmailComprobante' name="txtEmailComprobante" type="email" class="emailContacto form-control inputComp" required placeholder="E-mail" />
                                     </div>
                                 </div>
                                 <div class="div-telefono-comp">
-                                    <input id='txtTelefonoComprobante' type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp" required placeholder="Teléfono" />
+                                    <input id='txtTelefonoComprobante' name="txtTelefonoComprobante" type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp" required placeholder="Teléfono" />
                                 </div>
                                 <input type="hidden" name="hdnRegistro" id="hdnRegistro">
                                 <input type="hidden" name="hdnNombreCompleto" id="hdnNombreCompleto">
                                 <input type="hidden" name="hdnSemestre" id="hdnSemestre">
                                 <input type="hidden" name="hdnCorreo" id="hdnCorreo">
-
+                                
                                 <input type="hidden" name="hdnAia" id="hdnAia">
                                 <input type="hidden" name="hdnTcp" id="hdnTcp">
                             </div>

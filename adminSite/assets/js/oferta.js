@@ -1493,6 +1493,8 @@ function comprobantePago(response) {
             $("#modalComprobante .modal-footer").children().addClass("divModalFooter");
             $("#hdnTcp").val(0);
             $("#btnSubir").attr("disabled", false);
+            $("#txtEmailComprobante").attr("disabled", false);
+            $("#txtTelefonoComprobante").attr("disabled", false);
             $("#btnEnviar").attr("disabled", false);
             $("#btnEnviar").removeClass("btn-disabled");
             $("#msgComprobante").hide();
@@ -1505,11 +1507,15 @@ function comprobantePago(response) {
             if (datos.LESTADOCOMPROBANTE_ID == 4) {
                 $("#spEstadoComp").append(". Intente nuevamente por favor.")
                 $("#btnSubir").attr("disabled", false);
+                $("#txtEmailComprobante").attr("disabled", false);
+                $("#txtTelefonoComprobante").attr("disabled", false);
                 $("#btnEnviar").attr("disabled", false);
                 $("#btnEnviar").removeClass("btn-disabled");
                 $("#msgComprobante").hide();
             } else {
                 $("#btnSubir").attr("disabled", true);
+                $("#txtEmailComprobante").attr("disabled", true);
+                $("#txtTelefonoComprobante").attr("disabled", true);
                 $("#btnEnviar").attr("disabled", true);
                 $("#btnEnviar").addClass("btn-disabled");
                 $("#msgComprobante").show();
@@ -1519,6 +1525,8 @@ function comprobantePago(response) {
         $("#modalComprobante .modal-footer").addClass("divModalFooter");
         $("#hdnTcp").val(0);
         $("#btnSubir").attr("disabled", false);
+        $("#txtEmailComprobante").attr("disabled", false);
+        $("#txtTelefonoComprobante").attr("disabled", false);
         $("#btnEnviar").attr("disabled", false);
         $("#btnEnviar").removeClass("btn-disabled");
         $("#msgComprobante").hide();

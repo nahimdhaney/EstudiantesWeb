@@ -1273,7 +1273,7 @@ function fnDosDigitos(numero) {
 $("#comprobante").click(function () {
     obtenerComprobantePago();
 
-    setTimeout(function() {
+    setTimeout(function () {
         $('#modalComprobante').modal('show');
     }, 1000);
 })
@@ -1373,7 +1373,7 @@ function titleCase(str) {
     return str.join(' ');
 }
 
-$("#btnEnviar").click(function() {
+$("#btnEnviar").click(function () {
 
     if ($("#fichero")[0].files.length <= 0) {
         $("#msgConfirmacion").text("Debe cargar la imagen del comprobante.");
@@ -1395,36 +1395,36 @@ $("#btnEnviar").click(function() {
             $('#modalComprobante').modal('hide');
             $(".modal-carga").show();
         }
-    }).done(function(response) {
+    }).done(function (response) {
         $(".modal-carga").hide();
         var respuesta = "";
         switch (response) {
-        case "1":
-            respuesta = "Enviado correctamente.";
-            insertarComprobante();
-            break;
-        case "2":
-            respuesta = "No se pudo enviar correctamente. Por favor, intente más tarde.";
-            break;
-        case "3":
-            respuesta = "Imagen muy grande. Por favor, intente cargar una imagen más pequeña.";
-            break;
-        case "4":
-            respuesta = "Error al subir la imagen. Por favor, vuelva a intentar.";
-            break;
-        case "5":
-            respuesta = "Formato no válido. Por favor, intente cargar una imagen PNG, JPG o JPEG.";
-            break;
+            case "1":
+                respuesta = "Enviado correctamente.";
+                insertarComprobante();
+                break;
+            case "2":
+                respuesta = "No se pudo enviar correctamente. Por favor, intente más tarde.";
+                break;
+            case "3":
+                respuesta = "Imagen muy grande. Por favor, intente cargar una imagen más pequeña.";
+                break;
+            case "4":
+                respuesta = "Error al subir la imagen. Por favor, vuelva a intentar.";
+                break;
+            case "5":
+                respuesta = "Formato no válido. Por favor, intente cargar una imagen PNG, JPG o JPEG.";
+                break;
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             $("#msgConfirmacion").text(respuesta);
             $('#modalConfirmacion').modal('show');
         }, 1000);
-        
-    }).fail(function(response) {
+
+    }).fail(function (response) {
         $("#msgConfirmacion").text("Error al enviar el comprobante de pago. Intente nuevamente por favor.");
-    
+
         $('#modalConfirmacion').modal('show');
     });
 });
@@ -1498,12 +1498,12 @@ function comprobantePago(response) {
             $("#btnEnviar").attr("disabled", false);
             $("#btnEnviar").removeClass("btn-disabled");
             $("#msgComprobante").hide();
-        } else{
+        } else {
             $("#txtEstadoComp").show();
             $("#modalComprobante .modal-footer").children().addClass("divModalCostoFooter");
             $("#spEstadoComp").text(datos.SESTADOCOMPROBANTE_DSC);
             $("#hdnTcp").val(1);
-            
+
             if (datos.LESTADOCOMPROBANTE_ID == 4) {
                 $("#spEstadoComp").append(". Intente nuevamente por favor.")
                 $("#btnSubir").attr("disabled", false);
@@ -1521,7 +1521,7 @@ function comprobantePago(response) {
                 $("#msgComprobante").show();
             }
         }
-    } else{
+    } else {
         $("#modalComprobante .modal-footer").addClass("divModalFooter");
         $("#hdnTcp").val(0);
         $("#btnSubir").attr("disabled", false);
@@ -1533,19 +1533,19 @@ function comprobantePago(response) {
     }
 }
 
-$(document).on("change", "#txtEmailComprobante", function() {
-    if($("#divError-email").find(".msgError").length > 0){
-      $("#divError-email").find("p").remove();
+$(document).on("change", "#txtEmailComprobante", function () {
+    if ($("#divError-email").find(".msgError").length > 0) {
+        $("#divError-email").find("p").remove();
     }
     var correo = $(this).val();
     if (!isEmail(correo)) {
-      $('#divError-email').append(`<p id="msg" class="msgError">Correo inválido.</p>`);
+        $('#divError-email').append(`<p id="msg" class="msgError">Correo inválido.</p>`);
     } else {
-      $("#divError-email").find("p").remove();
+        $("#divError-email").find("p").remove();
     }
-  });
+});
 
-  function isEmail(email) {
+function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
-  }
+}

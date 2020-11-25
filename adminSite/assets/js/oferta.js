@@ -14,6 +14,7 @@ function cargarPagina() {
     InfoPersonal();
     InfoCarrera();
     obtenerOferta();
+    bloqueoInscripcion();
 }
 
 function getCostosSemestre() {
@@ -1056,8 +1057,6 @@ function enviarSolicitudCambio() {
     }
 }
 
-$('#registro_btn, #retiro_btn, #cambio_btn').hide();
-
 function formatearHora(fecha) {
     if (isEmpty(fecha)) {
         return "";
@@ -1354,6 +1353,7 @@ function enviarInscripcion() {
             } else {
                 $("#modalCostos").modal('hide');
                 swal("Finalizado", "Su inscripción se ha completado.", "success");
+                $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
             }
             $("#mainLoader").hide();
         },
@@ -1549,3 +1549,36 @@ function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
 }
+
+function bloqueoInscripcion() {
+    var token = localStorage.getItem("token");
+    var pPeriodoId = parseInt(localStorage.getItem("periodoOferta"));
+    var pCarreraId = parseInt(localStorage.getItem("carreraId"));
+    var datos = new Object();
+    datos.pPeriodoId = pPeriodoId;
+    datos.pCarreraId = pCarreraId;
+
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(datos),
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/BloqueoInscripcion",
+        'dataType': 'json',
+        'success': function (response) {
+            if (response.Data.BOOLBLOQUEO == 1) {
+                $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
+                swal("Formulario de Inscripción", "La insrcipcion en línea no se encuentra disponible para usted debido a que <b>" + response.Data.DESCRIPCION + "</b>", "info")
+            }
+        },
+        'error': function () {
+            swal("", "Los datos no se enviaron correctamente, intente de nuevo.", "info");
+        }
+    });
+}
+
+$('#registro_btn, #retiro_btn, #cambio_btn, #comprobante').hide();
+//  #selMateria_btn

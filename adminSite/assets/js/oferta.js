@@ -1346,10 +1346,11 @@ function enviarInscripcion() {
         'type': 'POST',
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/InscripcionOnline",
-        'dataType': 'json',
+        'dataType': 'json', 
         'success': function (response) {
             if (!response.Status) {
-                swal("Hubo un problema al registrar sus datos", titleCase(response.Message), "info");
+                debugger;
+                swal("Hubo un problema al registrar sus datos", response.Message, "info");
             } else {
                 $("#modalCostos").modal('hide');
                 swal("Finalizado", "Su inscripción se ha completado.", "success");
@@ -1571,7 +1572,7 @@ function bloqueoInscripcion() {
         'success': function (response) {
             if (response.Data.BOOLBLOQUEO == 1) {
                 $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
-                swal("Formulario de Inscripción", "La insrcipcion en línea no se encuentra disponible para usted debido a que <b>" + response.Data.DESCRIPCION + "</b>", "info")
+                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que <b>" + response.Data.DESCRIPCION + "</b>", "info")
             }
         },
         'error': function () {

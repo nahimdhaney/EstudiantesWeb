@@ -3,6 +3,7 @@ $(document).ready(function () {
     getCostosSemestre();
     tieneLaboratorio();
     $(".modal-carga").hide();
+    bloqueoInscripcion();
 })
 $("#imprimir").click(function () {
     window.print();
@@ -14,7 +15,6 @@ function cargarPagina() {
     InfoPersonal();
     InfoCarrera();
     obtenerOferta();
-    bloqueoInscripcion();
 }
 
 function getCostosSemestre() {

@@ -310,7 +310,7 @@ function verOferta() {
     if (periodosOferta > 0) {
         $("#modalOferta").show();
     } else {
-        swal("Humm!", "No tienes más ofertas", "info");
+        swal("No tienes ofertas", "No tiene materias, puede contactarse al WhatsApp 763-92502", "info");
     }
     $("#bodyClick").click();
 }

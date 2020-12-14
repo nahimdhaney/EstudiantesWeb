@@ -65,7 +65,7 @@
                                     <!-- <img id='imgPrint' src="../adminSite/assets//img/cambio.png"> -->
                                     <i id='iCompPago' class="fas fa-file-invoice-dollar"></i>
                                 </a>
-                                <h4 class="title titulo" style="text-align: center; font-weight: bold;">FORMULARIO DE INSCRIPCIÓN</h4>
+                                <h4 class="title titulo" style="text-align: center; font-weight: bold;">FORMULARIO DE INSCRIPCIÓN <span id="spPeriodoDsc"></span></h4>
                             </div>
                         </div>
                     </div>
@@ -575,6 +575,7 @@
                 <div class="modal-footer">
                     <div class="divModalCostoFooter">
                         <input id="btnAtras" type="button" class="btnAtras" value="Atrás">
+                        <p class="msgFooterCompPago">*Si usted tiene algún tipo de beca o descuento el cálculo de  sus pagos deberá hacerlo en el Simulador de Pagos.</p>
                         <input type="button" class="boton-siguiente" value="Finalizar" onclick="enviarInscripcion();">
                     </div>
                 </div>
@@ -611,7 +612,17 @@
                                     </div>
                                 </div>
                                 <div class="div-telefono-comp">
-                                    <input id='txtTelefonoComprobante' name="txtTelefonoComprobante" type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp" required placeholder="Teléfono" />
+                                    <div id="divError-email">
+                                        <label for="txtTelefonoComprobante">Teléfono</label>
+                                        <input id='txtTelefonoComprobante' name="txtTelefonoComprobante" type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp" required placeholder="Teléfono" />
+                                    </div>
+                                </div>
+                                <div class="div-obs-comp">
+                                    <div id="divError-email">
+                                        <label for="txtObsComprobante">Observación</label>
+                                        <textarea name="txtObsComprobante" id="txtObsComprobante" cols="30" rows="5" class="obsComprobante form-control inputComp" placeholder="Indique por favor una descripción de la cantidad de cuotas o si es pago al contado, y si tiene algún tipo de beca."></textarea>
+                                        <!-- <input id='txtTelefonoComprobante' name="txtTelefonoComprobante" type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp" required placeholder="Teléfono" /> -->
+                                    </div>
                                 </div>
                                 <input type="hidden" name="hdnRegistro" id="hdnRegistro">
                                 <input type="hidden" name="hdnNombreCompleto" id="hdnNombreCompleto">

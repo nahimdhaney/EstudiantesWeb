@@ -269,6 +269,8 @@ function cargarOferta(resultado) {
     }
     var periodoDsc = resultado.Data[0].SPERIODO_DSC;
     $("#hdnSemestre").val(periodoDsc);
+    $("#spPeriodoDsc").text(periodoDsc);
+    
 
     resultado.Data.forEach(function (element) {
         const {
@@ -1583,5 +1585,5 @@ function bloqueoInscripcion() {
     });
 }
 
-$('#registro_btn, #retiro_btn, #cambio_btn, #comprobante').hide();
+$('#registro_btn, #retiro_btn, #cambio_btn').hide();
 //  #selMateria_btn

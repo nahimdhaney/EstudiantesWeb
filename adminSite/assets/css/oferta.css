@@ -480,10 +480,9 @@
 #msgComprobante{
     color: red;
     font-size: 13px;
-    display: none;
 }
 
-.div-email-comp, .div-telefono-comp{
+.div-email-comp, .div-telefono-comp, .div-obs-comp{
     display: flex;
     justify-content: center;
     margin-top: 15px;
@@ -526,4 +525,16 @@
 #msg{
     color: red;
     font-size: 13px;
+}
+
+.div-email-comp>#divError-email,
+.div-telefono-comp>#divError-email,
+.div-obs-comp>#divError-email{
+    text-align: left;
+}
+
+.msgFooterCompPago{
+    font-size: 13px;
+    text-align: left;
+    padding: 0px 30px;
 }

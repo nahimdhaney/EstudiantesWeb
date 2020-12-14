@@ -1571,9 +1571,11 @@ function bloqueoInscripcion() {
         'dataType': 'json',
         'success': function (response) {
             if (response.Data.BOOLBLOQUEO == 1) {
-                $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
+                setTimeout(function(){ $('input[type=checkbox]').prop('disabled', true); }, 1000);
+                $('#selMateria_btn').hide();
                 swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que <b>" + response.Data.DESCRIPCION + "</b>", "info")
             }
+            
         },
         'error': function () {
             swal("", "Los datos no se enviaron correctamente, intente de nuevo.", "info");

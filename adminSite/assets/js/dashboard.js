@@ -282,7 +282,7 @@ function mostrarHorario() {
             type: "POST",
             async: false,
             data: JSON.stringify(usuario),
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
+            url: "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
             dataType: "json",
         })
         .done(function (resultado) {
@@ -360,7 +360,7 @@ function verListaHistorial() {
             Authorization: "Bearer " + token,
         },
         type: "POST",
-        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+        url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
         dataType: "json",
         data: JSON.stringify(usuario),
         success: cargarHistorial,
@@ -382,7 +382,7 @@ function realizarAjaxHistorial() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
             dataType: "json",
             data: JSON.stringify(usuario),
             success: cargarHistorial,
@@ -573,7 +573,7 @@ $(document).ready(function () {
                     },
                     type: "POST",
                     data: JSON.stringify(usuario),
-                    url: "http://wsnotas.nur.edu:8880/api/Registros/UpdatePin",
+                    url: "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
                     dataType: "json",
                 }).done(function (response) {
                     if (response.Status) {
@@ -730,7 +730,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoImagen",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoImagen",
                 dataType: "json",
                 success: cargarImagem,
                 error: errorSesion,
@@ -752,7 +752,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
                 dataType: "json",
                 success: resultado,
                 error: errorSesion,
@@ -780,7 +780,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoCarreras",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
                 dataType: "json",
                 success: infoCarrera,
                 error: errorSesion,
@@ -848,7 +848,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosCursados",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosCursados",
                 dataType: "json",
                 data: JSON.stringify(usuario),
                 success: periodosCursados,
@@ -926,7 +926,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOfertaCarrera",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOfertaCarrera",
                 dataType: "json",
                 data: JSON.stringify(obj),
                 success: periodosOfertas,
@@ -995,7 +995,7 @@ $(document).ready(function () {
                 },
                 type: "POST",
                 data: JSON.stringify(usuario),
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
                 dataType: "json",
                 success: cargarNotas,
                 error: errorSesion,
@@ -1203,7 +1203,7 @@ $(document).ready(function () {
                 type: "POST",
                 async: false,
                 data: JSON.stringify(usuario),
-                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOfertaa",
+                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOfertaa",
                 dataType: "json",
             })
             .done(function (resultado) {
@@ -1239,7 +1239,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "http://wsnotas.nur.edu:8880/api/Registros/GetPlanPagos",
+        url: "http://sisnur.nur.edu:8085/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultado,
         error: errorSesion,
@@ -1421,7 +1421,7 @@ $("#SaveEmail").click(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/UpdateEmailTelefono",
+                url: "http://sisnur.nur.edu:8085/api/Registros/UpdateEmailTelefono",
                 dataType: "json",
                 data: JSON.stringify(datos),
                 success: function (response) {
@@ -1459,7 +1459,7 @@ function cargarLinks() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetLinks",
+            url: "http://sisnur.nur.edu:8085/api/Registros/GetLinks",
             dataType: "json",
             success: function(response){
                 $("#ListaLinks_ul").empty();
@@ -1487,7 +1487,7 @@ function cargarLinks() {
       },
       type: "POST",
       async: false,
-      url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
+      url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
       dataType: "json",
     }).done(function (response) {
       var data = response.Data.toLowerCase();
@@ -1500,7 +1500,7 @@ function PeriodosSimular() {
     if (periodosOferta > 0) {
         $("#modalOfertaSimulador").show();
     } else {
-        swal("Humm!", "No tienes periodos ofertados", "info");
+        swal("Lo sentimos!", "No tienes periodos ofertados", "info");
     }
 };
 
@@ -1593,7 +1593,7 @@ function getCostosSemestre(periodoId, carreraId) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetCostosSemestre",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
     });
@@ -1614,7 +1614,7 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });

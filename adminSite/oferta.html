@@ -601,9 +601,11 @@
                                 <p><strong>Nota:</strong> Si ya realizó el pago, por favor envíe el comprobante de pago del banco que realizó a la cuenta de la Universidad. Puede ser una foto, captura de pantalla o la imagen del comprobante de pago.</p>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 div-fichero">
-                                <input type="file" name="fichero" id="fichero">
+                                <input type="file" name="fichero" id="fichero" class="requerido">
                                 
                                 <input type="button" value="Seleccionar imagen" id="btnSubir" class="btn btn-info">
+                                <i id="iConfirm" class="fas fa-check-circle iAviso"></i>
+                                <i id="iRechaz" class="fas fa-times-circle iAviso"></i>
                                 <p id="msgComprobante">Ya envió el comprobante para su revisión.</p>
 
                                 <hr class="linea-divisoria">
@@ -612,13 +614,13 @@
                                 <div class="div-email-comp">
                                     <div id="divError-email">
                                         <label for="txtEmailComprobante">Email</label>
-                                        <input id='txtEmailComprobante' name="txtEmailComprobante" type="email" class="emailContacto form-control inputComp" required placeholder="E-mail" />
+                                        <input id='txtEmailComprobante' name="txtEmailComprobante" type="email" class="emailContacto form-control inputComp requerido" required placeholder="E-mail" />
                                     </div>
                                 </div>
                                 <div class="div-telefono-comp">
                                     <div id="divError-email">
                                         <label for="txtTelefonoComprobante">Teléfono</label>
-                                        <input id='txtTelefonoComprobante' name="txtTelefonoComprobante" type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp" required placeholder="Teléfono" />
+                                        <input id='txtTelefonoComprobante' name="txtTelefonoComprobante" type="text" pattern="[0-9]" class="telefonoContacto form-control inputComp .requerido" required placeholder="Teléfono" />
                                     </div>
                                 </div>
                                 <div class="div-obs-comp">
@@ -640,7 +642,7 @@
                     <div class="modal-footer">
                         <div class="divModalCostoFooter">
                             <p id="txtEstadoComp" style="display: none;">Estado: <span id="spEstadoComp"></span></p>
-                            <input id="btnEnviar" type="button" class="btnEnviar" value="Enviar">
+                            <input id="btnEnviar" type="button" class="btnEnviar disabled" value="Enviar">
                         </div>
                     </div>
                 </div>

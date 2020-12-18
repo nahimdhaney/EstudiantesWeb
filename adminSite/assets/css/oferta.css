@@ -394,7 +394,7 @@
 .btnAtras,
 .btnConfirmar,
 .btnEnviar {
-    background-color: rgb(45, 189, 166) !important;
+    background-color: rgb(45, 189, 166);
     color: white;
     border-radius: 100px;
     border-style: none;
@@ -541,4 +541,22 @@
 
 #txtObsComprobante{
     resize: none;
+}
+
+.iAviso{
+    display: none;
+    font-size: 25px;
+    vertical-align: middle;
+}
+
+.iAviso:hover{
+    cursor: help;
+}
+
+.disabled{
+    background-color: #dddddd;
+}
+
+.disabled:hover{
+    color: white;
 }

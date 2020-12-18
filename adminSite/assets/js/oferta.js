@@ -2,7 +2,6 @@ $(document).ready(function () {
     cargarPagina();
     getCostosSemestre();
     tieneLaboratorio();
-    $(".modal-carga").hide();
     bloqueoInscripcion();
 })
 $("#imprimir").click(function () {
@@ -1275,6 +1274,7 @@ $("#comprobante").click(function () {
     obtenerComprobantePago();
 
     setTimeout(function () {
+        $("#btnEnviar").attr("disabled", true);
         $('#modalComprobante').modal('show');
     }, 1000);
 })
@@ -1283,6 +1283,35 @@ $('#btnSubir').click(function (e) {
     e.preventDefault();
     $('#fichero').click();
 });
+
+$('#fichero').on("change", function(e) {
+    var imgVal = $(this).val();
+    var nombre = $("#fichero")[0].files[0].name;
+    var ext = getExtension(imgVal);
+    if (!isImage(ext)) {
+        $("#iConfirm").hide();
+        swal("Formato no válido", "Debe seleccionar una imagen.", "error");
+    } else {
+        $("#iConfirm").show();
+        $('#iConfirm').prop('title', nombre);
+    }
+});
+
+function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
+}
+
+function isImage(filename) {
+    var ext = getExtension(filename);
+    switch (ext.toLowerCase()) {
+    case 'jpg':
+    case 'png':
+    case 'jpeg':
+        return true;
+    }
+    return false;
+}
 
 function cargaMateriaSelecionada() {
     var matLista = [];
@@ -1379,8 +1408,7 @@ function titleCase(str) {
 $("#btnEnviar").click(function () {
 
     if ($("#fichero")[0].files.length <= 0) {
-        $("#msgConfirmacion").text("Debe cargar la imagen del comprobante.");
-        $('#modalConfirmacion').modal('show');
+        swal("", "Debe seleccionar una imagen.", "error");
         return;
     }
 
@@ -1421,14 +1449,12 @@ $("#btnEnviar").click(function () {
         }
 
         setTimeout(function () {
-            $("#msgConfirmacion").text(respuesta);
-            $('#modalConfirmacion').modal('show');
+            swal("", respuesta, "info");
+            
         }, 1000);
 
     }).fail(function (response) {
-        $("#msgConfirmacion").text("Error al enviar el comprobante de pago. Intente nuevamente por favor.");
-
-        $('#modalConfirmacion').modal('show');
+        swal("", "Error al enviar el comprobante de pago. Intente nuevamente por favor.", "error");
     });
 });
 
@@ -1522,6 +1548,7 @@ function comprobantePago(response) {
                 $("#btnEnviar").attr("disabled", true);
                 $("#btnEnviar").addClass("btn-disabled");
                 $("#msgComprobante").show();
+                $("#iConfirm").hide();
             }
         }
     } else {
@@ -1587,3 +1614,28 @@ function bloqueoInscripcion() {
 
 $('#registro_btn, #retiro_btn, #cambio_btn').hide();
 //  #selMateria_btn
+
+$(function () {
+    var btnEnviar = $("#btnEnviar").attr("disabled", true);
+    $("#modalComprobante .requerido").change(function () {
+        var valid = true;
+        var correo = $("#txtEmailComprobante").val();
+        $.each($("#modalComprobante .requerido"), function (index, value) {
+            
+            if(!$(value).val()){
+                valid = false;
+            }
+            if (!isEmail(correo)) {
+                valid = false;
+            }
+        });
+        if(valid){
+            btnEnviar.attr("disabled", false);
+            btnEnviar.removeClass("disabled");
+        } 
+        else{
+            btnEnviar.attr("disabled", true);
+            btnEnviar.addClass("disabled");
+        }
+    });
+});

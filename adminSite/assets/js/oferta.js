@@ -1602,7 +1602,7 @@ function bloqueoInscripcion() {
             if (response.Data.BOOLBLOQUEO == 1) {
                 setTimeout(function(){ $('input[type=checkbox]').prop('disabled', true); }, 1000);
                 $('#selMateria_btn').hide();
-                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que <b>" + response.Data.DESCRIPCION + "</b>", "info")
+                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que " + response.Data.DESCRIPCION , "info")
             }
             
         },

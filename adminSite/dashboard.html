@@ -110,22 +110,22 @@
                                 </a>
                                 <div class="dropdown-menu show menuMasOpciones" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" onclick="verOferta()" href="javascript:void(0)">
-                                        <p>Ver oferta</p>
+                                        <p>Ver Oferta</p>
+                                    </a>
+                                    <a class="dropdown-item" id="botonImprimir" onclick="mostrarHorario()" href="javascript:void(0)">
+                                        <p>Ver Horario</p>
                                     </a>
                                     <a class="dropdown-item" onclick="consultarCXC()" href="javascript:void(0)">
-                                        <p>Ver plan de pagos</p>
-                                    </a>
-                                    <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial" onclick="verListaHistorial()">
-                                        <p>Ver historial</p>
-                                    </a>
-                                    <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
-                                        <p>Gráfico historial</p>
-                                    </a>
-                                    <a class="dropdown-item" id="botonPerfil" onclick="verPerfil()" href="javascript:void(0)">
-                                        <p>Ver perfil</p>
+                                        <p>Planes de pagos</p>
                                     </a>
                                     <a class="dropdown-item btnSimulador" id="btnSimulador" onclick="PeriodosSimular()" href="javascript:void(0)">
                                         <p>Simulador de pagos</p>
+                                    </a>
+                                    <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial" onclick="verListaHistorial()">
+                                        <p>Historial de Notas</p>
+                                    </a>
+                                    <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
+                                        <p>Gráfico historial</p>
                                     </a>
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
                                         <p>Cambiar Pin</p>
@@ -133,11 +133,14 @@
                                     <a id="otrosSitio_btn" class="dropdown-item" data-toggle="modal" data-target="#modalLinks">
                                         <p>Otros sitios</p>
                                     </a>
+                                    <a id="ctabacno_btn" class="dropdown-item" data-toggle="modal" data-target="#ctabanco_modal">
+                                        <p>Cuentas Banco Pago</p>
+                                    </a>
                                 </div>
                             </li>
                             <li>
-                                <a id="botonImprimir" onclick="mostrarHorario()" href="javascript:void(0)">
-                                    <p>Ver horario</p>
+                                <a id="botonPerfil" onclick="verPerfil()" href="javascript:void(0)">
+                                    <p>Mi Perfil</p>
                                 </a>
                             </li>
                             <li>
@@ -652,6 +655,31 @@
             </div>
         </div>
     </div> -->
+    <div class="modal fade" id="ctabanco_modal" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Cuentas Bancarias Pagos</h4>
+                </div>
+                <div class="modal-body">
+                    <table style='width:100%;border-collapse: collapse;' border='1'>
+                        <thead><tr><th>BANCO</th><th>TIPO</th><th>MONEDA</th><th>CUENTA</th><th>NOMBRE</th><th>NIT</th></tr></thead>
+                        <tbody>
+                            <tr><td>BANCO MERCANTIL</td><td>Cta. Cte.</td><td>BOB</td><td>4010140786</td><td>Universidad Nur</td><td>1028223024</td></tr>
+                            <tr><td>BANCO BNB</td><td>Cta. Cte.</td><td>BOB</td><td>2000129588</td><td>Universidad Nur</td><td>1028223024</td></tr>
+                            <tr><td>BANCO UNION</td><td>Cta. Cte.</td><td>BOB</td><td>1-689527</td><td>Universidad Nur</td><td>1028223024</td></tr>
+                            <tr><td>BANCO FASSIL</td><td>Cta. Cte.</td><td>BOB</td><td>951310</td><td>Universidad Nur</td><td>1028223024</td></tr>
+                            <tr><td>COOPERATIVA SAN MARTIN</td><td>Cta. Cte.</td><td>BOB</td><td>1061290444</td><td>Universidad Nur</td><td>1028223024</td></tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="assets/js/core.js" type="text/javascript"></script>
 <script src="assets/js/charts.js" type="text/javascript"></script>

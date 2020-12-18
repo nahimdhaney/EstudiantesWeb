@@ -600,12 +600,12 @@ function enviarSolicitudRegistro() {
                 swal("Solicitud enviada", "", "success");
                 tieneSolicitudPendiente(1);
             } else {
-                swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                swal("", "Algo anda mal, tus datos no se enviaron.");
             }
             $("#mainLoader").hide();
         },
         'error': function () {
-            swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+            swal("", "Algo anda mal, tus datos no se enviaron.");
             $("#mainLoader").hide();
         }
     });
@@ -658,12 +658,12 @@ function enviarSolicitudRetiro() {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
                 } else {
-                    swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                    swal("", "Algo anda mal, tus datos no se enviaron.");
                 }
                 $("#mainLoader").hide();
             },
             'error': function () {
-                swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                swal("", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
             }
         });
@@ -1047,12 +1047,12 @@ function enviarSolicitudCambio() {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
                 } else {
-                    swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                    swal("", "Algo anda mal, tus datos no se enviaron.");
                 }
                 $("#mainLoader").hide();
             },
             'error': function () {
-                swal("Ups!", "Algo anda mal, tus datos no se enviaron.");
+                swal("", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
             }
         });

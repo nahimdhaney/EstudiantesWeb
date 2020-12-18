@@ -289,7 +289,7 @@ function mostrarHorario() {
             if (resultado.Data.length == 0) response = false;
         });
     if (response) window.location = "horario.html";
-    else swal("Ups!", "Tu horario no esta disponible aún", "info");
+    else swal("", "Tu horario no esta disponible aún", "info");
     $("#bodyClick").click();
 }
 
@@ -601,7 +601,7 @@ $(document).ready(function () {
             window.open("oferta.html", "_blank");
         } else {
             $("#modalOferta").hide();
-            swal("Ups!", "No tienes ninguna materia ofertada aún", "info");
+            swal("", "No tienes ninguna materia ofertada aún", "info");
         }
     });
 
@@ -1348,7 +1348,7 @@ function mostrarResultado(response) {
         final = `<div class="row"><div class="col-md-12"><div class="card"><div class="alert alert-deuda" role="alert"><h2 class="alert-heading">No tiene planes de pago</h2>
     <p>No tiene deudas pendientes en esta gestión.</p></div></div></div></div>`;
     }
-    var parrafo = "<p>*Datos referenciales, para validar la información apersonarse a Cuentas por Cobrar por favor.</p>";
+    var parrafo = "<p>Para mas información sobre los planes de pago apersonarse por las oficinas Edificio Nur Central 4to piso <b>Dpto. Cuentas por cobrar</b>.</p>";
     $("#containerPlanPagos").append(final);
     $("#containerPlanPagos").append(parrafo);
 }
@@ -1427,10 +1427,10 @@ $("#SaveEmail").click(function () {
                 success: function (response) {
                     if (response.Status) {
                         swal("Guardado exitoso", "", "success");
-                    } else swal("Ups!", "Algo anda mal, tus datos no se guardaron.", "info");
+                    } else swal("", "Algo anda mal, tus datos no se guardaron.", "info");
                 },
                 error: function () {
-                    swal("Ups!", "Algo anda mal, tus datos no se guardaron.", "info");
+                    swal("", "Algo anda mal, tus datos no se guardaron.", "info");
                 },
             });
         }

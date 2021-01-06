@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="https://www.cv.nur.edu/pluginfile.php/1/theme_lambda/logo/1607690023/2.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Email Validation</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+
+<body style="background-color: #003871;">
+    <table id="ConfirmacionTable" style="display: none;" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td bgcolor="#003871" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#003871" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td bgcolor="#ffffff" align="center" valign="top"
+                            style="padding: 40px 20px 20px 20px; border-radius: 5px 5px 0px 0px;" , Helvetica, Arial,
+                            sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                            <img src="https://www.cv.nur.edu/pluginfile.php/1/theme_lambda/logo/1607690023/2.png"
+                                width="50%" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#003871" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                    style="max-width: 600px; margin-bottom: 100px;">
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 20px 30px 40px 30px; font-size: 18px;border-radius: 0px 0px 5px 5px;">
+                            <div id="Mensaje_txt" style="text-align: center;"></div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            var datos = new Object();
+            datos.pLlave = findGetParameter("key");
+            jQuery.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                'type': 'POST',
+                'url': "http://wsnotas.nur.edu:8880/api/Registros/ValidarEmail",
+                'dataType': 'json',
+                'data': JSON.stringify(datos),
+                'success': function (response) {
+                    $("#ConfirmacionTable").show();
+                    if (response.Status)
+                        $("#Mensaje_txt").html("<h5>Confirmación completa</h5> Gracias por confirmar su correo electrónico. <br><br><a href='http://notas2.nur.edu/'>http://notas2.nur.edu/</a>");
+                    else
+                        $("#Mensaje_txt").html("Lo sentimos, esta dirección de verificación ha expirado. <br><br><a href='http://notas2.nur.edu/'>http://notas2.nur.edu/</a>");
+                },
+                "error": function () {
+                    $("#ConfirmacionTable").show();
+                    $("#Mensaje_txt").html("No fue posible verificar su correo, intente registrarlo nuevamente. <br><br><a href='http://notas2.nur.edu/'>http://notas2.nur.edu/</a>");
+                }
+            });
+        });
+
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+    </script>
+
+</body>
+
+</html>

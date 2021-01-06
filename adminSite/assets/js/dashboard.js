@@ -282,7 +282,7 @@ function mostrarHorario() {
             type: "POST",
             async: false,
             data: JSON.stringify(usuario),
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+            url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
             dataType: "json",
         })
         .done(function (resultado) {
@@ -360,7 +360,7 @@ function verListaHistorial() {
             Authorization: "Bearer " + token,
         },
         type: "POST",
-        url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
+        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
         dataType: "json",
         data: JSON.stringify(usuario),
         success: cargarHistorial,
@@ -382,7 +382,7 @@ function realizarAjaxHistorial() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
+            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
             dataType: "json",
             data: JSON.stringify(usuario),
             success: cargarHistorial,
@@ -393,7 +393,7 @@ function realizarAjaxHistorial() {
 
 function cargarHistorial(resultado) {
     if (resultado.Data == null) return;
-    promedio = resultado.Data.PROMEDIOAPROBADAS??0;
+    promedio = resultado.Data.PROMEDIOAPROBADAS ?? 0;
     if (!isPageLoaded) {
         isPageLoaded = true;
         return;
@@ -515,7 +515,7 @@ $(document).ready(function () {
 
         var arrayCarPer = JSON.parse(localStorage.getItem("arrayCarPer"));
         arrayCarPer.forEach(function (element) {
-            var carreraIdStorage = localStorage.getItem("carreraId");  
+            var carreraIdStorage = localStorage.getItem("carreraId");
             if (element.LCARRERA_ID == carreraIdStorage) {
                 localStorage.setItem("corrPeActId", element.LPERIODOACTUAL_ID);
                 $("#periodoActual").text(element.LPERIODOACTUAL);
@@ -573,7 +573,7 @@ $(document).ready(function () {
                     },
                     type: "POST",
                     data: JSON.stringify(usuario),
-                    url: "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
+                    url: "http://wsnotas.nur.edu:8880/api/Registros/UpdatePin",
                     dataType: "json",
                 }).done(function (response) {
                     if (response.Status) {
@@ -730,15 +730,20 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoImagen",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoImagen",
                 dataType: "json",
                 success: cargarImagem,
-                error: errorSesion,
+                error: function () {
+                    $("#imgUsuario").attr("src", "assets/img/user.png");
+                },
             });
         }
     }
 
     function cargarImagem(resultado) {
+        if (resultado.Data == "") {
+            $("#imgUsuario").attr("src", "assets/img/user.png"); return;
+        }
         var imagen = "data:image/png;base64," + resultado.Data;
         $("#imgUsuario").attr("src", imagen);
     }
@@ -752,7 +757,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
                 dataType: "json",
                 success: resultado,
                 error: errorSesion,
@@ -780,7 +785,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoCarreras",
                 dataType: "json",
                 success: infoCarrera,
                 error: errorSesion,
@@ -819,16 +824,16 @@ $(document).ready(function () {
             } else {
                 carreras += " , " + SCARRERA_DSC;
             }
-            arrayCarPer.push({LCARRERA_ID,LPERIODOACTUAL_ID, LPERIODOACTUAL});
+            arrayCarPer.push({ LCARRERA_ID, LPERIODOACTUAL_ID, LPERIODOACTUAL });
             count++;
         });
-        localStorage.setItem("arrayCarPer",JSON.stringify(arrayCarPer));
+        localStorage.setItem("arrayCarPer", JSON.stringify(arrayCarPer));
         realizarAjaxHistorial();
         $("#carreraPerfil").text(carreras);
         GetPeriodosOfertas();
     }
 
-    function cargarPeriodoYNotas(){
+    function cargarPeriodoYNotas() {
         var pPeriodoId = localStorage.getItem("corrPeActId");
         obtenerNotas(pPeriodoId);
         GetPeriodosCursados();
@@ -848,7 +853,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosCursados",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosCursados",
                 dataType: "json",
                 data: JSON.stringify(usuario),
                 success: periodosCursados,
@@ -926,7 +931,7 @@ $(document).ready(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOfertaCarrera",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOfertaCarrera",
                 dataType: "json",
                 data: JSON.stringify(obj),
                 success: periodosOfertas,
@@ -995,7 +1000,7 @@ $(document).ready(function () {
                 },
                 type: "POST",
                 data: JSON.stringify(usuario),
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
                 dataType: "json",
                 success: cargarNotas,
                 error: errorSesion,
@@ -1203,7 +1208,7 @@ $(document).ready(function () {
                 type: "POST",
                 async: false,
                 data: JSON.stringify(usuario),
-                url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOfertaa",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOfertaa",
                 dataType: "json",
             })
             .done(function (resultado) {
@@ -1239,7 +1244,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "http://sisnur.nur.edu:8085/api/Registros/GetPlanPagos",
+        url: "http://wsnotas.nur.edu:8880/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultado,
         error: errorSesion,
@@ -1261,7 +1266,7 @@ function mostrarResultado(response) {
         var saldoTotal = 0;
         var pagadoTotal = 0;
         var cuotaTotal = 0;
-        
+
         for (let aux = 0; aux < detalles.length; aux++) {
             var rowDetalles = detalles[aux];
             var nroCuota = rowDetalles.LNROCUOTA;
@@ -1421,7 +1426,7 @@ $("#SaveEmail").click(function () {
                     Authorization: "Bearer " + token,
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/UpdateEmailTelefono",
+                url: "http://wsnotas.nur.edu:8880/api/Registros/UpdateEmailTelefono",
                 dataType: "json",
                 data: JSON.stringify(datos),
                 success: function (response) {
@@ -1437,15 +1442,15 @@ $("#SaveEmail").click(function () {
     }
 });
 
-$('#inputTelefono, #inputCelular ').keyup(function (){
- this.value = (this.value + '').replace(/[^0-9]/g, '');
+$('#inputTelefono, #inputCelular ').keyup(function () {
+    this.value = (this.value + '').replace(/[^0-9]/g, '');
 });
 function validateEmail(email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     return emailReg.test(email);
 }
 
-$("#otrosSitio_btn").click(function() {
+$("#otrosSitio_btn").click(function () {
     cargarLinks();
 });
 
@@ -1459,17 +1464,17 @@ function cargarLinks() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetLinks",
+            url: "http://wsnotas.nur.edu:8880/api/Registros/GetLinks",
             dataType: "json",
-            success: function(response){
+            success: function (response) {
                 $("#ListaLinks_ul").empty();
                 var lista = response.Data;
-                lista.forEach(function(element) {
+                lista.forEach(function (element) {
                     const {
                         TITULO,
                         LINK
                     } = element;
-                    var input = $('<a target="_blank" href="'+LINK+'">'+TITULO+'</a>')
+                    var input = $('<a target="_blank" href="' + LINK + '">' + TITULO + '</a>')
                     var li = $("<li></li>").append(input);
                     $('#ListaLinks_ul').append(li);
                 });
@@ -1478,22 +1483,22 @@ function cargarLinks() {
     }
 }
 
-  function obtenerBloqueo(token) {
+function obtenerBloqueo(token) {
     $.ajax({
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      type: "POST",
-      async: false,
-      url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
-      dataType: "json",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+        },
+        type: "POST",
+        async: false,
+        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
+        dataType: "json",
     }).done(function (response) {
-      var data = response.Data.toLowerCase();
-      localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
+        var data = response.Data.toLowerCase();
+        localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
     });
-  }
+}
 
 function PeriodosSimular() {
     var periodosOferta = document.getElementById("periodosOferta").options.length;
@@ -1504,16 +1509,16 @@ function PeriodosSimular() {
     }
 };
 
-$(document).on("change", "input[type=number]", function() {
-    if ($(this).val() ==  "" || $(this).val() < 0) {
+$(document).on("change", "input[type=number]", function () {
+    if ($(this).val() == "" || $(this).val() < 0) {
         $(this).val(0);
     } else if ($(this).val() > 100) {
         $(this).val(100);
     }
 
-  });
+});
 
-$("#btnSimular").click(function() {
+$("#btnSimular").click(function () {
     $("#containerNotas").hide();
     $("#containerAsistencia").hide();
     $("#containerPensul").hide();
@@ -1527,10 +1532,10 @@ $("#btnSimular").click(function() {
 
     tieneLaboratorio();
     getCostosSemestre(periodoId, carreraId);
-    setTimeout(function() {
+    setTimeout(function () {
         var auxPresencial = $("#cbCantMatPres").find(":selected").val();
         var auxSemipresencial = $("#cbCantMatSem").find(":selected").val();
-        
+
         $("#cantMatPre").text(auxPresencial);
         $("#cantMatSemi").text(auxSemipresencial);
 
@@ -1555,7 +1560,7 @@ $("#btnSimular").click(function() {
         var totalMatPres = parseFloat(auxPresencial) * costoPresencial;
         var totalMatSemi = parseFloat(auxSemipresencial) * costoSemi;
 
-        
+
         $("#spMatPresencial").text(fnDosDigitos(totalMatPres));
         $("#spMatSemipresencial").text(fnDosDigitos(totalMatSemi));
         $("#spCarnetEst").text(fnDosDigitos(costoCarnet));
@@ -1575,7 +1580,7 @@ $("#btnSimular").click(function() {
         if ($("#trLaboratorio").css("display") != "none") {
             total = parseFloat(costoLaboratorio) + total;
         }
-        
+
         $("#totalCost").text(fnDosDigitos(total));
         $("#containerSimulador").fadeIn();
     }, 1000);
@@ -1593,7 +1598,7 @@ function getCostosSemestre(periodoId, carreraId) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetCostosSemestre",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
     });
@@ -1614,7 +1619,7 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneLaboratorio",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -1638,7 +1643,7 @@ function cargarCostos(resultado) {
     var csu = 0;
     var cga = 0;
     var cl = 0;
-    
+
     for (var item in costos) {
         if (costos[item].LTIPOCOSTO_ID == 2) {
             cce = costos[item].DMONTO;
@@ -1670,12 +1675,12 @@ function cargarCostos(resultado) {
     $("#prd").val(prd);
 }
 
-function isEmpty(value){
+function isEmpty(value) {
     return (value == null || value === '');
 }
 
-$('input[name=pagoContado]').on('change', function() {
-    if($(this).prop("checked") == true){
+$('input[name=pagoContado]').on('change', function () {
+    if ($(this).prop("checked") == true) {
         resetComboCuotas();
         $('#cbCuotas').prop('disabled', true);
         $(".filaPagoContado").fadeIn(1000);
@@ -1687,7 +1692,7 @@ $('input[name=pagoContado]').on('change', function() {
         totalMat = calcularPagoContado(totalMat);
         mostrarCostosTotales(totalMat);
     }
-    else if($(this).prop("checked") == false){
+    else if ($(this).prop("checked") == false) {
         $('#cbCuotas').prop('disabled', false);
         $(".filaPagoContado").fadeOut();
         var costoMatFijo = $("#totalCostMat").val();
@@ -1696,8 +1701,8 @@ $('input[name=pagoContado]').on('change', function() {
     }
 });
 
-$("input[name=otrosDesc]").on("change", function() {
-    if($(this).prop("checked") == true){
+$("input[name=otrosDesc]").on("change", function () {
+    if ($(this).prop("checked") == true) {
         $(".otrosDesc").fadeIn(1000);
         $(".filaOtrosDesc").fadeIn(1000);
         $("#spOtrosDescuentos").text("0");
@@ -1707,10 +1712,10 @@ $("input[name=otrosDesc]").on("change", function() {
         var otrosDesc = $("#spOtrosDescuentos").text();
         if (otrosDesc != "0") {
             $("#spSigno").show();
-        } else{
+        } else {
             $("#spSigno").hide();
         }
-    } else if($(this).prop("checked") == false){
+    } else if ($(this).prop("checked") == false) {
         $(".otrosDesc").fadeOut();
         $(".filaOtrosDesc").fadeOut();
         recalcular();
@@ -1746,14 +1751,14 @@ function mostrarCostosTotales(costo) {
     $("#spCostoFinalMat").fadeIn(1000);
 }
 
-$('#spCostoFinalMat').on('change', function() {
+$('#spCostoFinalMat').on('change', function () {
     var costoFinalMat = $("#spCostoFinalMat").text();
     var costoCarnet = $("#spCarnetEst").text();
     var costoSeguro = $("#spSeguroEst").text();
     // var costoAdm = $("#spGastoAdm").text();
-     var costoLab = $("#spCostLab").text();
+    var costoLab = $("#spCostLab").text();
     var totales = parseFloat(costoFinalMat) + parseFloat(costoCarnet) + parseFloat(costoSeguro);
-    
+
     if ($("#trLaboratorio").css("display") != "none") {
         totales = parseFloat(costoLab) + totales;
     }
@@ -1762,8 +1767,8 @@ $('#spCostoFinalMat').on('change', function() {
     $("#totalCost").fadeIn(1000);
 });
 
-$("#cbCantMatPres").on('change', function() {
-    var cantMatPresencial =  $("#cbCantMatPres").find(":selected").val();
+$("#cbCantMatPres").on('change', function () {
+    var cantMatPresencial = $("#cbCantMatPres").find(":selected").val();
     resetearDescuento(cantMatPresencial, "descPrese");
     $("#cantMatPre").text(cantMatPresencial);
     var costoPresencial = $("#cmp").val();
@@ -1773,8 +1778,8 @@ $("#cbCantMatPres").on('change', function() {
 
 });
 
-$("#cbCantMatSem").on('change', function() {
-    var cantMatSemipresencial =  $("#cbCantMatSem").find(":selected").val();
+$("#cbCantMatSem").on('change', function () {
+    var cantMatSemipresencial = $("#cbCantMatSem").find(":selected").val();
     resetearDescuento(cantMatSemipresencial, "descSemip");
     $("#cantMatSemi").text(cantMatSemipresencial);
     var costoSemi = $("#cms").val();
@@ -1783,7 +1788,7 @@ $("#cbCantMatSem").on('change', function() {
     otrosDescuentos();
 });
 
-$('.spMaterias').on('change', function() {
+$('.spMaterias').on('change', function () {
     var cambio = false;
 
     if ($(".filaPagoContado").css("display") != "none") {
@@ -1810,12 +1815,12 @@ $('.spMaterias').on('change', function() {
     $("#spTotalCostMaterias").fadeIn(1000);
 });
 
-$('#spTotalCostMaterias').on('change', function() {
+$('#spTotalCostMaterias').on('change', function () {
     var costoTotalMaterias = $("#spTotalCostMaterias").text();
     $("#spCostoFinalMat").text(costoTotalMaterias).trigger('change');
 });
 
-$('#cbCuotas').on('change', function() {
+$('#cbCuotas').on('change', function () {
     $("#tableCuotas").remove();
     var nroCuotas = $("#cbCuotas").find("option:selected").val();
     if (isEmpty(nroCuotas)) {
@@ -1860,7 +1865,7 @@ $('#cbCuotas').on('change', function() {
             <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
             </tr>`;
         }
-        else{
+        else {
             table += `<tr>
             <td class="itemCosto">` + aux + 'º Cuota' + `</td>
             <td class="table-der">` + fnDosDigitos(montoCuotas) + ` Bs.</td>
@@ -1871,11 +1876,11 @@ $('#cbCuotas').on('change', function() {
     divDer.append('<table id="tableCuotas" class="table"><tbody>' + table + '</tbody></table>');
 });
 
-$('#totalCost').on('change', function() {
+$('#totalCost').on('change', function () {
     var nroCuotas = $("#cbCuotas").find("option:selected").val();
     if (!isEmpty(nroCuotas)) {
         $("#tableCuotas").remove();
-        
+
         var costoFinalMat = $("#spCostoFinalMat").text();
         var costoCarnet = $("#spCarnetEst").text();
         var costoSeguro = $("#spSeguroEst").text();
@@ -1899,7 +1904,7 @@ $('#totalCost').on('change', function() {
                 <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
                 </tr>`;
             }
-            else{
+            else {
                 table += `<tr>
                 <td class="itemCosto">` + aux + 'º Cuota' + `</td>
                 <td class="table-der">` + fnDosDigitos(montoCuotas) + ` Bs.</td>
@@ -1911,7 +1916,7 @@ $('#totalCost').on('change', function() {
     }
 });
 
-$(".descuentos").on("change", function() {
+$(".descuentos").on("change", function () {
     otrosDescuentos();
 });
 
@@ -1924,7 +1929,7 @@ function otrosDescuentos() {
     var totalPres = $("#spMatPresencial").text();
     var descSemi = $("#descSemip").val();
     var totalSemi = $("#spMatSemipresencial").text();
-    
+
     descPres = parseFloat(descPres);
     totalPres = parseFloat(totalPres);
     descSemi = parseFloat(descSemi);
@@ -1934,11 +1939,11 @@ function otrosDescuentos() {
     $("#spOtrosDescuentos").text(fnDosDigitos(totalOtrosDesc)).trigger('change');
 }
 
-$("#spOtrosDescuentos").on("change", function() {
+$("#spOtrosDescuentos").on("change", function () {
     var otrosDesc = $("#spOtrosDescuentos").text();
     if (otrosDesc != "0") {
         $("#spSigno").show();
-    } else{
+    } else {
         $("#spSigno").hide();
     }
 });
@@ -1958,7 +1963,7 @@ function recalcular() {
         $("#pagoContado").prop("checked", false).trigger('change');
         cambio = true;
     }
-    
+
     totalPres = parseFloat(totalPres);
     totalSemi = parseFloat(totalSemi);
 

@@ -1612,9 +1612,6 @@ function bloqueoInscripcion() {
     });
 }
 
-$('#registro_btn, #retiro_btn, #cambio_btn').hide();
-//  #selMateria_btn
-
 $(function () {
     var btnEnviar = $("#btnEnviar").attr("disabled", true);
     $("#modalComprobante .requerido").change(function () {
@@ -1639,3 +1636,6 @@ $(function () {
         }
     });
 });
+
+//$('#registro_btn, #retiro_btn, #cambio_btn').hide();
+$('#registro_btn, #retiro_btn, #cambio_btn, #selMateria_btn, #comprobante').hide();

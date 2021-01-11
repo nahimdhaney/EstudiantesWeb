@@ -269,7 +269,7 @@ function cargarOferta(resultado) {
     var periodoDsc = resultado.Data[0].SPERIODO_DSC;
     $("#hdnSemestre").val(periodoDsc);
     $("#spPeriodoDsc").text(periodoDsc);
-    
+
 
     resultado.Data.forEach(function (element) {
         const {
@@ -1284,7 +1284,7 @@ $('#btnSubir').click(function (e) {
     $('#fichero').click();
 });
 
-$('#fichero').on("change", function(e) {
+$('#fichero').on("change", function (e) {
     var imgVal = $(this).val();
     var nombre = $("#fichero")[0].files[0].name;
     var ext = getExtension(imgVal);
@@ -1305,10 +1305,10 @@ function getExtension(filename) {
 function isImage(filename) {
     var ext = getExtension(filename);
     switch (ext.toLowerCase()) {
-    case 'jpg':
-    case 'png':
-    case 'jpeg':
-        return true;
+        case 'jpg':
+        case 'png':
+        case 'jpeg':
+            return true;
     }
     return false;
 }
@@ -1368,6 +1368,8 @@ function enviarInscripcion() {
     datos.pPeriodoId = pPeriodoId;
     datos.pCarreraId = pCarreraId;
     datos.pGruposIds = pGruposIds;
+    $("#mainLoader").show();
+    $("#modalCostos").modal('hide');
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -1377,13 +1379,12 @@ function enviarInscripcion() {
         'type': 'POST',
         'data': JSON.stringify(datos),
         'url': "http://wsnotas.nur.edu:8880/api/Registros/InscripcionOnline",
-        'dataType': 'json', 
+        'dataType': 'json',
         'success': function (response) {
             if (!response.Status) {
                 debugger;
                 swal("Hubo un problema al registrar sus datos", response.Message, "info");
             } else {
-                $("#modalCostos").modal('hide');
                 swal("Proceso finalizado", "Usted acaba de inscribirse y adquirió una deuda, deberá realizar su pago mediante depósito o tranferencia bancaria en un plazo máximo de 48 horas y enviar la imagen, foto o captura de su comprobante, de lo contrario nos reservamos el derecho de retirar las materias aquí registradas.", "success");
                 $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
             }
@@ -1450,7 +1451,7 @@ $("#btnEnviar").click(function () {
 
         setTimeout(function () {
             swal("", respuesta, "info");
-            
+
         }, 1000);
 
     }).fail(function (response) {
@@ -1600,11 +1601,11 @@ function bloqueoInscripcion() {
         'dataType': 'json',
         'success': function (response) {
             if (response.Data.BOOLBLOQUEO == 1) {
-                setTimeout(function(){ $('input[type=checkbox]').prop('disabled', true); }, 1000);
+                setTimeout(function () { $('input[type=checkbox]').prop('disabled', true); }, 1000);
                 $('#selMateria_btn').hide();
-                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que " + response.Data.DESCRIPCION , "info")
+                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que " + response.Data.DESCRIPCION, "info")
             }
-            
+
         },
         'error': function () {
             $('#selMateria_btn').hide();
@@ -1618,19 +1619,19 @@ $(function () {
         var valid = true;
         var correo = $("#txtEmailComprobante").val();
         $.each($("#modalComprobante .requerido"), function (index, value) {
-            
-            if(!$(value).val()){
+
+            if (!$(value).val()) {
                 valid = false;
             }
             if (!isEmail(correo)) {
                 valid = false;
             }
         });
-        if(valid){
+        if (valid) {
             btnEnviar.attr("disabled", false);
             btnEnviar.removeClass("disabled");
-        } 
-        else{
+        }
+        else {
             btnEnviar.attr("disabled", true);
             btnEnviar.addClass("disabled");
         }

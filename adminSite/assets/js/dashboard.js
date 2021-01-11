@@ -1418,6 +1418,8 @@ $("#SaveEmail").click(function () {
         datos.pTelefono = pTelefono;
         datos.pCelular = pCelular;
         datos.pEmail = pEmail;
+        $("#loader").show();
+        $("#SaveEmail").hide();
         if (token != "") {
             jQuery.ajax({
                 headers: {
@@ -1433,9 +1435,11 @@ $("#SaveEmail").click(function () {
                     if (response.Status) {
                         swal("Guardado exitoso", "", "success");
                     } else swal("", "Algo anda mal, tus datos no se guardaron.", "info");
+                    $("#loader").hide();
                 },
                 error: function () {
                     swal("", "Algo anda mal, tus datos no se guardaron.", "info");
+                    $("#loader").hide();
                 },
             });
         }

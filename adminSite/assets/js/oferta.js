@@ -1158,6 +1158,7 @@ function contabilizar() {
     }
 
     $("#totalCost").text(fnDosDigitos(total));
+    $("#cbCuotas").val(4).trigger('change');
 }
 
 $('input[name=pagoContado]').on('change', function () {
@@ -1618,11 +1619,17 @@ $(function () {
     $("#modalComprobante .requerido").change(function () {
         var valid = true;
         var correo = $("#txtEmailComprobante").val();
+        var fichero = $("#fichero").val();
         $.each($("#modalComprobante .requerido"), function (index, value) {
 
             if (!$(value).val()) {
                 valid = false;
+            } else if ($(value).val() == fichero) {
+                if (!isImage(getExtension(fichero))) {
+                    valid = false;
+                }
             }
+
             if (!isEmail(correo)) {
                 valid = false;
             }
@@ -1638,5 +1645,5 @@ $(function () {
     });
 });
 
-//$('#registro_btn, #retiro_btn, #cambio_btn').hide();
-$('#registro_btn, #retiro_btn, #cambio_btn, #selMateria_btn, #comprobante').hide();
+$('#registro_btn, #retiro_btn, #cambio_btn').hide();
+//$('#registro_btn, #retiro_btn, #cambio_btn, #selMateria_btn, #comprobante').hide();

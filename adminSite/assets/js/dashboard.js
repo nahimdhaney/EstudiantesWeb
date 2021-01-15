@@ -329,7 +329,7 @@ function verHistorial() {
         return;
     }
     comenzarCargado();
-    realizarAjaxHistorial();
+    //realizarAjaxHistorial();
     $("#containerHistorial").hide();
     $("#containerPensul").show();
     return false;
@@ -364,7 +364,9 @@ function verListaHistorial() {
         dataType: "json",
         data: JSON.stringify(usuario),
         success: cargarHistorial,
-        error: errorSesion,
+        error: function () {
+            swal("", "Lo sentimos, el servicio de historial en línea está temporalmente inhabilitado.", "info");
+        },
     });
     $("#containerHistorial").show();
 }
@@ -386,13 +388,19 @@ function realizarAjaxHistorial() {
             dataType: "json",
             data: JSON.stringify(usuario),
             success: cargarHistorial,
-            error: errorSesion,
+            error: function () {
+                swal("", "Lo sentimos, el servicio de historial en línea está temporalmente inhabilitado.", "info");
+            },
         });
     }
 }
 
 function cargarHistorial(resultado) {
-    if (resultado.Data == null) return;
+    if (resultado.Data == null) {
+        swal("", "Lo sentimos, el servicio de historial en línea está temporalmente inhabilitado.", "info");
+        terminarCargado();
+        return
+    };
     promedio = resultado.Data.PROMEDIOAPROBADAS ?? 0;
     if (!isPageLoaded) {
         isPageLoaded = true;
@@ -828,7 +836,7 @@ $(document).ready(function () {
             count++;
         });
         localStorage.setItem("arrayCarPer", JSON.stringify(arrayCarPer));
-        realizarAjaxHistorial();
+        //realizarAjaxHistorial();
         $("#carreraPerfil").text(carreras);
         GetPeriodosOfertas();
     }

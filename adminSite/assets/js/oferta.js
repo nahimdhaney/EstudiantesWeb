@@ -1382,17 +1382,19 @@ function enviarInscripcion() {
         'url': "http://wsnotas.nur.edu:8880/api/Registros/InscripcionOnline",
         'dataType': 'json',
         'success': function (response) {
-            if (!response.Status) {
-                debugger;
-                swal("Hubo un problema al registrar sus datos", response.Message, "info");
-            } else {
+            if (response.Status) {
                 swal("Proceso finalizado", "Usted acaba de inscribirse y adquirió una deuda, deberá realizar su pago mediante depósito o tranferencia bancaria en un plazo máximo de 48 horas y enviar la imagen, foto o captura de su comprobante, de lo contrario nos reservamos el derecho de retirar las materias aquí registradas.", "success");
                 $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
+            } else {
+                if (response.Message.includes('Bloqueo'))
+                    swal("Formulario de Inscripción", response.Message, "info");
+                else
+                    swal("Formulario de Inscripción", "No fue posible completar su inscripción. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
             }
             $("#mainLoader").hide();
         },
         'error': function () {
-            swal("", "Los datos no se enviaron correctamente, intente de nuevo.", "info");
+            swal("Formulario de Inscripción", "No fue posible completar su inscripción. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
             $("#mainLoader").hide();
         }
     });
@@ -1589,7 +1591,7 @@ function bloqueoInscripcion() {
     var datos = new Object();
     datos.pPeriodoId = pPeriodoId;
     datos.pCarreraId = pCarreraId;
-
+    $("#mainLoader").show();
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -1604,11 +1606,12 @@ function bloqueoInscripcion() {
             if (response.Data.BOOLBLOQUEO == 1) {
                 setTimeout(function () { $('input[type=checkbox]').prop('disabled', true); }, 1000);
                 $('#selMateria_btn').hide();
-                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible debido a que " + response.Data.DESCRIPCION, "info")
+                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible. <br>" + response.Data.DESCRIPCION, "info")
             }
-
+            $("#mainLoader").hide();
         },
         'error': function () {
+            $("#mainLoader").hide();
             $('#selMateria_btn').hide();
         }
     });

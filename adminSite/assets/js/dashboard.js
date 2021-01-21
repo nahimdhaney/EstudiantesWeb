@@ -782,6 +782,7 @@ $(document).ready(function () {
         $("#inputEmail").val(SEMAIL);
         $("#tituloNombreEstudiante").text(NombreCompleto);
         cargarCreditos(LHORASERVICIO);
+        getEmailValido();
     }
 
     function getCarreraInfo(token) {
@@ -1259,6 +1260,7 @@ function consultarCXC() {
     });
 }
 
+var botonPagoVisible = 0;
 function mostrarResultado(response) {
     var planes = response.Data;
     var carrera = "";
@@ -1274,7 +1276,6 @@ function mostrarResultado(response) {
         var saldoTotal = 0;
         var pagadoTotal = 0;
         var cuotaTotal = 0;
-
         for (let aux = 0; aux < detalles.length; aux++) {
             var rowDetalles = detalles[aux];
             var nroCuota = rowDetalles.LNROCUOTA;
@@ -1293,12 +1294,14 @@ function mostrarResultado(response) {
         }
 
         var datosPlanAlumno = planes[index].PLAN;
+        planpagosId = datosPlanAlumno.LPLANPAGOS_ID;
         carrera = datosPlanAlumno.SCARRERA_DSC;
         centro = datosPlanAlumno.SCENTRO_DSC;
         centro = titleCase(centro);
         periodo = datosPlanAlumno.SPERIODO_DSC;
 
         var items = {
+            planpagosId,
             carrera,
             centro,
             cuotas,
@@ -1313,7 +1316,6 @@ function mostrarResultado(response) {
             datos.push(items);
         }
     }
-
     datos = sortByKey(datos, "carrera");
     var final = "";
 
@@ -1327,7 +1329,7 @@ function mostrarResultado(response) {
             `</h5><h5 class="title">` +
             datos[index].centro +
             `</h5></div>
-              <div class="content table-responsive table-full-width"><table class="table table-hover table-striped">
+              <div class="content table-responsive table-full-width"><table id="`+ datos[index].planpagosId + `" class="table table-hover table-striped">
               <thead><th>#</th><th>Fecha Vencimiento</th><th>Cuota (Bs)</th><th>Pagado (Bs)</th><th>Saldo (Bs)</th><th>Estado</th>
               </thead><tbody>`;
         var htmlEnd =
@@ -1337,7 +1339,10 @@ function mostrarResultado(response) {
             fnDosDigitos(datos[index].pagadoTotal) +
             `</strong></td><td><strong>` +
             fnDosDigitos(datos[index].saldoTotal) +
-            `</strong></td><td></td></tr></tbody></table></div></div></div></div>`;
+            `</strong></td><td>`;
+        htmlEnd += "</td></tr></tbody></table></div></div></div></div>";
+
+        var botonPagoPuesto = 0;
         for (let aux = 0; aux < planRow.length; aux++) {
             detalleRow +=
                 "<tr><th>" +
@@ -1350,9 +1355,15 @@ function mostrarResultado(response) {
                 fnDosDigitos(planRow[aux].pagado) +
                 "</td><td>" +
                 fnDosDigitos(planRow[aux].saldo) +
-                "</td><td>" +
-                planRow[aux].estado +
-                "</td></tr>";
+                "</td><td>";
+            
+            if (planRow[aux].saldo > 0 && botonPagoPuesto == 0 && botonPagoVisible == 1) {
+                detalleRow += "<a class='btn btn-primary' onclick='tieneEmailValidoPago(" + datos[index].planpagosId + "," + planRow[aux].nroCuota + "," + planRow[aux].saldo + ")'><i class='fas fa-money-check-alt'></i> Pagar cuota</a>";
+                botonPagoPuesto = 1;
+            } else {
+                detalleRow += planRow[aux].estado;
+            }
+            detalleRow += "</td></tr>";
         }
         final += html + detalleRow + htmlEnd;
     }
@@ -1441,8 +1452,10 @@ $("#SaveEmail").click(function () {
                 data: JSON.stringify(datos),
                 success: function (response) {
                     if (response.Status) {
-                        swal("Guardado exitoso", "", "success");
-                    } else swal("", "Algo anda mal, tus datos no se guardaron.", "info");
+                        swal("Guardado exitoso", "Se ha enviado un mensaje para verificar su correo electrónico, revise su bandeja de entrada.", "success");
+                        getEmailValido();
+                    } else
+                        swal("", "Algo anda mal, tus datos no se guardaron.", "info");
                     $("#loader").hide();
                 },
                 error: function () {
@@ -1988,4 +2001,62 @@ function recalcular() {
     $("#spTotalCostMaterias").hide();
     $("#spTotalCostMaterias").text(fnDosDigitos(totales)).trigger('change');
     $("#spTotalCostMaterias").fadeIn(1000);
+}
+
+function getEmailValido() {
+    var token = localStorage.getItem("token");
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetEmailEsValido",
+        'dataType': 'json',
+        'success': function (response) {
+            var esValido = response.Data;
+            if (esValido == 1) {
+                $('#inputEmail_ver').show();
+                $('#inputEmail_ver').html('<i class="fas fa-check-circle"></i>');
+            } else {
+                $('#inputEmail_ver').show();
+                $('#inputEmail_ver').html('<i class="fas fa-times-circle"></i>');
+            }
+        }
+    });
+}
+
+function tieneEmailValidoPago(pPlanPagosId, pCuota, pMonto) {
+    $('#nextPagoId_hf').val(pPlanPagosId);
+    $('#nextPagoCuota_hf').val(pCuota);
+    $('#nextPagoMonto_hf').val(pMonto);
+    comenzarCargado();
+    var token = localStorage.getItem("token");
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetEmailEsValido",
+        'dataType': 'json',
+        'success': function (response) {
+            terminarCargado();
+            var esValido = response.Data;
+            if (esValido == 1) {
+                // Abrir ventana de PAGO
+            } else {
+                swal("Verifique su correo electrónico", "Esta verificación es indispensable para continuar con el proceso de Pago. Para verificar su correo electrónico: <br>" +
+                    "   1. Ir a 'Mi perfil'. <br>" +
+                    "   2. Llenar el campo 'Email'. <br>" +
+                    "   3. Presiona 'Guardar'", "info");
+            }
+        },
+        'error': function () {
+            terminarCargado();
+            swal("", "No fue posible verificar su correo electrónico, intente mas tarde.", "info");
+        }
+    });
 }

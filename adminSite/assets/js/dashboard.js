@@ -3,6 +3,8 @@ var promedio = 0;
 var isPageLoaded = false;
 var isHistorialCargado = false;
 
+var botonPagoVisible = 0;
+
 function comenzarCargado() {
     $("#loader").removeAttr("style");
     $(".content").attr("style", "display:none");
@@ -1260,7 +1262,6 @@ function consultarCXC() {
     });
 }
 
-var botonPagoVisible = 0;
 function mostrarResultado(response) {
     var planes = response.Data;
     var carrera = "";
@@ -1339,8 +1340,7 @@ function mostrarResultado(response) {
             fnDosDigitos(datos[index].pagadoTotal) +
             `</strong></td><td><strong>` +
             fnDosDigitos(datos[index].saldoTotal) +
-            `</strong></td><td>`;
-        htmlEnd += "</td></tr></tbody></table></div></div></div></div>";
+            `</strong></td><td></td></tr></tbody></table></div></div></div></div>`;
 
         var botonPagoPuesto = 0;
         for (let aux = 0; aux < planRow.length; aux++) {
@@ -1356,9 +1356,9 @@ function mostrarResultado(response) {
                 "</td><td>" +
                 fnDosDigitos(planRow[aux].saldo) +
                 "</td><td>";
-            
+
             if (planRow[aux].saldo > 0 && botonPagoPuesto == 0 && botonPagoVisible == 1) {
-                detalleRow += "<a class='btn btn-primary' onclick='tieneEmailValidoPago(" + datos[index].planpagosId + "," + planRow[aux].nroCuota + "," + planRow[aux].saldo + ")'><i class='fas fa-money-check-alt'></i> Pagar cuota</a>";
+                detalleRow += "<a id='pago_btn_" + datos[index].planpagosId + "' class='btn btn-primary' onclick='tieneEmailValidoPago(" + datos[index].planpagosId + "," + fnDosDigitos(planRow[aux].saldo) + ")'><i class='fas fa-money-check-alt'></i> Pagar cuota</a>";
                 botonPagoPuesto = 1;
             } else {
                 detalleRow += planRow[aux].estado;
@@ -1534,13 +1534,12 @@ function PeriodosSimular() {
     }
 };
 
-$(document).on("change", "input[type=number]", function () {
+$(document).on("change", "#containerSimulador input[type=number]", function () {
     if ($(this).val() == "" || $(this).val() < 0) {
         $(this).val(0);
     } else if ($(this).val() > 100) {
         $(this).val(100);
     }
-
 });
 
 $("#btnSimular").click(function () {
@@ -2027,11 +2026,10 @@ function getEmailValido() {
     });
 }
 
-function tieneEmailValidoPago(pPlanPagosId, pCuota, pMonto) {
-    $('#nextPagoId_hf').val(pPlanPagosId);
-    $('#nextPagoCuota_hf').val(pCuota);
-    $('#nextPagoMonto_hf').val(pMonto);
+function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
     comenzarCargado();
+    $('#nextPagoId_hf').val(pPlanPagosId);
+    $('#nextPagoSaldo_hf').val(pSaldo);
     var token = localStorage.getItem("token");
     jQuery.ajax({
         headers: {
@@ -2043,20 +2041,75 @@ function tieneEmailValidoPago(pPlanPagosId, pCuota, pMonto) {
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetEmailEsValido",
         'dataType': 'json',
         'success': function (response) {
-            terminarCargado();
             var esValido = response.Data;
-            if (esValido == 1) {
-                // Abrir ventana de PAGO
+            if (esValido >= 0) {
+                $("#campoMonto").html('Bs. <input type="number" id="montoPago_txt" min="' + fnDosDigitos(pSaldo) + '" value="' + fnDosDigitos(pSaldo) + '" class="text-center">');
+                $('#MontoaPagarModal').modal('show');
             } else {
                 swal("Verifique su correo electrónico", "Esta verificación es indispensable para continuar con el proceso de Pago. Para verificar su correo electrónico: <br>" +
                     "   1. Ir a 'Mi perfil'. <br>" +
                     "   2. Llenar el campo 'Email'. <br>" +
                     "   3. Presiona 'Guardar'", "info");
             }
+            terminarCargado();
         },
         'error': function () {
-            terminarCargado();
             swal("", "No fue posible verificar su correo electrónico, intente mas tarde.", "info");
+            terminarCargado();
         }
     });
 }
+
+function GetLinkPago() {
+    var pPlanPagosId = $('#nextPagoId_hf').val();
+    var pSaldo = parseFloat($('#nextPagoSaldo_hf').val());
+    var pMontoPago = parseFloat($('#montoPago_txt').val());
+    if (pMontoPago < pSaldo) {
+        swal("", "Para realizar el pago en línea su monto mínimo es " + fnDosDigitos(pSaldo) + ".", "info");
+        return;
+    } else {
+        pSaldo = pMontoPago;
+    }
+    comenzarCargado();
+    var datos = new Object();
+    datos.pPlanPagosId = pPlanPagosId;
+    datos.pSaldo = pSaldo;
+    var token = localStorage.getItem("token");
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetLinkPago",
+        'dataType': 'json',
+        'data': JSON.stringify(datos),
+        'success': function (response) {
+            terminarCargado();
+            var pPlanPagosId = $('#nextPagoId_hf').val();
+            if (response.Data != "") {
+                // Abrir ventana de PAGO
+                $('#pago_btn_' + pPlanPagosId).text("En proceso...");
+                $('#pago_btn_' + pPlanPagosId).attr("disabled", "disabled");
+                $('#pago_btn_' + pPlanPagosId).prop("onclick", null).off("click");
+                setTimeout(window.open(response.Data, '_blank'), 3000);
+            } else {
+                swal("", "No sentimos, no se pudo solicitar el pago en línea.", "info");
+            }
+        },
+        'error': function () {
+            swal("", "No sentimos, no se pudo solicitar el pago en línea.", "info");
+            terminarCargado();
+        }
+    });
+}
+
+$("#montoPago_txt").change(function () {
+    var pSaldo = parseFloat($('#nextPagoSaldo_hf').val());
+    var pMontoPago = parseFloat($('#montoPago_txt').val());
+    if (pMontoPago < pSaldo)
+        $("#montoPago_txt").val(fnDosDigitos(pSaldo));
+    else
+        $("#montoPago_txt").val(fnDosDigitos(pMontoPago));
+});

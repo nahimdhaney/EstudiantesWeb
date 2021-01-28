@@ -397,9 +397,8 @@
                 </div>
 
                 <input id="nextPagoId_hf" type="hidden" value="#">
-                <input id="nextPagoCuota_hf" type="hidden" value="#">
-                <input id="nextPagoMonto_hf" type="hidden" value="#">
-                
+                <input id="nextPagoSaldo_hf" type="hidden" value="#">
+
                 <div id='containerPlanPagos' style="display:none">
 
                 </div>
@@ -713,7 +712,7 @@
     </div> -->
     <div class="modal fade" id="ctabanco_modal" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -723,15 +722,23 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <table style='width:100%;border-collapse: collapse;' border='1'>
+                    <table class="table">
+                        <tr>
+                            <th>NOMBRE: </th>
+                            <td>Universidad Nur</td>
+                        </tr>
+                        <tr>
+                            <th>NIT: </th>
+                            <td>1028223024</td>
+                        </tr>
+                    </table>
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>BANCO</th>
                                 <th>TIPO</th>
                                 <th>MONEDA</th>
                                 <th>CUENTA</th>
-                                <th>NOMBRE</th>
-                                <th>NIT</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -740,43 +747,68 @@
                                 <td>Cta. Cte.</td>
                                 <td>BOB</td>
                                 <td>4010140786</td>
-                                <td>Universidad Nur</td>
-                                <td>1028223024</td>
                             </tr>
                             <tr>
                                 <td>BANCO BNB</td>
                                 <td>Cta. Cte.</td>
                                 <td>BOB</td>
                                 <td>2000129588</td>
-                                <td>Universidad Nur</td>
-                                <td>1028223024</td>
                             </tr>
                             <tr>
                                 <td>BANCO UNION</td>
                                 <td>Cta. Cte.</td>
                                 <td>BOB</td>
                                 <td>1-689527</td>
-                                <td>Universidad Nur</td>
-                                <td>1028223024</td>
                             </tr>
                             <tr>
                                 <td>BANCO FASSIL</td>
                                 <td>Cta. Cte.</td>
                                 <td>BOB</td>
                                 <td>951310</td>
-                                <td>Universidad Nur</td>
-                                <td>1028223024</td>
                             </tr>
                             <tr>
                                 <td>COOPERATIVA SAN MARTIN</td>
                                 <td>Cta. Cte.</td>
                                 <td>BOB</td>
                                 <td>1061290444</td>
-                                <td>Universidad Nur</td>
-                                <td>1028223024</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input id="montoPago_hf" type="hidden" value="0">
+    <div id="MontoaPagarModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Monto a pagar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div>
+                            A continuación el monto para realizar el pago:
+                        </div>
+                        <br>
+                        <div id="campoMonto">
+
+                        </div>
+                        <br>
+                        <div>
+                            <b>Nota:</b> Si desea puede incrementar el monto para pagos por adelantado o próximas inscripciones
+                            (saldo a favor).
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="GetLinkPago();">Siguiente</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

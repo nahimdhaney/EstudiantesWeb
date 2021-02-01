@@ -1437,7 +1437,7 @@ $("#SaveEmail").click(function () {
         datos.pTelefono = pTelefono;
         datos.pCelular = pCelular;
         datos.pEmail = pEmail;
-        $("#loader").show();
+        comenzarCargado();
         $("#SaveEmail").hide();
         if (token != "") {
             jQuery.ajax({
@@ -1456,11 +1456,11 @@ $("#SaveEmail").click(function () {
                         getEmailValido();
                     } else
                         swal("", "Algo anda mal, tus datos no se guardaron.", "info");
-                    $("#loader").hide();
+                    terminarCargado();
                 },
                 error: function () {
                     swal("", "Algo anda mal, tus datos no se guardaron.", "info");
-                    $("#loader").hide();
+                    terminarCargado();
                 },
             });
         }
@@ -2011,7 +2011,7 @@ function getEmailValido() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetEmailEsValido",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function (response) {
             var esValido = response.Data;
@@ -2038,18 +2038,19 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetEmailEsValido",
+        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function (response) {
             var esValido = response.Data;
-            if (esValido >= 0) {
+            if (esValido == 1) {
                 $("#campoMonto").html('Bs. <input type="number" id="montoPago_txt" min="' + fnDosDigitos(pSaldo) + '" value="' + fnDosDigitos(pSaldo) + '" class="text-center">');
                 $('#MontoaPagarModal').modal('show');
             } else {
-                swal("Verifique su correo electrónico", "Esta verificación es indispensable para continuar con el proceso de Pago. Para verificar su correo electrónico: <br>" +
+                swal("Verifique su correo electrónico", "Esta verificación es indispensable para continuar con el proceso de Pago. Para verificar su correo electrónico: <br><br>" +
                     "   1. Ir a 'Mi perfil'. <br>" +
                     "   2. Llenar el campo 'Email'. <br>" +
-                    "   3. Presiona 'Guardar'", "info");
+                    "   3. Presiona 'Guardar'. <br>" +
+                    "   4. Revisar la bandeja de entreda de su correo electrónico, recibirá un mensaje para concluir la verificación.", "info");
             }
             terminarCargado();
         },

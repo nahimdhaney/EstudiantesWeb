@@ -3,7 +3,7 @@ var promedio = 0;
 var isPageLoaded = false;
 var isHistorialCargado = false;
 
-var botonPagoVisible = 0;
+var botonPagoVisible = 1;
 
 function comenzarCargado() {
     $("#loader").removeAttr("style");

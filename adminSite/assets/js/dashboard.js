@@ -2094,7 +2094,8 @@ function GetLinkPago() {
                 $('#pago_btn_' + pPlanPagosId).text("En proceso...");
                 $('#pago_btn_' + pPlanPagosId).attr("disabled", "disabled");
                 $('#pago_btn_' + pPlanPagosId).prop("onclick", null).off("click");
-                setTimeout(window.open(response.Data, '_blank'), 3000);
+                //setTimeout(window.open(response.Data, '_blank'), 3000);
+                window.location.href = response.Data;
             } else {
                 swal("", "No sentimos, no se pudo solicitar el pago en línea.", "info");
             }

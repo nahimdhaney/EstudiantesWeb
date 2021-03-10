@@ -1,6 +1,10 @@
+
 $(document).ready(function ($) {
+
+
   var userId = localStorage.getItem("token");
   if (userId != null && userId != "") {
+    debugger;
     var url = "adminSite/dashboard.html";
     $(location).attr("href", url);
   }
@@ -67,4 +71,5 @@ $(document).ready(function ($) {
     $("#loginButton").removeAttr("style");
     swal("Error", "Usuario o Pin incorrectos.", "error");
   }
+
 });

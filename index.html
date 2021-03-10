@@ -2,166 +2,141 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="icon" type="image/png" href="adminSite/assets/img/nur.png" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="icon" type="image/png" href="adminSite/assets/img/nur.png" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Consulta de Notas</title>
-    <meta name="description" content="Sitio de Notas de la Universidad Nur" />
-    <meta name="keywords" content="Puedes ver tus notas, horarios, ofertas e historial de materias" />
+  <title>Consulta de Notas</title>
+  <meta name="description" content="Sitio de Notas de la Universidad Nur" />
+  <meta name="keywords" content="Puedes ver tus notas, horarios, ofertas e historial de materias" />
 
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600|Montserrat:200,300,400" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600|Montserrat:200,300,400"
+    rel="stylesheet" />
 
-    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
-    <link rel="stylesheet" href="assets/fonts/ionicons/css/ionicons.min.css" />
-    <!-- <link rel="stylesheet" href="assets/fonts/law-icons/font/flaticon.css"> -->
+  <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" href="assets/fonts/ionicons/css/ionicons.min.css" />
+  <!-- <link rel="stylesheet" href="assets/fonts/law-icons/font/flaticon.css"> -->
 
-    <link rel="stylesheet" href="assets/fonts/fontawesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="assets/fonts/fontawesome/css/font-awesome.min.css" />
 
-    <link rel="stylesheet" href="assets/css/slick.css" />
-    <link rel="stylesheet" href="assets/sweetalert2/sweetalert2.min.css" />
-    <link rel="stylesheet" href="assets/css/slick-theme.css" />
+  <link rel="stylesheet" href="assets/css/slick.css" />
+  <link rel="stylesheet" href="assets/sweetalert2/sweetalert2.min.css" />
+  <link rel="stylesheet" href="assets/css/slick-theme.css" />
 
-    <link rel="stylesheet" href="assets/css/helpers.css" />
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <link rel="stylesheet" href="assets/css/landing-2.css" />
-    <style>
-        .loader {
-            border: 12px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 12px solid #3498db;
-            width: 80px;
-            height: 80px;
-            /* margin: 50px; */
-            display: inline-block;
-            text-align: center;
-            -webkit-animation: spin 2s linear infinite;
-            /* Safari */
-            animation: spin 2s linear infinite;
-        }
-        /* Safari */
-        
-        @-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-        
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+  <link rel="stylesheet" href="assets/css/helpers.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/landing-2.css" />
+  <style>
+    .loader {
+      border: 12px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 12px solid #3498db;
+      width: 80px;
+      height: 80px;
+      /* margin: 50px; */
+      display: inline-block;
+      text-align: center;
+      -webkit-animation: spin 2s linear infinite;
+      /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
-    <nav class="navbar navbar-expand-lg navbar-dark pb_navbar pb_scrolled-light" id="pb-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Consulta de notas</a>
-        </div>
-    </nav>
-    <!-- END nav -->
+  <nav class="navbar navbar-expand-lg navbar-dark pb_navbar pb_scrolled-light" id="pb-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Consulta de notas</a>
+    </div>
+  </nav>
+  <!-- END nav -->
 
-    <section class="pb_cover_v3 overflow-hidden cover-bg-indigo cover-bg-opacity text-left pb_gradient_v1 pb_slant-light" id="section-home">
-        <div class="container">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-md-6">
-                    <img src="assets/images/nur.png" alt="Image placeholder" class="img-fluid" />
-                    <h2 class="heading mb-3">Notas Nur</h2>
-                    <div class="sub-heading">
-                        <p class="mb-4">Bienvenido a la plataforma de notas Nur 2.0</p>
-                        <!-- <p class="mb-5"><a class="btn btn-success btn-lg pb_btn-pill smoothscroll" href="#section-pricing"><span class="pb_font-14 text-uppercase pb_letter-spacing-1">See Pricing</span></a></p> -->
-                    </div>
-                    <div class="sub-heading">
-                        <a class="mb-5 btn btn-link" href="./Equipo/index.html" target="_blank">Conoce nuestro equipo</a
-              >
+  <section class="pb_cover_v3 overflow-hidden cover-bg-indigo cover-bg-opacity text-left pb_gradient_v1 pb_slant-light"
+    id="section-home">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-md-6">
+          <img src="assets/images/nur.png" alt="Image placeholder" class="img-fluid" />
+          <h2 class="heading mb-3">Notas Nur</h2>
+          <div class="sub-heading">
+            <p class="mb-4">Bienvenido a la plataforma de notas Nur 2.0</p>
+            <!-- <p class="mb-5"><a class="btn btn-success btn-lg pb_btn-pill smoothscroll" href="#section-pricing"><span class="pb_font-14 text-uppercase pb_letter-spacing-1">See Pricing</span></a></p> -->
+          </div>
+          <div class="sub-heading">
+            <a class="mb-5 btn btn-link" href="./Equipo/index.html" target="_blank">Conoce nuestro equipo</a>
+          </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5 relative align-self-center">
+          <form action="#" class="bg-white rounded pb_form_v1">
+            <h2 class="mb-4 mt-0 text-center">Ingresar</h2>
+            <div class="form-group">
+              <input id="registroNumber" required="required" type="text" class="form-control pb_height-50 reverse"
+                placeholder="Registro" />
             </div>
-          </div>
-          <div class="col-md-1"></div>
-          <div class="col-md-5 relative align-self-center">
-            <form action="#" class="bg-white rounded pb_form_v1">
-              <h2 class="mb-4 mt-0 text-center">Ingresar</h2>
-              <div class="form-group">
-                <input
-                  id="registroNumber"
-                  required="required"
-                  type="text"
-                  class="form-control pb_height-50 reverse"
-                  placeholder="Registro"
-                />
-              </div>
-              <div class="form-group">
-                <input
-                  id="pingNumber"
-                  required="required"
-                  type="password"
-                  class="form-control pb_height-50 reverse"
-                  placeholder="Número de pin"
-                />
-              </div>
-              <div style="text-align: center">
-                <div id="loader" style="display:none" class="loader"></div>
-              </div>
-              <div class="form-group">
-                <input
-                  id="loginButton"
-                  type="submit"
-                  class="btn btn-primary btn-lg btn-block pb_btn-pill  btn-shadow-blue"
-                  value="Ingresar"
-                />
-              </div>
-            </form>
-          </div>
+            <div class="form-group">
+              <input id="pingNumber" required="required" type="password" class="form-control pb_height-50 reverse"
+                placeholder="Número de pin" />
+            </div>
+            <div style="text-align: center">
+              <div id="loader" style="display:none" class="loader"></div>
+            </div>
+            <div class="form-group">
+              <input id="loginButton" type="submit"
+                class="btn btn-primary btn-lg btn-block pb_btn-pill  btn-shadow-blue" value="Ingresar" />
+            </div>
+          </form>
         </div>
       </div>
-    </section>
-    <!-- END section -->
-
-    <!-- END section -->
-
-    <!-- loader -->
-    <div id="pb_loader" class="show fullscreen">
-      <svg class="circular" width="48px" height="48px">
-        <circle
-          class="path-bg"
-          cx="24"
-          cy="24"
-          r="22"
-          fill="none"
-          stroke-width="4"
-          stroke="#eeeeee"
-        />
-        <circle
-          class="path"
-          cx="24"
-          cy="24"
-          r="22"
-          fill="none"
-          stroke-width="4"
-          stroke-miterlimit="10"
-          stroke="#1d82ff"
-        />
-      </svg>
     </div>
-    <script src="assets/sweetalert2/sweetalert2.min.js"></script>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/jquery.mb.YTPlayer.min.js"></script>
+  </section>
+  <!-- END section -->
 
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/jquery.easing.1.3.js"></script>
+  <!-- END section -->
 
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/login.js"></script>
-  </body>
+  <!-- loader -->
+  <div id="pb_loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+        stroke="#1d82ff" />
+    </svg>
+  </div>
+  <script src="assets/sweetalert2/sweetalert2.min.js"></script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/slick.min.js"></script>
+  <script src="assets/js/jquery.mb.YTPlayer.min.js"></script>
+
+  <script src="assets/js/jquery.waypoints.min.js"></script>
+  <script src="assets/js/jquery.easing.1.3.js"></script>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/login.js"></script>
+</body>
+
 </html>

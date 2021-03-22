@@ -1,3 +1,5 @@
+var botonInscripcionVisible = 0;
+
 $(document).ready(function () {
     cargarPagina();
     getCostosSemestre();
@@ -1384,7 +1386,8 @@ function enviarInscripcion() {
         'success': function (response) {
             if (response.Status) {
                 swal("Proceso finalizado", "Usted acaba de inscribirse y adquirió una deuda, deberá realizar su pago mediante depósito o tranferencia bancaria en un plazo máximo de 48 horas y enviar la imagen, foto o captura de su comprobante, de lo contrario nos reservamos el derecho de retirar las materias aquí registradas.", "success");
-                $('input[type=checkbox]').prop('disabled', true); $('#selMateria_btn').hide();
+                $('input[type=checkbox]').prop('disabled', true);
+                $('#selMateria_btn').hide();
             } else {
                 if (response.Message.includes('Bloqueo'))
                     swal("Formulario de Inscripción", response.Message, "info");
@@ -1585,6 +1588,11 @@ function isEmail(email) {
 }
 
 function bloqueoInscripcion() {
+    if (botonInscripcionVisible == 0) {
+        setTimeout(function () { $('input[type=checkbox]').prop('disabled', true); }, 1000);
+        $('#selMateria_btn').hide();
+        return;
+    }
     var token = localStorage.getItem("token");
     var pPeriodoId = parseInt(localStorage.getItem("periodoOferta"));
     var pCarreraId = parseInt(localStorage.getItem("carreraId"));

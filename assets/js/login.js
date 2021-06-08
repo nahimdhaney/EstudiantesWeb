@@ -4,7 +4,6 @@ $(document).ready(function ($) {
 
   var userId = localStorage.getItem("token");
   if (userId != null && userId != "") {
-    debugger;
     var url = "adminSite/dashboard.html";
     $(location).attr("href", url);
   }

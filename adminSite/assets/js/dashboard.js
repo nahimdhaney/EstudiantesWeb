@@ -829,7 +829,6 @@ function periodosOfertas(resultado) {
 }
 
 function obtenerNotas(periodoId) {
-    debugger;
     var periodoActual = $("#dperiodoActual").val();
     var semestre = periodoActual.split("-")[1];
     var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="assets/img/nur.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Pagos Nur</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
+
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="assets/icons/css/all.min.css">
+    <link href='assets/css/robotoFont.css' rel='stylesheet' type='text/css'>
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="assets/css/pagos.css">
+
+</head>
+
+<body class="fondo">
+    <div id="mainLoader" class='loader'></div>
+    <div>
+
+        <div class=" cabeza text-center">
+            <div class="container">
+                <div class="logo">
+                    <img src="assets/img/nur_iso.png" />
+                </div>
+                <h1>Pagos Nur</h1>
+                <p>Realiza tus pagos de forma virtual o en puntos fisicos</p>
+            </div>
+            <br>
+            <div class="formapago container">
+                <a onclick="showPagoOnline()" role="button">
+                    <div><img src="assets/img/tarjeta.png" alt="">
+                        <p>Pago online</p>
+                    </div>
+                </a>
+                <a onclick="showPuntosPago()" role="button">
+                    <div><img src="assets/img/cajero.png" alt="">
+                        <p>Ver puntos físicos de Pago</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="puntospago container bg-white rounded pb_form_v1" style="display: none; padding: 15px; background-color: white; border-radius: 5px;color: black; padding: 15px;">
+                <a onclick="location.reload();" class="btn btn-primary" style="float: left;">Atras</a>
+                <br>
+                <div>
+                    <div class="col-12 text-center ">
+                        <h2 class="section-title mb-3 ">Puntos de Cobranza</h2>
+                    </div>
+                    <div class="col-12 text-center">
+                        <img src="assets/img/pagoexpress2.png" alt="PAGO_EXPRESS" style="width: 200px;margin: 15px;">
+                    </div>
+                    <div class="col-12">
+                        <p><span style="background-color: #3fb1ce " class="badge badge-pill ">&nbsp;</span> Puntos de Cobranza Externos</p>
+                        <p><span style="background-color: #2d5f99 " class="badge badge-pill ">&nbsp;</span> Puntos de Cobranza PAGO EXPRESS</p>
+
+                    </div>
+                    <div class="col-12 text-center ">
+                        <iframe style="width: 100%; height: 400px; margin: 0; " src="https://www.pagoexpress.com.bo/sitioweb/mapa " allow="geolocation " frameborder="0 "></iframe>
+                    </div>
+                    <br>
+                    <div class="col-12 text-center">
+                        <a href="assets/docs/PUNTOS FISICOS DE COBRANZA PAGO EXPRESS.pdf" target="_blank" download class="btn btn-primary" style="color: white;background-color: #3472F7;">
+                            <img src="assets/img/pdficon.png" alt="pdf" width="50"> Entidades financieras Pago Express</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logindiv container bg-white rounded pb_form_v1" style="display: none; background-color: white; border-radius: 5px; color: black; padding: 15px;">
+                <a onclick="location.reload();" class="btn btn-primary" style="float: left;">Atras</a>
+                <br>
+                <form action="#" class="bg-white rounded pb_form_v1">
+                    <h2 class="mb-4 mt-0 text-center">Ingresar</h2>
+                    <br>
+                    <div class="form-group">
+                        <input id="registroNumber" required="required" type="text" class="form-control pb_height-50 reverse text-center" placeholder="Nro. de Registro" />
+                    </div>
+                    <div class="form-group">
+                        <input id="pingNumber" required="required" type="password" class="form-control pb_height-50 reverse text-center" placeholder="Pin" />
+                    </div>
+                    <div style="text-align: center">
+                        <div id="loader" style="display:none" class="loader"></div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <input id="loginButton" type="submit" class="btn btn-primary btn-lg btn-block pb_btn-pill  btn-shadow-blue" value="Ingresar" />
+                    </div>
+                </form>
+            </div>
+
+            <input id="nextPagoId_hf" type="hidden" value="#">
+            <input id="nextPagoSaldo_hf" type="hidden" value="#">
+
+            <div class="pagosdiv container bg-white rounded pb_form_v1" style="color: black; display: none; background-color: white; border-radius: 5px;color: black; padding: 15px;min-height: 300px;">
+                <a onclick="location.reload();" class="btn btn-primary" style="float: left;">Atras</a>
+                <a onclick="logout();" class="btn btn-primary" style="float: right ;">Cerrar sesión</a>
+                <br>
+                <br>
+                <br>
+                <div id='containerPlanPagos'>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+        </div>
+
+    </div>
+
+
+    <input id="montoPago_hf" type="hidden" value="0">
+    <div id="MontoaPagarModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Monto a pagar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div>
+                            A continuación el monto para realizar el pago:
+                        </div>
+                        <br>
+                        <div id="campoMonto">
+
+                        </div>
+                        <br>
+                        <div>
+                            <b>Nota:</b> Si desea puede incrementar el monto para pagos por adelantado o próximas inscripciones (saldo a favor).
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="GetLinkPago();">Siguiente</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="assets/js/core.js" type="text/javascript"></script>
+<script src="assets/js/charts.js" type="text/javascript"></script>
+<script src="assets/js/animated.js" type="text/javascript"></script>
+<!--   Core JS Files   -->
+<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../assets/sweetalert2/sweetalert2.min.js"></script>
+<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+<script src="assets/js/pagos.js"></script>
+
+</html>

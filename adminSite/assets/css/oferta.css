@@ -335,9 +335,12 @@
     border: none;
 }
 
-.divModalFooter {
+/* .divModalFooter {
     display: flex;
     justify-content: flex-end;
+} */
+.divModalFooter .btnAtras{
+    float: left;
 }
 
 .divModalCostoFooter{

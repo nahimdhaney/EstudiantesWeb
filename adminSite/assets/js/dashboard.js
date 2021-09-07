@@ -1,4 +1,3 @@
-
 var horasServicio = 120;
 var promedio = 0;
 var isPageLoaded = false;
@@ -6,7 +5,7 @@ var isHistorialCargado = false;
 var esconderPeriodos = false;
 var botonPagoVisible = 1;
 
-$(document).ready(function () {
+$(document).ready(function() {
 
     var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
     if (tieneBloqueo == 1) {
@@ -20,7 +19,7 @@ $(document).ready(function () {
     cargarPagina();
 
     //tieneLaboratorio();
-    $("#carrerasAlumno").change(function () {
+    $("#carrerasAlumno").change(function() {
         localStorage.setItem("carreraId", this.value);
         localStorage.setItem("carreraNombre", $(this).find("option:selected").text());
         if ($("#containerPensul").is(":visible")) {
@@ -34,7 +33,7 @@ $(document).ready(function () {
         //cargarPagina();
 
         var arrayCarPer = JSON.parse(localStorage.getItem("arrayCarPer"));
-        arrayCarPer.forEach(function (element) {
+        arrayCarPer.forEach(function(element) {
             var carreraIdStorage = localStorage.getItem("carreraId");
             if (element.LCARRERA_ID == carreraIdStorage) {
                 localStorage.setItem("corrPeActId", element.LPERIODOACTUAL_ID);
@@ -46,13 +45,13 @@ $(document).ready(function () {
         });
     });
 
-    $("#closePensul").click(function () {
+    $("#closePensul").click(function() {
         $("#containerNotas").show();
         $("#containerAsistencia").show();
         $("#containerPensul").hide();
     });
 
-    $("#formCambiarPin").submit(function (event) {
+    $("#formCambiarPin").submit(function(event) {
         var pinAnterior = $("#pinAnterior").val();
         var nuevoPin = $("#nuevoPin").val();
         var repetirNuevoPin = $("#repetirNuevoPin").val();
@@ -80,7 +79,7 @@ $(document).ready(function () {
                     data: JSON.stringify(usuario),
                     url: "http://wsnotas.nur.edu:8880/api/Registros/UpdatePin",
                     dataType: "json",
-                }).done(function (response) {
+                }).done(function(response) {
                     if (response.Status) {
                         swal("Operacion Exitosa!", "Pin actualizado correctamente!", "success");
                     } else {
@@ -96,7 +95,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#verOferta").click(function () {
+    $("#verOferta").click(function() {
         //if (tieneOferta()) {
         if (true) {
             var periodoOferta = $("#periodosOferta").find(":selected").val();
@@ -111,7 +110,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", "#verMasPeriodos", function () {
+    $(document).on("click", "#verMasPeriodos", function() {
         if (esconderPeriodos == false) {
             $(".periodosInvisibles").removeAttr("style");
             $(this).children().text("Ver Menos Periodos");
@@ -123,7 +122,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", ".semestre", function () {
+    $(document).on("click", ".semestre", function() {
         $("#bodyClick").click();
         comenzarCargado();
         $("#containerNotas").show();
@@ -143,12 +142,12 @@ $(document).ready(function () {
     });
 
     /*   ACTUALIZAR EMAIL-TELEFONO   */
-    $("#infoPersonal input[type=text]").click(function () {
+    $("#infoPersonal input[type=text]").click(function() {
         this.removeAttribute("readonly");
         $("#SaveEmail").show(300);
     });
 
-    $("#SaveEmail").click(function () {
+    $("#SaveEmail").click(function() {
         var pTelefono = $("#inputTelefono").val().trim();
         var pCelular = $("#inputCelular").val().trim();
         var pEmail = $("#inputEmail").val().trim();
@@ -178,7 +177,7 @@ $(document).ready(function () {
                     url: "http://wsnotas.nur.edu:8880/api/Registros/UpdateEmailTelefono",
                     dataType: "json",
                     data: JSON.stringify(datos),
-                    success: function (response) {
+                    success: function(response) {
                         if (response.Status) {
                             swal("Guardado exitoso", "Se ha enviado un mensaje para verificar su correo electrónico, revise su bandeja de entrada.", "success");
                             getEmailValido();
@@ -186,7 +185,7 @@ $(document).ready(function () {
                             swal("", "Algo anda mal, tus datos no se guardaron.", "info");
                         terminarCargado();
                     },
-                    error: function () {
+                    error: function() {
                         swal("", "Algo anda mal, tus datos no se guardaron.", "info");
                         terminarCargado();
                     },
@@ -195,15 +194,15 @@ $(document).ready(function () {
         }
     });
 
-    $('#inputTelefono, #inputCelular ').keyup(function () {
+    $('#inputTelefono, #inputCelular ').keyup(function() {
         this.value = (this.value + '').replace(/[^0-9]/g, '');
     });
 
-    $("#otrosSitio_btn").click(function () {
+    $("#otrosSitio_btn").click(function() {
         cargarLinks();
     });
 
-    $(document).on("change", "#containerSimulador input[type=number]", function () {
+    $(document).on("change", "#containerSimulador input[type=number]", function() {
         if ($(this).val() == "" || $(this).val() < 0) {
             $(this).val(0);
         } else if ($(this).val() > 100) {
@@ -211,7 +210,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#btnSimular").click(function () {
+    $("#btnSimular").click(function() {
         $("#containerNotas").hide();
         $("#containerAsistencia").hide();
         $("#containerPensul").hide();
@@ -225,7 +224,7 @@ $(document).ready(function () {
 
         tieneLaboratorio();
         getCostosSemestre(periodoId, carreraId);
-        setTimeout(function () {
+        setTimeout(function() {
             var auxPresencial = $("#cbCantMatPres").find(":selected").val();
             var auxSemipresencial = $("#cbCantMatSem").find(":selected").val();
 
@@ -279,7 +278,7 @@ $(document).ready(function () {
         }, 1000);
     });
 
-    $('input[name=pagoContado]').on('change', function () {
+    $('input[name=pagoContado]').on('change', function() {
         if ($(this).prop("checked") == true) {
             resetComboCuotas();
             $('#cbCuotas').prop('disabled', true);
@@ -291,8 +290,7 @@ $(document).ready(function () {
             totalMat = parseFloat(totalMat);
             totalMat = calcularPagoContado(totalMat);
             mostrarCostosTotales(totalMat);
-        }
-        else if ($(this).prop("checked") == false) {
+        } else if ($(this).prop("checked") == false) {
             $('#cbCuotas').prop('disabled', false);
             $(".filaPagoContado").fadeOut();
             var costoMatFijo = $("#totalCostMat").val();
@@ -301,7 +299,7 @@ $(document).ready(function () {
         }
     });
 
-    $("input[name=otrosDesc]").on("change", function () {
+    $("input[name=otrosDesc]").on("change", function() {
         if ($(this).prop("checked") == true) {
             $(".otrosDesc").fadeIn(1000);
             $(".filaOtrosDesc").fadeIn(1000);
@@ -321,7 +319,7 @@ $(document).ready(function () {
             recalcular();
         }
     });
-    $('#spCostoFinalMat').on('change', function () {
+    $('#spCostoFinalMat').on('change', function() {
         var costoFinalMat = $("#spCostoFinalMat").text();
         var costoCarnet = $("#spCarnetEst").text();
         var costoSeguro = $("#spSeguroEst").text();
@@ -337,7 +335,7 @@ $(document).ready(function () {
         $("#totalCost").fadeIn(1000);
     });
 
-    $("#cbCantMatPres").on('change', function () {
+    $("#cbCantMatPres").on('change', function() {
         var cantMatPresencial = $("#cbCantMatPres").find(":selected").val();
         resetearDescuento(cantMatPresencial, "descPrese");
         $("#cantMatPre").text(cantMatPresencial);
@@ -348,7 +346,7 @@ $(document).ready(function () {
 
     });
 
-    $("#cbCantMatSem").on('change', function () {
+    $("#cbCantMatSem").on('change', function() {
         var cantMatSemipresencial = $("#cbCantMatSem").find(":selected").val();
         resetearDescuento(cantMatSemipresencial, "descSemip");
         $("#cantMatSemi").text(cantMatSemipresencial);
@@ -358,7 +356,7 @@ $(document).ready(function () {
         otrosDescuentos();
     });
 
-    $('.spMaterias').on('change', function () {
+    $('.spMaterias').on('change', function() {
         var cambio = false;
 
         if ($(".filaPagoContado").css("display") != "none") {
@@ -385,12 +383,12 @@ $(document).ready(function () {
         $("#spTotalCostMaterias").fadeIn(1000);
     });
 
-    $('#spTotalCostMaterias').on('change', function () {
+    $('#spTotalCostMaterias').on('change', function() {
         var costoTotalMaterias = $("#spTotalCostMaterias").text();
         $("#spCostoFinalMat").text(costoTotalMaterias).trigger('change');
     });
 
-    $('#cbCuotas').on('change', function () {
+    $('#cbCuotas').on('change', function() {
         $("#tableCuotas").remove();
         var nroCuotas = $("#cbCuotas").find("option:selected").val();
         if (isEmpty(nroCuotas)) {
@@ -434,8 +432,7 @@ $(document).ready(function () {
                 <td class="itemCosto">` + aux + 'º Cuota' + `</td>
                 <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
                 </tr>`;
-            }
-            else {
+            } else {
                 table += `<tr>
                 <td class="itemCosto">` + aux + 'º Cuota' + `</td>
                 <td class="table-der">` + fnDosDigitos(montoCuotas) + ` Bs.</td>
@@ -446,7 +443,7 @@ $(document).ready(function () {
         divDer.append('<table id="tableCuotas" class="table"><tbody>' + table + '</tbody></table>');
     });
 
-    $('#totalCost').on('change', function () {
+    $('#totalCost').on('change', function() {
         var nroCuotas = $("#cbCuotas").find("option:selected").val();
         if (!isEmpty(nroCuotas)) {
             $("#tableCuotas").remove();
@@ -473,8 +470,7 @@ $(document).ready(function () {
                     <td class="itemCosto">` + aux + 'º Cuota' + `</td>
                     <td class="table-der">` + fnDosDigitos((montoCuotas + costoCarnet + costoSeguro + costoLab)) + ` Bs.</td>
                     </tr>`;
-                }
-                else {
+                } else {
                     table += `<tr>
                     <td class="itemCosto">` + aux + 'º Cuota' + `</td>
                     <td class="table-der">` + fnDosDigitos(montoCuotas) + ` Bs.</td>
@@ -486,7 +482,7 @@ $(document).ready(function () {
         }
     });
 
-    $(".descuentos").on("change", function () {
+    $(".descuentos").on("change", function() {
         otrosDescuentos();
     });
 
@@ -494,7 +490,7 @@ $(document).ready(function () {
     //     otrosDescuentos();
     // });
 
-    $("#spOtrosDescuentos").on("change", function () {
+    $("#spOtrosDescuentos").on("change", function() {
         var otrosDesc = $("#spOtrosDescuentos").text();
         if (otrosDesc != "0") {
             $("#spSigno").show();
@@ -503,7 +499,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#montoPago_txt").change(function () {
+    $("#montoPago_txt").change(function() {
         var pSaldo = parseFloat($('#nextPagoSaldo_hf').val());
         var pMontoPago = parseFloat($('#montoPago_txt').val());
         if (pMontoPago < pSaldo)
@@ -530,7 +526,7 @@ function cargarPagina() {
     obtenerNombre(token);
     obtenerImagen(token);
     getCarreraInfo(token);
-    cargarPeriodoYNotas();
+    setTimeout(function() { cargarPeriodoYNotas(); }, 5000);
 }
 
 function resultadoBloqueo(resultado) {
@@ -543,8 +539,7 @@ function cargarCreditos(creditosVencidos) {
     // Themes end
     var chart = am4core.create("divCreditos", am4charts.PieChart);
     chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-    chart.data = [
-        {
+    chart.data = [{
             country: "Realizadas",
             value: creditosVencidos,
         },
@@ -581,14 +576,15 @@ function obtenerImagen(token) {
             type: "POST",
             url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoImagen",
             dataType: "json",
-            success: function (resultado) {
+            success: function(resultado) {
                 if (resultado.Data == "") {
-                    $("#imgUsuario").attr("src", "assets/img/user.png"); return;
+                    $("#imgUsuario").attr("src", "assets/img/user.png");
+                    return;
                 }
                 var imagen = "data:image/png;base64," + resultado.Data;
                 $("#imgUsuario").attr("src", imagen);
             },
-            error: function () {
+            error: function() {
                 $("#imgUsuario").attr("src", "assets/img/user.png");
             },
         });
@@ -649,7 +645,7 @@ function infoCarrera(resultado) {
     var carreras = "";
     var correcionId = 0;
     var arrayCarPer = [];
-    resultado.Data.forEach(function (element) {
+    resultado.Data.forEach(function(element) {
         const { LCARRERA_ID, SCARRERA_DSC, LPERIODOACTUAL, LPERIODOACTUAL_ID } = element;
         $("#MasterPeriodoActual").val(LPERIODOACTUAL_ID);
         localStorage.setItem("MasterPeriodoActual", LPERIODOACTUAL_ID);
@@ -715,7 +711,7 @@ function GetPeriodosCursados() {
 function periodosCursados(resultado) {
     var count = 0;
     var length = resultado.Data.length;
-    resultado.Data.forEach(function (element) {
+    resultado.Data.forEach(function(element) {
         const { SPERIODO_DSC, LPERIODO_ID } = element;
         if (length > 2) {
             if (count == 0) {
@@ -898,7 +894,7 @@ function cargarNotas(resultado) {
         terminarMainCargado();
         return;
     }
-    resultado.Data.forEach(function (element) {
+    resultado.Data.forEach(function(element) {
         const { SCODMATERIA, SCODGRUPO, DOCENTE, EXFINAL, FINAL, PAR1, PAR2, TRABPRACTICOS, CONLECTURA, SMATERIA_DSC, LCENTRO_ID } = element;
         var tr = $("<tr ></tr>");
         var tdCodMateria = $("<td></td>").text(SCODMATERIA);
@@ -1061,7 +1057,7 @@ function tieneOferta() {
             url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOfertaa",
             dataType: "json",
         })
-        .done(function (resultado) {
+        .done(function(resultado) {
             if (resultado.Data.length == 0) response = false;
         });
     return response;
@@ -1072,7 +1068,7 @@ function cargarHistorial(resultado) {
     var espacio = "-";
 
     var arbol = [];
-    resultado.Data.CURSADAS.forEach(function (element) {
+    resultado.Data.CURSADAS.forEach(function(element) {
         const { MATERIAS, REQUISITOS } = element;
         var objMateria = new Object();
         objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
@@ -1082,7 +1078,7 @@ function cargarHistorial(resultado) {
         objMateria.cursada = 1;
         arbol.push(objMateria);
     });
-    resultado.Data.FALTANTES.forEach(function (element) {
+    resultado.Data.FALTANTES.forEach(function(element) {
         const { MATERIAS, REQUISITOS } = element;
         if (MATERIAS.SPERIODO_DSC.length > 1) {
             return;
@@ -1095,7 +1091,7 @@ function cargarHistorial(resultado) {
         objMateria.cursada = 0;
         arbol.push(objMateria);
     });
-    arbol.sort(function (a, b) {
+    arbol.sort(function(a, b) {
         return a.semestre - b.semestre;
     });
     construirTablas(arbol);
@@ -1190,7 +1186,7 @@ function obtenerNumerosCardinales(semestre) {
 
 function obtenerRequisitos(requisitos) {
     var requisitosConcatenado = "";
-    requisitos.forEach(function (req) {
+    requisitos.forEach(function(req) {
         var nombreMateria = req.SMATERIA_DSC;
         if (requisitosConcatenado != "") {
             requisitosConcatenado += " ,";
@@ -1255,7 +1251,7 @@ function cargarPromedio() {
     hand.pin.disabled = true;
     hand.value = 50;
 
-    hand.events.on("propertychanged", function (ev) {
+    hand.events.on("propertychanged", function(ev) {
         range0.endValue = ev.target.value;
         range1.value = ev.target.value;
         axis2.invalidate();
@@ -1263,8 +1259,7 @@ function cargarPromedio() {
     var value = promedio;
     label.text = value;
     var animation = new am4core.Animation(
-        hand,
-        {
+        hand, {
             property: "value",
             to: value,
         },
@@ -1274,7 +1269,6 @@ function cargarPromedio() {
 }
 
 function errorSesion() {
-    debugger;
     localStorage.removeItem("token");
     var url = "../index.html";
     $(location).attr("href", url);
@@ -1340,7 +1334,7 @@ function mostrarHorario() {
             url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
             dataType: "json",
         })
-        .done(function (resultado) {
+        .done(function(resultado) {
             if (resultado.Data.length == 0) response = false;
         });
     if (response) window.location = "horario.html";
@@ -1389,6 +1383,7 @@ function verHistorial() {
     $("#containerPensul").show();
     return false;
 }
+
 function verListaHistorial() {
     $("#containerNotas").hide();
     $("#containerAsistencia").hide();
@@ -1419,7 +1414,7 @@ function verListaHistorial() {
         dataType: "json",
         data: JSON.stringify(usuario),
         success: cargarHistorial,
-        error: function () {
+        error: function() {
             swal("", "Lo sentimos, el servicio de historial en línea está temporalmente inhabilitado.", "info");
         },
     });
@@ -1443,7 +1438,7 @@ function realizarAjaxHistorial() {
             dataType: "json",
             data: JSON.stringify(usuario),
             success: cargarHistorial,
-            error: function () {
+            error: function() {
                 swal("", "Lo sentimos, el servicio de historial en línea está temporalmente inhabilitado.", "info");
             },
         });
@@ -1456,19 +1451,19 @@ function cargarHistorial(resultado) {
         terminarCargado();
         return
     };
-    promedio = resultado.Data.PROMEDIOAPROBADAS ?? 0;
-    if (!isPageLoaded) {
+    promedio = resultado.Data.PROMEDIOAPROBADAS == null ? 0 : resultado.Data.PROMEDIOAPROBADAS;
+    /*if (!isPageLoaded) {
         isPageLoaded = true;
         return;
-    }
+    }*/
     var semestre = " SEMESTRE";
     var espacio = " - ";
     var arbol = [];
-    resultado.Data.CURSADAS.forEach(function (element) {
+    resultado.Data.CURSADAS.forEach(function(element) {
         const { MATERIAS, REQUISITOS } = element;
         var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
         var count = 0;
-        REQUISITOS.forEach(function (req) {
+        REQUISITOS.forEach(function(req) {
             if (req.LSEMESTRE == null) return;
             var objNodo = new Object();
             var numeroSemestre = req.LSEMESTRE == null ? "" : req.LSEMESTRE;
@@ -1488,11 +1483,11 @@ function cargarHistorial(resultado) {
             arbol.push(objNodo);
         }
     });
-    resultado.Data.FALTANTES.forEach(function (element) {
+    resultado.Data.FALTANTES.forEach(function(element) {
         const { MATERIAS, REQUISITOS } = element;
         var materiaPadre = removerAcentos(MATERIAS.SMATERIA_DSC.toUpperCase()) + espacio + MATERIAS.LSEMESTRE + semestre;
         var count = 0;
-        REQUISITOS.forEach(function (req) {
+        REQUISITOS.forEach(function(req) {
             if (req.LSEMESTRE == null) return;
             var objNodo = new Object();
             var numeroSemestre = req.LSEMESTRE == null ? "" : req.LSEMESTRE;
@@ -1513,7 +1508,7 @@ function cargarHistorial(resultado) {
             arbol.push(objNodo);
         }
     });
-    arbol.sort(function (a, b) {
+    arbol.sort(function(a, b) {
         return parseInt(a.semestre) - parseInt(b.semestre);
     });
     am4core.useTheme(am4themes_animated);
@@ -1649,7 +1644,7 @@ function mostrarResultadoCxc(response) {
             `</h5><h5 class="title">` +
             datos[index].centro +
             `</h5></div>
-              <div class="content table-responsive table-full-width"><table id="`+ datos[index].planpagosId + `" class="table table-hover table-striped">
+              <div class="content table-responsive table-full-width"><table id="` + datos[index].planpagosId + `" class="table table-hover table-striped">
               <thead><th>#</th><th>Fecha Vencimiento</th><th>Cuota (Bs)</th><th>Pagado (Bs)</th><th>Saldo (Bs)</th><th>Estado</th>
               </thead><tbody>`;
         var htmlEnd =
@@ -1706,7 +1701,7 @@ function titleCase(str) {
 }
 
 function sortByKey(array, key) {
-    return array.sort(function (a, b) {
+    return array.sort(function(a, b) {
         var x = a[key];
         var y = b[key];
 
@@ -1737,6 +1732,7 @@ function validateEmail(email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     return emailReg.test(email);
 }
+
 function cargarLinks() {
     var token = localStorage.getItem("token");
     if (token != "") {
@@ -1749,10 +1745,10 @@ function cargarLinks() {
             type: "POST",
             url: "http://wsnotas.nur.edu:8880/api/Registros/GetLinks",
             dataType: "json",
-            success: function (response) {
+            success: function(response) {
                 $("#ListaLinks_ul").empty();
                 var lista = response.Data;
-                lista.forEach(function (element) {
+                lista.forEach(function(element) {
                     const {
                         TITULO,
                         LINK
@@ -1777,7 +1773,7 @@ function obtenerBloqueo(token) {
         async: false,
         url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
         dataType: "json",
-    }).done(function (response) {
+    }).done(function(response) {
         var data = response.Data.toLowerCase();
         localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
     });
@@ -1972,7 +1968,7 @@ function getEmailValido() {
         'type': 'POST',
         'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
         'dataType': 'json',
-        'success': function (response) {
+        'success': function(response) {
             var esValido = response.Data;
             if (esValido == 1) {
                 $('#inputEmail_ver').show();
@@ -1999,7 +1995,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
         'type': 'POST',
         'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
         'dataType': 'json',
-        'success': function (response) {
+        'success': function(response) {
             var esValido = response.Data;
             if (esValido == 1) {
                 $("#campoMonto").html('Bs. <input type="number" id="montoPago_txt" min="' + fnDosDigitos(pSaldo) + '" value="' + fnDosDigitos(pSaldo) + '" class="text-center">');
@@ -2014,7 +2010,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             }
             terminarCargado();
         },
-        'error': function () {
+        'error': function() {
             swal("", "No fue posible verificar su correo electrónico, intente mas tarde.", "info");
             terminarCargado();
         }
@@ -2046,7 +2042,7 @@ function GetLinkPago() {
         'url': "http://wsnotas.nur.edu:8880/api/Registros/GetLinkPago",
         'dataType': 'json',
         'data': JSON.stringify(datos),
-        'success': function (response) {
+        'success': function(response) {
             terminarCargado();
             var pPlanPagosId = $('#nextPagoId_hf').val();
             if (response.Data != "") {
@@ -2060,7 +2056,7 @@ function GetLinkPago() {
                 swal("", "No sentimos, no se pudo solicitar el pago en línea.", "info");
             }
         },
-        'error': function () {
+        'error': function() {
             swal("", "No sentimos, no se pudo solicitar el pago en línea.", "info");
             terminarCargado();
         }

@@ -527,6 +527,98 @@
                 <div class="modal-footer">
                     <div class="divModalFooter">
                         <input type="button" class="boton-siguiente" value="Siguiente"
+                            onclick="$('.modal').modal('hide'); $('#Paso2_modal').modal('show')">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="Paso2_modal" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle"
+        aria-hidden="true" style="overflow: scroll;">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="titulo-modal">Términos y condiciones </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="content">
+                                <div>
+                                    <h5 style="text-align: center;">LEA CUIDADOSAMENTE</h3>
+                                        <br>
+                                        <p>Estimado(a) estudiante:</p>
+                                        <p>Utilizando esta plataforma, usted visualizará y tiene la opción de imprimir
+                                            antes
+                                            de inscribirse en sus
+                                            materias, de esa manera elaborar cuidadosamente su horario. Si desea puede
+                                            inscribirse, pero una vez
+                                            inscrito tiene que tomar en cuenta lo siguiente:</p>
+
+                                        <ol type="A" style="text-align: justify;">
+                                            <li>Adquiere una deuda y debe pagarse.</li>
+                                            <li>Debe realizar su pago UNICAMENTE mediante vía online utilizando
+                                                <u>nuestra
+                                                    plataforma</u> o diríjase a
+                                                ventanilla de
+                                                Caja en el edificio de Nur. Tiene un plazo máximo de 2 horas para hacer
+                                                su
+                                                pago.
+                                            </li>
+                                            <li>No realice ninguna transferencia o depósito bancario a las cuentas de la
+                                                Nur.</li>
+                                            <li>La Universidad puede que le retire o no sus materias, si no pagó.</li>
+                                            <li>En caso de que tenga plan de pagos, becas o descuentos usted debe
+                                                solicitarlo al wasap 78017905
+                                                indicando en cuantas cuotas quiere pagar, y si tiene becas o descuentos
+                                                debe
+                                                mencionarlo.
+                                                Posiblemente demoremos en responderle hasta 30 minutos, debido a que se
+                                                responderá por orden de llegada,
+                                                por favor le pedimos su paciencia y comprensión. <br>
+                                                Las becas o descuentos serán de manera provisional hasta conocer la nota
+                                                final, luego usted deberá
+                                                confirmar desde el 19 de julio en la oficina de plataforma estudiantil
+                                                en
+                                                planta baja en el horario de
+                                                08:00 a 16:00. o puede registrar sus datos en el siguiente enlace <a
+                                                    href="https://bit.ly/3nzSxqi"
+                                                    target="_blank">https://bit.ly/3nzSxqi</a>
+                                            </li>
+                                            <li>Tenemos un simulador de pagos que puede utilizarlo, se encuentra aquí
+                                                mismo.
+                                            </li>
+                                            <li>Usted podrá matricular sus materias en la plataforma virtual a partir
+                                                del 26
+                                                de julio.</li>
+                                            <li>Los retiros y Cambios de materias se las puede realizar a partir del 26
+                                                de
+                                                julio, puede escribir sus
+                                                cambios al Whatsapp <a href="https://wa.me/+59176392502"
+                                                    target="_blank">76392502</a></li>
+                                            <li>No existe reservas de materias sin pagarlas.</li>
+                                            <li>Los retiros de materias se las hace de la siguiente manera: Retiro
+                                                económico
+                                                (100% a favor) 2 al 7 de
+                                                agosto; (50% a favor) del 9 al 14 de agosto; retiro académico (sin
+                                                dinero a
+                                                favor) 16 al 28 de agosto,
+                                            </li>
+                                            <li>Horarios de atención y/o consultas (online) de 08:00 am. a 18:00 pm.</li>
+                                        </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="divModalFooter">
+                        <input type="button" class="btnAtras" value="Atrás"
+                            onclick="$('.modal').modal('hide'); $('#Paso1_modal').modal('show');">
+                        <input type="button" class="boton-siguiente" value="Sí, acepto los terminos"
                             onclick="$('.modal').modal('hide'); contabilizar();">
                     </div>
                 </div>
@@ -535,7 +627,7 @@
     </div>
 
     <div class="modal fade" id="modalCostos" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle"
-        aria-hidden="true">
+        aria-hidden="true" style="overflow: scroll;">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -623,7 +715,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="divModalCostoFooter">
-                        <input id="btnAtras" type="button" class="btnAtras" value="Atrás">
+                        <input type="button" class="btnAtras" value="Atrás"
+                            onclick="$('.modal').modal('hide'); $('#Paso2_modal').modal('show');">
                         <p class="msgFooterCompPago">*Si usted tiene algún tipo de beca o descuento el cálculo de sus
                             pagos deberá hacerlo en el Simulador de Pagos.</p>
                         <input id="finalizarInscripcion_btn" type="button" class="boton-siguiente" value="Finalizar"

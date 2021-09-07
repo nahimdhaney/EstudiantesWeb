@@ -159,7 +159,7 @@ function cargarHorarios(resultado) {
         tdGrupo.text(SCODGRUPO)
         tdGrupo.css("padding-left", "20px");
         tr.append($("<td></td>").text(SMATERIA_DSC))
-        //tr.append($("<td></td>").text(SCENTRO_DSC))
+            //tr.append($("<td></td>").text(SCENTRO_DSC))
         tr.append($("<td></td>").text(DOCENTE))
         tr.append(tdGrupo)
         tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC))

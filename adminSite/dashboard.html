@@ -50,7 +50,7 @@
                 <div class="logo">
                     <ul class="nav">
                         <a href="" class="simple-text">
-                            <img style="width:90%" src="assets/img/nur.png" alt="">
+                            <img style="width:90%" src="assets/img/nur_iso.png" alt="">
                         </a>
 
                     </ul>
@@ -74,8 +74,7 @@
                     <div style=" padding: 10px 15px">
                         <!-- <h4 style="margin-left: 23%;margin-top: 0px">Carreras</h4> -->
                         <li class="active">
-                            <select id="carrerasAlumno" style="width:100%;margin:auto;text-align: center"
-                                class="form-control m-5 " id="selectCarrera">
+                            <select id="carrerasAlumno" style="width:100%;margin:auto;text-align: center" class="form-control m-5 " id="selectCarrera">
                             </select>
                         </li>
                     </div>
@@ -92,8 +91,7 @@
             <nav class="navbar navbar-default navbar-fixed">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target="#navigation-example-2">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -107,41 +105,32 @@
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="nav-item dropdown show">
-                                <a class="nav-link dropdown-toggle" href="http://example.com"
-                                    id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="true">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <p><i class="fas fa-list-ul"></i> Más opciones</p>
                                 </a>
-                                <div class="dropdown-menu show menuMasOpciones"
-                                    aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu show menuMasOpciones" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" onclick="verOferta()" href="javascript:void(0)">
                                         <p>Ver oferta</p>
                                     </a>
-                                    <a class="dropdown-item" id="botonImprimir" onclick="mostrarHorario()"
-                                        href="javascript:void(0)">
+                                    <a class="dropdown-item" id="botonImprimir" onclick="mostrarHorario()" href="javascript:void(0)">
                                         <p>Ver horario</p>
                                     </a>
                                     <a class="dropdown-item" onclick="consultarCXC()" href="javascript:void(0)">
                                         <p>Planes de pagos</p>
                                     </a>
-                                    <a class="dropdown-item btnSimulador" id="btnSimulador" onclick="PeriodosSimular()"
-                                        href="javascript:void(0)">
+                                    <a class="dropdown-item btnSimulador" id="btnSimulador" onclick="PeriodosSimular()" href="javascript:void(0)">
                                         <p>Simulador de pagos</p>
                                     </a>
-                                    <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial"
-                                        onclick="verListaHistorial()">
+                                    <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial" onclick="verListaHistorial()">
                                         <p>Historial de notas</p>
                                     </a>
-                                    <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()"
-                                        href="javascript:void(0)">
+                                    <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
                                         <p>Gráfico historial</p>
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal"
-                                        data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
                                         <p>Cambiar pin</p>
                                     </a>
-                                    <a id="otrosSitio_btn" class="dropdown-item" data-toggle="modal"
-                                        data-target="#modalLinks">
+                                    <a id="otrosSitio_btn" class="dropdown-item" data-toggle="modal" data-target="#modalLinks">
                                         <p>Otros sitios</p>
                                     </a>
                                     <!-- <a id="ctabacno_btn" class="dropdown-item" data-toggle="modal"
@@ -267,8 +256,7 @@
                             <div class="card-body">
                                 <div class="author">
                                     <a href="javascript:void(0)">
-                                        <img id='imgUsuario' class="avatar" alt="No se pudo obtener la imagen"
-                                            style="border: none;">
+                                        <img id='imgUsuario' class="avatar" alt="No se pudo obtener la imagen" style="border: none;">
                                         <h5 id='tituloNombreEstudiante' class="title"></h5>
                                         <p id='carreraPerfil' class="description">
                                         </p>
@@ -293,8 +281,7 @@
                                         <i class="fas fa-phone"></i>
                                         Telefono
                                     </span>
-                                    <input id='inputTelefono' type="text" style="cursor:text" readonly="readonly"
-                                        class="form-control" maxlength="7" />
+                                    <input id='inputTelefono' type="text" style="cursor:text" readonly="readonly" class="form-control" maxlength="7" />
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -303,8 +290,7 @@
                                         <i class="fas fa-mobile-alt"></i>
                                         Celular
                                     </span>
-                                    <input id='inputCelular' type="text" style="cursor:text" readonly="readonly"
-                                        class="form-control" maxlength="8" />
+                                    <input id='inputCelular' type="text" style="cursor:text" readonly="readonly" class="form-control" maxlength="8" />
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -313,8 +299,7 @@
                                         <i class="far fa-envelope"></i>
                                         Email
                                     </span>
-                                    <input id='inputEmail' type="text" style="cursor:text" readonly="readonly"
-                                        class="form-control" />
+                                    <input id='inputEmail' type="text" style="cursor:text" readonly="readonly" class="form-control" />
                                     <span id="inputEmail_ver" class="input-group-addon" style="display: none;">
                                     </span>
                                 </div>
@@ -353,14 +338,12 @@
                         <div class="card">
                             <div class="header">
                                 <h4 class="title" style="float: left;">Historial pénsum académico</h4>
-                                <a id='closePensul' href="javascript:void(0)"
-                                    style="color: #3498db;float: right;font-size: 30px;">
+                                <a id='closePensul' href="javascript:void(0)" style="color: #3498db;float: right;font-size: 30px;">
                                     <i class="far fa-times-circle"></i>
                                 </a>
                                 <br>
                                 <div style="margin-top:20px">
-                                    <div
-                                        style="height:20px;width:20px;background-color: #757575;float: left;border-radius: 5px">
+                                    <div style="height:20px;width:20px;background-color: #757575;float: left;border-radius: 5px">
                                     </div>
                                     <p style="margin-left:30px">Materias faltantes</p>
                                 </div>
@@ -450,30 +433,23 @@
                                                 </select>
                                             </div>
                                             <div class="form-check div-chk">
-                                                <input type="checkbox" name="pagoContado" id="pagoContado"
-                                                    class="form-check-input chkDesc">
+                                                <input type="checkbox" name="pagoContado" id="pagoContado" class="form-check-input chkDesc">
                                                 <label class="form-check-label labelCheckbox" for="pagoContado">Pago al
                                                     contado (-10%)</label>
                                             </div>
                                             <div class="form-check div-chk">
-                                                <input type="checkbox" name="otrosDesc" id="otrosDesc"
-                                                    class="form-check-input chkDesc">
-                                                <label class="form-check-label labelCheckbox"
-                                                    for="otrosDesc">Descuentos</label>
+                                                <input type="checkbox" name="otrosDesc" id="otrosDesc" class="form-check-input chkDesc">
+                                                <label class="form-check-label labelCheckbox" for="otrosDesc">Descuentos</label>
                                             </div>
-                                            <div id="div-descPres" class="form-inline divSelCantMat otrosDesc"
-                                                style="display: none;">
+                                            <div id="div-descPres" class="form-inline divSelCantMat otrosDesc" style="display: none;">
                                                 <label for="descPrese" class="col-form-label">Descuento Presencial
                                                     (%):</label>
-                                                <input type="number" class="form-control descuentos" id="descPrese"
-                                                    name="descPrese" value="0">
+                                                <input type="number" class="form-control descuentos" id="descPrese" name="descPrese" value="0">
                                             </div>
-                                            <div id="div-descSemi" class="form-inline divSelCantMat otrosDesc"
-                                                style="display: none;">
+                                            <div id="div-descSemi" class="form-inline divSelCantMat otrosDesc" style="display: none;">
                                                 <label for="descSemip" class="col-form-label">Descuento Semipresencial
                                                     (%):</label>
-                                                <input type="number" class="form-control descuentos" id="descSemip"
-                                                    name="descSemip">
+                                                <input type="number" class="form-control descuentos" id="descSemip" name="descSemip">
                                             </div>
                                         </div>
                                     </div>
@@ -486,25 +462,21 @@
                                                 <table id="tableCostosMaterias" class="table">
                                                     <tbody>
                                                         <tr class="primeraFila">
-                                                            <td class="itemCosto">Materias Presencial <span
-                                                                    class="spCantidad">x<span
-                                                                        id="cantMatPre"></span></span></td>
-                                                            <td class="table-der"><span id="spMatPresencial"
-                                                                    class="spMaterias"></span> Bs.</td>
+                                                            <td class="itemCosto">Materias Presencial <span class="spCantidad">x<span
+                                                                        id="cantMatPre"></span></span>
+                                                            </td>
+                                                            <td class="table-der"><span id="spMatPresencial" class="spMaterias"></span> Bs.</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="itemCosto">Materias Semipresencial <span
-                                                                    class="spCantidad">x<span
-                                                                        id="cantMatSemi"></span></span></td>
-                                                            <td class="table-der"><span id="spMatSemipresencial"
-                                                                    class="spMaterias"></span> Bs.</td>
+                                                            <td class="itemCosto">Materias Semipresencial <span class="spCantidad">x<span
+                                                                        id="cantMatSemi"></span></span>
+                                                            </td>
+                                                            <td class="table-der"><span id="spMatSemipresencial" class="spMaterias"></span> Bs.</td>
                                                         </tr>
                                                         <tr class="filaOtrosDesc" style="display: none;">
                                                             <td class="itemCosto">Otros descuentos</td>
-                                                            <td id="otrosDescuentos" class="table-der"><span
-                                                                    id="spSigno" style="display: none;">-</span><span
-                                                                    id="spOtrosDescuentos" class="spMaterias"></span>
-                                                                Bs.</td>
+                                                            <td id="otrosDescuentos" class="table-der"><span id="spSigno" style="display: none;">-</span><span id="spOtrosDescuentos" class="spMaterias"></span> Bs.
+                                                            </td>
                                                         </tr>
                                                         <tr class="filaPagoContado" style="display: none;">
                                                             <td class="itemCosto">Pago al contado</td>
@@ -512,8 +484,7 @@
                                                         </tr>
                                                         <tr class="filaTotal">
                                                             <td class="itemCosto">Subtotal</td>
-                                                            <td id="totalCostMaterias" class="table-der"><span
-                                                                    id="spTotalCostMaterias"></span> Bs.</td>
+                                                            <td id="totalCostMaterias" class="table-der"><span id="spTotalCostMaterias"></span> Bs.</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -523,8 +494,7 @@
                                                     <tbody>
                                                         <tr class="primeraFila">
                                                             <td class="itemCosto">Costo Materias</td>
-                                                            <td id="costoFinalMat" class="table-der"><span
-                                                                    id="spCostoFinalMat"></span> Bs.</td>
+                                                            <td id="costoFinalMat" class="table-der"><span id="spCostoFinalMat"></span> Bs.</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="itemCosto">Carnet Estudiantil</td>
@@ -551,8 +521,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div id="div-der" class="sim-div-der col-md-4 col-xs-12"
-                                                style="display: none;">
+                                            <div id="div-der" class="sim-div-der col-md-4 col-xs-12" style="display: none;">
 
                                             </div>
                                         </div>
@@ -580,8 +549,7 @@
                                 <h2 class="alert-heading">Bloqueo por Deuda</h2>
                                 <div>
                                     <p>Puede consultar el monto pendiente dando clic en la siguiente opción:</p>
-                                    <a class="btn btn-outline-dark" onclick="consultarCXC()"
-                                        style="border-color: white; color: white;">
+                                    <a class="btn btn-outline-dark" onclick="consultarCXC()" style="border-color: white; color: white;">
                                         Ir a Planes de pagos <i class="fas fa-money-check-alt"></i>
                                     </a>
                                 </div>
@@ -630,19 +598,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Oferta de materias</h4>
-                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="close" data-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <label>Selecciona un periodo</label>
-                    <select id="periodosOferta" style="width:100%;margin:auto;text-align: center;margin-bottom: 15px"
-                        class="form-control m-5 " id="selectCarrera">
+                    <select id="periodosOferta" style="width:100%;margin:auto;text-align: center;margin-bottom: 15px" class="form-control m-5 " id="selectCarrera">
                     </select>
                     <button id='verOferta' type="button" class="btn btn-primary">Ver oferta</button>
-                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="btn btn-secondary"
-                        data-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -653,20 +618,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Simulador de pagos</h4>
-                    <button type="button" onclick="$('#modalOfertaSimulador').modal('toggle')" class="close"
-                        data-dismiss="modal" aria-label="Close">
+                    <button type="button" onclick="$('#modalOfertaSimulador').modal('toggle')" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <label>Selecciona un periodo:</label>
-                    <select id="periodosSimulador" style="width:100%;margin:auto;text-align: center;margin-bottom: 15px"
-                        class="form-control m-5">
+                    <select id="periodosSimulador" style="width:100%;margin:auto;text-align: center;margin-bottom: 15px" class="form-control m-5">
                     </select>
                     <div class="div-btns">
                         <button id='btnSimular' type="button" class="btn btn-primary">Simular</button>
-                        <button id="btnCancelarSim" type="button" onclick="$('#modalOfertaSimulador').modal('toggle')"
-                            class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button id="btnCancelarSim" type="button" onclick="$('#modalOfertaSimulador').modal('toggle')" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -678,8 +640,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 style="float:left;font-weight: 450;color: #3498db" class="modal-title">Otros sitios Nur</h4>
-                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="close" data-dismiss="modal"
-                        aria-label="Close">
+                    <button type="button" onclick="$('#modalOferta').modal('toggle')" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -709,8 +670,7 @@
             </div>
         </div>
     </div> -->
-    <div class="modal fade" id="ctabanco_modal" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="ctabanco_modal" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -799,15 +759,12 @@
                         </div>
                         <br>
                         <div>
-                            <b>Nota:</b> Si desea puede incrementar el monto para pagos por adelantado o próximas
-                            inscripciones
-                            (saldo a favor).
+                            <b>Nota:</b> Si desea puede incrementar el monto para pagos por adelantado o próximas inscripciones (saldo a favor).
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        onclick="GetLinkPago();">Siguiente</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="GetLinkPago();">Siguiente</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

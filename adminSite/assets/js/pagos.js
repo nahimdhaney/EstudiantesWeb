@@ -49,7 +49,7 @@ $("#loginButton").click(function() {
                 "Content-Type": "application/json",
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/Login",
+            url: "https://nurssl.nur.edu:8182/api/Registros/Login",
             data: JSON.stringify(usuario),
             dataType: "json",
             success: function(resultado) {
@@ -85,7 +85,7 @@ function obtenerNombre() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
             dataType: "json",
             success: function(resultado) {
                 const {
@@ -119,7 +119,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "http://wsnotas.nur.edu:8880/api/Registros/GetPlanPagos",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultadoCxc,
         error: errorSesion,
@@ -304,7 +304,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -314,7 +314,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             } else {
                 //verPerfil();
                 swal("Debe verificar su correo electrónico", "Esta verificación es indispensable para continuar con el proceso de Pago. Para verificar su correo electrónico: <br><br>" +
-                    "   1. ingresar a <a href='http://notas2.nur.edu/' target='_blank'>http://notas2.nur.edu/</a>. <br>" +
+                    "   1. ingresar a <a href='https://notas2.nur.edu/' target='_blank'>https://notas2.nur.edu/</a>. <br>" +
                     "   2. Ir a 'Mi perfil'. <br>" +
                     "   3. Llenar el campo 'Email'. <br>" +
                     "   4. Presiona 'Guardar'. <br>" +
@@ -348,7 +348,7 @@ function GetLinkPago() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetLinkPago",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetLinkPago",
         'dataType': 'json',
         'data': JSON.stringify(datos),
         'success': function(response) {

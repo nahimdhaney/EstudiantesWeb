@@ -4,8 +4,13 @@ var isPageLoaded = false;
 var isHistorialCargado = false;
 var esconderPeriodos = false;
 var botonPagoVisible = 1;
+var boolModoDev = 0;
 
 $(document).ready(function() {
+
+    if (location.protocol !== 'https:' && boolModoDev == 0) {
+        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+    }
 
     var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
     if (tieneBloqueo == 1) {
@@ -77,7 +82,7 @@ $(document).ready(function() {
                     },
                     type: "POST",
                     data: JSON.stringify(usuario),
-                    url: "http://wsnotas.nur.edu:8880/api/Registros/UpdatePin",
+                    url: "https://nurssl.nur.edu:8182/api/Registros/UpdatePin",
                     dataType: "json",
                 }).done(function(response) {
                     if (response.Status) {
@@ -174,7 +179,7 @@ $(document).ready(function() {
                         Authorization: "Bearer " + token,
                     },
                     type: "POST",
-                    url: "http://wsnotas.nur.edu:8880/api/Registros/UpdateEmailTelefono",
+                    url: "https://nurssl.nur.edu:8182/api/Registros/UpdateEmailTelefono",
                     dataType: "json",
                     data: JSON.stringify(datos),
                     success: function(response) {
@@ -574,7 +579,7 @@ function obtenerImagen(token) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoImagen",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoImagen",
             dataType: "json",
             success: function(resultado) {
                 if (resultado.Data == "") {
@@ -602,7 +607,7 @@ function obtenerNombre(token) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
             dataType: "json",
             success: resultado,
             error: errorSesion,
@@ -631,7 +636,7 @@ function getCarreraInfo(token) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoCarreras",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoCarreras",
             dataType: "json",
             success: infoCarrera,
             error: errorSesion,
@@ -699,7 +704,7 @@ function GetPeriodosCursados() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosCursados",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetPeriodosCursados",
             dataType: "json",
             data: JSON.stringify(usuario),
             success: periodosCursados,
@@ -777,7 +782,7 @@ function GetPeriodosOfertas() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetPeriodosOfertaCarrera",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetPeriodosOfertaCarrera",
             dataType: "json",
             data: JSON.stringify(obj),
             success: periodosOfertas,
@@ -846,7 +851,7 @@ function obtenerNotas(periodoId) {
             },
             type: "POST",
             data: JSON.stringify(usuario),
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
             dataType: "json",
             success: cargarNotas,
             error: errorSesion,
@@ -1052,9 +1057,8 @@ function tieneOferta() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            async: false,
             data: JSON.stringify(usuario),
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoOfertaa",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOfertaa",
             dataType: "json",
         })
         .done(function(resultado) {
@@ -1329,9 +1333,8 @@ function mostrarHorario() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            async: false,
             data: JSON.stringify(usuario),
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
             dataType: "json",
         })
         .done(function(resultado) {
@@ -1410,7 +1413,7 @@ function verListaHistorial() {
             Authorization: "Bearer " + token,
         },
         type: "POST",
-        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoHistorial",
         dataType: "json",
         data: JSON.stringify(usuario),
         success: cargarHistorial,
@@ -1434,7 +1437,7 @@ function realizarAjaxHistorial() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoHistorial",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoHistorial",
             dataType: "json",
             data: JSON.stringify(usuario),
             success: cargarHistorial,
@@ -1569,7 +1572,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "http://wsnotas.nur.edu:8880/api/Registros/GetPlanPagos",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultadoCxc,
         error: errorSesion,
@@ -1743,7 +1746,7 @@ function cargarLinks() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetLinks",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetLinks",
             dataType: "json",
             success: function(response) {
                 $("#ListaLinks_ul").empty();
@@ -1770,8 +1773,7 @@ function obtenerBloqueo(token) {
             Authorization: "Bearer " + token,
         },
         type: "POST",
-        async: false,
-        url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoBloqueo",
         dataType: "json",
     }).done(function(response) {
         var data = response.Data.toLowerCase();
@@ -1801,7 +1803,7 @@ function getCostosSemestre(periodoId, carreraId) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetCostosSemestre",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
     });
@@ -1822,7 +1824,7 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneLaboratorio",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -1966,7 +1968,7 @@ function getEmailValido() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -1993,7 +1995,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/TieneEmailValido",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -2039,7 +2041,7 @@ function GetLinkPago() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetLinkPago",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetLinkPago",
         'dataType': 'json',
         'data': JSON.stringify(datos),
         'success': function(response) {

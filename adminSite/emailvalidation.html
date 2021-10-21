@@ -44,8 +44,13 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        var boolModoDev = 0;
+
         $(document).ready(function() {
 
+            if (location.protocol !== 'https:' && boolModoDev == 0) {
+                location.replace(`https:${location.href.substring(location.protocol.length)}`);
+            }
 
             var datos = new Object();
             datos.pLlave = findGetParameter("key");
@@ -55,19 +60,19 @@
                     'Content-Type': 'application/json'
                 },
                 'type': 'POST',
-                'url': "http://wsnotas.nur.edu:8880/api/Registros/ValidarEmail",
+                'url': "https://nurssl.nur.edu:8182/api/Registros/ValidarEmail",
                 'dataType': 'json',
                 'data': JSON.stringify(datos),
                 'success': function(response) {
                     $("#ConfirmacionDiv").show();
                     if (response.Status)
-                        $("#Mensaje_txt").html("<h5>Confirmación completa</h5> Gracias por confirmar su correo electrónico. <br><br><a href='http://notas2.nur.edu/'>http://notas2.nur.edu/</a>");
+                        $("#Mensaje_txt").html("<h5>Confirmación completada</h5> Gracias por confirmar su correo electrónico. <br><br><a href='https://notas2.nur.edu/'>www.notas2.nur.edu/</a>");
                     else
-                        $("#Mensaje_txt").html("Lo sentimos, esta dirección de verificación ha expirado. <br><br><a href='http://notas2.nur.edu/'>http://notas2.nur.edu/</a>");
+                        $("#Mensaje_txt").html("Lo sentimos, esta dirección de verificación ha expirado. <br><br><a href='https://notas2.nur.edu/'>www.notas2.nur.edu/</a>");
                 },
                 "error": function() {
                     $("#ConfirmacionDiv").show();
-                    $("#Mensaje_txt").html("No fue posible verificar su correo, intente registrarlo nuevamente. <br><br><a href='http://notas2.nur.edu/'>http://notas2.nur.edu/</a>");
+                    $("#Mensaje_txt").html("No fue posible verificar su correo, intente registrarlo nuevamente. <br><br><a href='https://notas2.nur.edu/'>www.notas2.nur.edu/</a>");
                 }
             });
 

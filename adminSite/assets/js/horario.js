@@ -23,7 +23,7 @@ function InfoCarrera() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoCarreras",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoCarreras",
         'dataType': 'json',
         'success': cargarInfoCarrera
     });
@@ -89,7 +89,7 @@ function InfoPersonal() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoInfo",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
         'dataType': 'json',
         'success': cargarInformacionPersonal
     });
@@ -138,7 +138,7 @@ function obtenerHorarios() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://wsnotas.nur.edu:8880/api/Registros/GetNotasFaltas",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
         'dataType': 'json',
         'success': cargarHorarios
     });

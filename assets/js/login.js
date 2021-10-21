@@ -1,5 +1,10 @@
-$(document).ready(function($) {
+var boolModoDev = 0;
 
+$(document).ready(function() {
+
+    if (location.protocol !== 'https:' && boolModoDev == 0) {
+        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+    }
 
     var userId = localStorage.getItem("token");
     if (userId != null && userId != "") {
@@ -24,7 +29,7 @@ $(document).ready(function($) {
                     "Content-Type": "application/json",
                 },
                 type: "POST",
-                url: "http://wsnotas.nur.edu:8880/api/Registros/Login",
+                url: "https://nurssl.nur.edu:8182/api/Registros/Login",
                 data: JSON.stringify(usuario),
                 dataType: "json",
                 success: resultado,
@@ -55,8 +60,7 @@ $(document).ready(function($) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            async: false,
-            url: "http://wsnotas.nur.edu:8880/api/Registros/GetAlumnoBloqueo",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoBloqueo",
             dataType: "json",
         }).done(function(response) {
             var data = response.Data.toLowerCase();

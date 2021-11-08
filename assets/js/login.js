@@ -1,4 +1,4 @@
-var boolModoDev = 0;
+var boolModoDev = 1;
 
 $(document).ready(function() {
 

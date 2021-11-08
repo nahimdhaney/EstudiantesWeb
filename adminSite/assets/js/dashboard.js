@@ -4,7 +4,7 @@ var isPageLoaded = false;
 var isHistorialCargado = false;
 var esconderPeriodos = false;
 var botonPagoVisible = 1;
-var boolModoDev = 0;
+var boolModoDev = 1;
 
 $(document).ready(function() {
 
@@ -1058,7 +1058,7 @@ function tieneOferta() {
             },
             type: "POST",
             data: JSON.stringify(usuario),
-            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOfertaa",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
             dataType: "json",
         })
         .done(function(resultado) {

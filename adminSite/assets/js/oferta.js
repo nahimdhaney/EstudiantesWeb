@@ -1,5 +1,5 @@
 var boolModoSimulacion = 0;
-var botonInscripcionVisible = 1;
+var botonInscripcionVisible = 0;
 
 $(document).ready(function() {
     cargarPagina();
@@ -246,7 +246,7 @@ function obtenerOferta() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOfertaa",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
         'dataType': 'json',
         'success': cargarOferta
     });
@@ -255,14 +255,11 @@ function obtenerOferta() {
 function cargarOferta(resultado) {
     var haySemi = false;
     if (resultado.Data.length == 0) {
-        //var url = "dashboard.html";
-        //$(location).attr("href", url);
         swal("", "Sin materias ofertadas");
 
         $('.materiasSemiPresencial').hide();
         $('.noMateriasSemiPresencial').show();
         $('.materiasPresencial').hide();
-        //$('.MateriasSemiPresencial').show();
         $('.noMateriasPresencial').show();
         $('.noMateriasPresencial').parent().css({ "padding": "15px" });
         $('.noMateriasSemiPresencial').parent().css({ "padding": "15px" });
@@ -419,23 +416,27 @@ function obtenerDocumentos() {
         'type': 'POST',
         'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoDoc",
         'dataType': 'json',
-        'success': cargarDocumentos
-    });
-}
-
-function cargarDocumentos(resultado) {
-
-    resultado.Data.forEach(function(element) {
-        const {
-            STIPODOCUMENTO_DSC,
-            SESTADODOC_DSC
-        } = element;
-        var tr = $("<tr ></tr>")
-        var td1 = $("<td></td>").text(STIPODOCUMENTO_DSC);
-        var td2 = $("<td></td>").text(SESTADODOC_DSC);
-        tr.append(td1)
-        tr.append(td2)
-        $('#tablaDocumentos').append(tr);
+        'success': function(resultado) {
+            resultado.Data.forEach(function(element) {
+                const {
+                    LTIPODOC,
+                    STIPODOCUMENTO_DSC,
+                    LESTADODOC,
+                    SESTADODOC_DSC
+                } = element;
+                var tr = $("<tr ></tr>")
+                var td1 = $("<td></td>").text(STIPODOCUMENTO_DSC);
+                var td2 = $("<td></td>").text(SESTADODOC_DSC);
+                tr.append(td1)
+                tr.append(td2)
+                $('#tablaDocumentos').append(tr);
+                if (LTIPODOC == 34 && LESTADODOC == 0) {
+                    $('#EstaVacunado_hf').val('1');
+                    $('#HabilitadoPresencial_div').css('display', 'block');
+                    $('.mevacune_btn, #SoloVirtual_div').css('display', 'none');
+                }
+            });
+        }
     });
 }
 
@@ -914,7 +915,7 @@ function cargarOfertaSolicitud(resultado) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOfertaa",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
         'dataType': 'json',
         'success': function(resultado) {
             $("#tablaNotas_SOfertaCambio tbody").empty();
@@ -1616,6 +1617,8 @@ function bloqueoInscripcion() {
                 setTimeout(function() { $('input[type=checkbox]').prop('disabled', true); }, 1000);
                 $('#selMateria_btn').hide();
                 swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible. <br>" + response.Data.DESCRIPCION, "info")
+            } else {
+
             }
             $("#mainLoader").hide();
         },
@@ -1654,5 +1657,38 @@ $(function() {
     });
 });
 
-$('#registro_btn, #retiro_btn, #cambio_btn').hide();
+function sendVacunaDatos() {
+    var datos = new Object();
+    datos.pCI = $("#vacunaci_txt").val();
+    datos.pFecha = $("#vacunafecha_txt").val();
+    datos.pEmail = $("#vacunaemail_txt").val();
+    var token = localStorage.getItem("token");
+    $("#mainLoader").show();
+    $("#mevacune_modal button").prop('disabled', true);
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(datos),
+        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudVacunado",
+        'dataType': 'json',
+        'success': function(response) {
+            if (response.Data == 1) {
+                swal("Formulario enviado", "Gracias por enviarnos sus datos, recibira una confirmación a su correo electrónico " + $("#vacunaemail_txt").val() + ", cuando hallan sido registrado sus datos de vacunación.", "info")
+            }
+            $("#mevacune_modal").modal('hide');
+            $("#mevacune_modal button").prop('disabled', false);
+            $("#mainLoader").hide();
+        },
+        'error': function() {
+            $("#mevacune_modal button").prop('disabled', false);
+            $("#mainLoader").hide();
+        }
+    });
+}
+
+//$('#registro_btn, #retiro_btn, #cambio_btn').hide();
 //$('#registro_btn, #retiro_btn, #cambio_btn, #selMateria_btn, #comprobante').hide();

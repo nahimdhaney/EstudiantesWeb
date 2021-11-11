@@ -49,7 +49,7 @@ $("#loginButton").click(function() {
                 "Content-Type": "application/json",
             },
             type: "POST",
-            url: "https://nurssl.nur.edu:8182/api/Registros/Login",
+            url: "http://sisnur.nur.edu:8085/api/Registros/Login",
             data: JSON.stringify(usuario),
             dataType: "json",
             success: function(resultado) {
@@ -85,7 +85,7 @@ function obtenerNombre() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
+            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
             dataType: "json",
             success: function(resultado) {
                 const {
@@ -119,7 +119,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "https://nurssl.nur.edu:8182/api/Registros/GetPlanPagos",
+        url: "http://sisnur.nur.edu:8085/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultadoCxc,
         error: errorSesion,
@@ -304,7 +304,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -348,7 +348,7 @@ function GetLinkPago() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetLinkPago",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetLinkPago",
         'dataType': 'json',
         'data': JSON.stringify(datos),
         'success': function(response) {

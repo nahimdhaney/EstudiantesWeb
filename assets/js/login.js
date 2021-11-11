@@ -29,7 +29,7 @@ $(document).ready(function() {
                     "Content-Type": "application/json",
                 },
                 type: "POST",
-                url: "https://nurssl.nur.edu:8182/api/Registros/Login",
+                url: "http://sisnur.nur.edu:8085/api/Registros/Login",
                 data: JSON.stringify(usuario),
                 dataType: "json",
                 success: resultado,
@@ -60,7 +60,7 @@ $(document).ready(function() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoBloqueo",
+            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
             dataType: "json",
         }).done(function(response) {
             var data = response.Data.toLowerCase();

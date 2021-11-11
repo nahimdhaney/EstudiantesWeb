@@ -1,13 +1,13 @@
-var boolModoSimulacion = 0;
-var botonInscripcionVisible = 0;
+var boolModoSimulacion = 1;
+var botonInscripcionVisible = 1;
 
-$(document).ready(function() {
+$(document).ready(function () {
     cargarPagina();
     getCostosSemestre();
     tieneLaboratorio();
     bloqueoInscripcion();
 })
-$("#imprimir").click(function() {
+$("#imprimir").click(function () {
     window.print();
 });
 
@@ -32,7 +32,7 @@ function getCostosSemestre() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetCostosSemestre",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
     });
@@ -97,7 +97,7 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneLaboratorio",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -128,7 +128,7 @@ function InfoCarrera() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoCarreras",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
         'dataType': 'json',
         'success': cargarInfoCarrera
     });
@@ -147,7 +147,7 @@ function pad(number, length) {
 }
 
 function cargarInfoCarrera(resultado) {
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             LCARRERA_ID,
             SCARRERA_DSC,
@@ -191,7 +191,7 @@ function InfoPersonal() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
         'dataType': 'json',
         'success': cargarInformacionPersonal
     });
@@ -246,7 +246,7 @@ function obtenerOferta() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta_v2",
         'dataType': 'json',
         'success': cargarOferta
     });
@@ -269,9 +269,7 @@ function cargarOferta(resultado) {
     var periodoDsc = resultado.Data[0].SPERIODO_DSC;
     $("#hdnSemestre").val(periodoDsc);
     $("#spPeriodoDsc").text(periodoDsc);
-
-
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             LGRUPO_ID,
             LCENTRO_ID,
@@ -312,14 +310,30 @@ function cargarOferta(resultado) {
             tr.append(td6)
             tr.append(td1)
             tr.append(td2)
-            tr.append(td3)
-            tr.append(td4)
+            // tr.append(td3)
+            // tr.append(td4)
             tr.append(td5)
             tr.append(row)
+
+            //  MODALIDAD DE GRUPO
+            var boolEsPre = 0;
+            if (SCODGRUPO[SCODGRUPO.length - 1] == 'P') {
+                tr.append("<td><span class='alert alert-success'>P</span></td>");
+                boolEsPre = 1;
+            } else if (SSEMANA) {
+                if (SSEMANA[0] == 'P') {
+                    tr.append("<td><span class='alert alert-success'>P</span></td>");
+                    boolEsPre = 1;
+                } else
+                    tr.append("<td><span class='alert alert-info'>V</span></td>");
+            }
+            else {
+                tr.append("<td><span class='alert alert-info'>V</span></td>");
+            }
+
             tr.append(td7)
             tr.append(td8)
             tr.append(td9)
-
             tr.append(td10)
             tr.append(td11)
             tr.append(td12)
@@ -329,8 +343,11 @@ function cargarOferta(resultado) {
                 tr.css({ 'pointer-events': 'none' });
                 tr.find('td[name ="ins"]').css({ 'font-weight': 'bold' });
             }
+            if ($('#EstaVacunado_hf').val() == 0 && boolEsPre == 1) {
+                // NO SE MUESTRA
+            } else
+                $('#tablaOferta').append(tr);
 
-            $('#tablaOferta').append(tr);
         }
         if (LCENTRO_ID == 2) {
             cargarSemi(element);
@@ -386,14 +403,30 @@ function cargarSemi(element) {
     tr.append(td6)
     tr.append(td1)
     tr.append(td2)
-    tr.append(td3)
-    tr.append(td4)
+    // tr.append(td3)
+    // tr.append(td4)
     tr.append(td5)
     tr.append(td12)
     tr.append(td7)
     tr.append(td8)
-    tr.append(td9)
 
+    //  MODALIDAD DE GRUPO
+    var boolEsPre = 0;
+    if (SCODGRUPO[SCODGRUPO.length - 1] == 'P') {
+        tr.append("<td><span class='alert alert-success'>P</span></td>");
+        boolEsPre = 1;
+    } else if (SSEMANA) {
+        if (SSEMANA[0] == 'P') {
+            tr.append("<td><span class='alert alert-success'>P</span></td>");
+            boolEsPre = 1;
+        } else
+            tr.append("<td><span class='alert alert-info'>V</span></td>");
+    }
+    else {
+        tr.append("<td><span class='alert alert-info'>V</span></td>");
+    }
+
+    tr.append(td9)
     tr.append(td10)
     tr.append(td11)
     tr.append(td13)
@@ -402,7 +435,10 @@ function cargarSemi(element) {
         tr.css({ 'pointer-events': 'none' });
         tr.find('td[name ="ins"]').css({ 'font-weight': 'bold' });
     }
-    $('#tablaOfertaSemi').append(tr);
+    if ($('#EstaVacunado_hf').val() == 0 && boolEsPre == 1) {
+        // NO SE MUESTRA
+    } else
+        $('#tablaOfertaSemi').append(tr);
 }
 
 function obtenerDocumentos() {
@@ -414,10 +450,10 @@ function obtenerDocumentos() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoDoc",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoDoc",
         'dataType': 'json',
-        'success': function(resultado) {
-            resultado.Data.forEach(function(element) {
+        'success': function (resultado) {
+            resultado.Data.forEach(function (element) {
                 const {
                     LTIPODOC,
                     STIPODOCUMENTO_DSC,
@@ -443,7 +479,7 @@ function obtenerDocumentos() {
 function getDiasHorario(HORARIO) {
     var dias = ''
 
-    HORARIO.forEach(function(element) {
+    HORARIO.forEach(function (element) {
         dias += element.DIA + " <br>";
     })
     return dias;
@@ -451,13 +487,13 @@ function getDiasHorario(HORARIO) {
 
 function getHoraHorario(HORARIO) {
     var hora = ''
-    HORARIO.forEach(function(element) {
+    HORARIO.forEach(function (element) {
         hora += formatearHora(element.DTHRENTRADA) + " - " + formatearHora(element.DTHRSALIDA) + " <br>";
     })
     return hora;
 }
 
-$.fn.gparent = function(recursion) {
+$.fn.gparent = function (recursion) {
     //console.log('recursion: ' + recursion);
     if (recursion > 1) return $(this).parent().gparent(recursion - 1);
     return $(this).parent();
@@ -472,33 +508,33 @@ $('#SolicitudRegistroForm').hide();
 $('#SolicitudRetiroPendienteDiv').hide();
 $('#SolicitudRetiroForm').hide();
 
-$("#registro_btn").click(function() {
+$("#registro_btn").click(function () {
     tieneSolicitudPendiente(1);
 });
-$("#retiro_btn").click(function() {
+$("#retiro_btn").click(function () {
     tieneSolicitudPendiente(2);
 });
-$("#cambio_btn").click(function() {
+$("#cambio_btn").click(function () {
     tieneSolicitudPendiente(3);
     $("#tablaAdicion_SCambio tbody").empty();
     $("#tablaRetiro_SCambio tbody").empty();
 });
 
-$("#enviar_SRegistro_btn").click(function() {
+$("#enviar_SRegistro_btn").click(function () {
     var email = $('#emailContacto_SRegistro').val().trim();
     if (email == '' || !validateEmail(email))
         swal('', 'Necesitamos un email válido.');
     else
         enviarSolicitudRegistro();
 });
-$("#enviar_SRetiro_btn").click(function() {
+$("#enviar_SRetiro_btn").click(function () {
     var email = $('#emailContacto_SRetiro').val().trim();
     if (email == '' || !validateEmail(email))
         swal('', 'Necesitamos un email válido.');
     else
         enviarSolicitudRetiro();
 });
-$("#enviar_SCambio_btn").click(function() {
+$("#enviar_SCambio_btn").click(function () {
     var email = $('#emailContacto_SCambio').val().trim();
     if (email == '' || !validateEmail(email))
         swal('', 'Necesitamos un email válido.');
@@ -507,17 +543,17 @@ $("#enviar_SCambio_btn").click(function() {
     }
 });
 
-$("#anular_SRegistro_btn").click(function() {
+$("#anular_SRegistro_btn").click(function () {
     anularSolicitud(1);
 });
-$("#ok_SRegistro_btn").click(function() {
+$("#ok_SRegistro_btn").click(function () {
     enviarVisto(1);
 });
 
-$("#anular_SRetiro_btn").click(function() {
+$("#anular_SRetiro_btn").click(function () {
     anularSolicitud(2);
 });
-$("#ok_SRetiro_btn").click(function() {
+$("#ok_SRetiro_btn").click(function () {
     enviarVisto(2);
 });
 
@@ -529,7 +565,7 @@ function validateEmail(email) {
 function enviarSolicitudRegistro() {
     var alertaGrupoLleno = 0;
     var pMatRegistro = [];
-    $("#tablaOferta input[type=checkbox]").each(function() {
+    $("#tablaOferta input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
             var obs = $("#" + id + "-obs").html();
@@ -541,7 +577,7 @@ function enviarSolicitudRegistro() {
             pMatRegistro.push(id);
         }
     });
-    $("#tablaOfertaSemi input[type=checkbox]").each(function() {
+    $("#tablaOfertaSemi input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
             var obs = $("#" + id + "-obs").html();
@@ -592,9 +628,9 @@ function enviarSolicitudRegistro() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudInscripcion",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudInscripcion",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status) {
                 $('#tablaOferta input[type=checkbox]').gparent(2).css("background-color", "white");
                 $('#tablaOfertaSemi input[type=checkbox]').gparent(2).css("background-color", "white");
@@ -607,7 +643,7 @@ function enviarSolicitudRegistro() {
             }
             $("#mainLoader").hide();
         },
-        'error': function() {
+        'error': function () {
             swal("", "Algo anda mal, tus datos no se enviaron.");
             $("#mainLoader").hide();
         }
@@ -616,7 +652,7 @@ function enviarSolicitudRegistro() {
 
 function enviarSolicitudRetiro() {
     var pMatRetiro = [];
-    $("#tablaNotas_SRetiro input[type=checkbox]").each(function() {
+    $("#tablaNotas_SRetiro input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             pMatRetiro.push($(this).attr('id'));
         }
@@ -654,9 +690,9 @@ function enviarSolicitudRetiro() {
             },
             'type': 'POST',
             'data': JSON.stringify(datos),
-            'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudInscripcion",
+            'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
-            'success': function(response) {
+            'success': function (response) {
                 if (response.Status) {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
@@ -665,7 +701,7 @@ function enviarSolicitudRetiro() {
                 }
                 $("#mainLoader").hide();
             },
-            'error': function() {
+            'error': function () {
                 swal("", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
             }
@@ -705,9 +741,9 @@ function tieneSolicitudPendiente($tipo) {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetTieneSolicitudPendiente",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetTieneSolicitudPendiente",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             var obj = response.Data;
             const {
                 LTIPO,
@@ -782,7 +818,7 @@ function tieneSolicitudPendiente($tipo) {
                 }
             }
         },
-        error: function() {
+        error: function () {
             swal("Upps", "El servicio esta temporalmente inactivo");
         }
     });
@@ -802,9 +838,9 @@ function anularSolicitud($tipo) {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/AnularSolicitud",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/AnularSolicitud",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status) {
                 swal("", "Solicitud anulada.");
                 tieneSolicitudPendiente(response.Data.LTIPO);
@@ -812,7 +848,7 @@ function anularSolicitud($tipo) {
                 swal("", "Su solicitud no pudo ser anulada.");
             }
         },
-        'error': function() {
+        'error': function () {
             swal("", "Su solicitud no pudo ser anulada.");
         }
     });
@@ -831,10 +867,10 @@ function obtenerTablaNotas() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
         'dataType': 'json',
         'success': cargarNotasSolicitud,
-        'error': function() {
+        'error': function () {
             swal("Upps", "Hubo un problema al obtener materias");
         }
     });
@@ -845,7 +881,7 @@ function cargarNotasSolicitud(resultado) {
     if (resultado.Data.length == 0) {
         $("#tablaNotas_SRetiro, #tablaNotas_SRetiroCambio").append("<tr><td colspan='5' class='text-center'>   --    No hay materias para retirar    --  </td></tr>");
     }
-    resultado.Data.forEach(function(element) {
+    resultado.Data.forEach(function (element) {
         const {
             LGRUPO_ID,
             LCENTRO_ID,
@@ -888,9 +924,9 @@ function enviarVisto($tipo) {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudVista",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudVista",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status)
                 window.location.reload();
         }
@@ -915,12 +951,12 @@ function cargarOfertaSolicitud(resultado) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta_v2",
         'dataType': 'json',
-        'success': function(resultado) {
+        'success': function (resultado) {
             $("#tablaNotas_SOfertaCambio tbody").empty();
             var lista = resultado.Data;
-            lista.forEach(function(element) {
+            lista.forEach(function (element) {
                 const {
                     LGRUPO_ID,
                     LCENTRO_ID,
@@ -970,14 +1006,14 @@ function cargarOfertaSolicitud(resultado) {
 
 function marcadoAdicion() {
     var pMatAdicion = [];
-    $("#tablaNotas_SOfertaCambio input[type=checkbox]").each(function() {
+    $("#tablaNotas_SOfertaCambio input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var myrow = $(this).gparent(2);
             pMatAdicion.push(myrow[0].outerHTML);
             $(this).gparent(2).remove();
         }
     });
-    pMatAdicion.forEach(function(element) {
+    pMatAdicion.forEach(function (element) {
         $('#tablaAdicion_SCambio').append(element);
     });
     $('#tablaAdicion_SCambio input[type=checkbox]').prop("checked", true).prop("disabled", true);
@@ -985,14 +1021,14 @@ function marcadoAdicion() {
 
 function marcadoRetiro() {
     var pMatAdicion = [];
-    $("#tablaNotas_SRetiroCambio input[type=checkbox]").each(function() {
+    $("#tablaNotas_SRetiroCambio input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var myrow = $(this).gparent(2);
             pMatAdicion.push(myrow[0].outerHTML);
             $(this).gparent(2).remove();
         }
     });
-    pMatAdicion.forEach(function(element) {
+    pMatAdicion.forEach(function (element) {
         $('#tablaRetiro_SCambio').append(element);
     });
     $('#tablaRetiro_SCambio input[type=checkbox]').prop("checked", true).prop("disabled", true);
@@ -1000,12 +1036,12 @@ function marcadoRetiro() {
 
 function enviarSolicitudCambio() {
     var pMatAdicion = [];
-    $("#tablaAdicion_SCambio input[type=checkbox]").each(function() {
+    $("#tablaAdicion_SCambio input[type=checkbox]").each(function () {
         if ($(this).is(":checked"))
             pMatAdicion.push($(this).attr('id'));
     });
     var pMatRetiro = [];
-    $("#tablaRetiro_SCambio input[type=checkbox]").each(function() {
+    $("#tablaRetiro_SCambio input[type=checkbox]").each(function () {
         if ($(this).is(":checked"))
             pMatRetiro.push($(this).attr('id'));
     });
@@ -1043,9 +1079,9 @@ function enviarSolicitudCambio() {
             },
             'type': 'POST',
             'data': JSON.stringify(datos),
-            'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudInscripcion",
+            'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
-            'success': function(response) {
+            'success': function (response) {
                 if (response.Status) {
                     swal("Solicitud enviada", "", "success");
                     tieneSolicitudPendiente(2);
@@ -1054,7 +1090,7 @@ function enviarSolicitudCambio() {
                 }
                 $("#mainLoader").hide();
             },
-            'error': function() {
+            'error': function () {
                 swal("", "Algo anda mal, tus datos no se enviaron.");
                 $("#mainLoader").hide();
             }
@@ -1074,7 +1110,7 @@ function isEmpty(value) {
     return (value == null || value === '');
 }
 
-$(document).on("change", ".chkRow", function() {
+$(document).on("change", ".chkRow", function () {
     var $box = $(this);
     if ($box.is(":checked")) {
         var group = "input:checkbox[name='" + $box.attr("name") + "']";
@@ -1086,11 +1122,11 @@ $(document).on("change", ".chkRow", function() {
     }
 });
 
-$("#selMateria_btn").click(function() {
+$("#selMateria_btn").click(function () {
     cargaMateriaSelecionada();
 });
 
-$("#contabilizar").click(function() {
+$("#contabilizar").click(function () {
     contabilizar();
 });
 
@@ -1103,13 +1139,13 @@ function contabilizar() {
     $("#spPeriodoDsc").text(periodoDsc);
     var auxPresencial = 0;
     var auxSemipresencial = 0;
-    $("#tablaOferta .chkRow").each(function() {
+    $("#tablaOferta .chkRow").each(function () {
         if ($(this).is(":checked")) {
             auxPresencial++;
         }
     });
 
-    $("#tablaOfertaSemi .chkRow").each(function() {
+    $("#tablaOfertaSemi .chkRow").each(function () {
         if ($(this).is(":checked")) {
             auxSemipresencial++;
         }
@@ -1165,7 +1201,7 @@ function contabilizar() {
     $("#cbCuotas").val(4).trigger('change');
 }
 
-$('input[name=pagoContado]').on('change', function() {
+$('input[name=pagoContado]').on('change', function () {
     if ($(this).prop("checked") == true) {
         resetComboCuotas();
         $('#cbCuotas').prop('disabled', true);
@@ -1196,13 +1232,13 @@ function mostrarCostosTotales(costo) {
     $("#spCostoFinalMat").fadeIn(2000);
 }
 
-$('#modalCostos').on('hidden.bs.modal', function() {
+$('#modalCostos').on('hidden.bs.modal', function () {
     $('#pagoContado').prop("checked", false);
     $('#pagoContado').change();
     resetComboCuotas();
 });
 
-$('#spCostoFinalMat').on('change', function() {
+$('#spCostoFinalMat').on('change', function () {
     var costoFinalMat = $("#spCostoFinalMat").text();
     var costoCarnet = $("#spCarnetEst").text();
     var costoSeguro = $("#spSeguroEst").text();
@@ -1222,7 +1258,7 @@ function calcularPagoContado(costoMaterias) {
     return costoMaterias - (costoMaterias * 0.1);
 }
 
-$('#cbCuotas').on('change', function() {
+$('#cbCuotas').on('change', function () {
     $("#tableCuotas").remove();
     var nroCuotas = $("#cbCuotas").find("option:selected").val();
     if (isEmpty(nroCuotas)) {
@@ -1273,21 +1309,21 @@ function fnDosDigitos(numero) {
     return Number(numero).toFixed(2);
 }
 
-$("#comprobante").click(function() {
+$("#comprobante").click(function () {
     obtenerComprobantePago();
 
-    setTimeout(function() {
+    setTimeout(function () {
         $("#btnEnviar").attr("disabled", true);
         $('#modalComprobante').modal('show');
     }, 1000);
 })
 
-$('#btnSubir').click(function(e) {
+$('#btnSubir').click(function (e) {
     e.preventDefault();
     $('#fichero').click();
 });
 
-$('#fichero').on("change", function(e) {
+$('#fichero').on("change", function (e) {
     var imgVal = $(this).val();
     var nombre = $("#fichero")[0].files[0].name;
     var ext = getExtension(imgVal);
@@ -1319,7 +1355,7 @@ function isImage(filename) {
 function cargaMateriaSelecionada() {
     var matLista = [];
     $('#tablaSelMateria tbody').empty();
-    $("#tablaOferta input[type=checkbox]").each(function() {
+    $("#tablaOferta input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
             var obs = $("#" + id + "-obs").html();
@@ -1332,7 +1368,7 @@ function cargaMateriaSelecionada() {
             $('#tablaSelMateria tbody').append($(this).gparent(2)[0].outerHTML);
         }
     });
-    $("#tablaOfertaSemi input[type=checkbox]").each(function() {
+    $("#tablaOfertaSemi input[type=checkbox]").each(function () {
         if ($(this).is(":checked")) {
             var id = $(this).attr('id')
             var obs = $("#" + id + "-obs").html();
@@ -1383,9 +1419,9 @@ function enviarInscripcion() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/InscripcionOnline",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/InscripcionOnline",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Status) {
                 swal("Proceso finalizado", "Usted acaba de inscribirse, por lo tanto, adquirió una deuda, ahora debe realizar su pago mediante vía online en nuestra plataforma o en ventanilla de Caja en Nur. Tiene un plazo máximo de <b>2 horas</b> para hacer su pago. <br><br> En caso de no pagarlas en ese tiempo, nos reservamos el derecho de retirar o no las materias registradas y si desea reinscribirse deberá ser de manera presencial en el edificio de Nur.", "success");
                 $('input[type=checkbox]').prop('disabled', true);
@@ -1398,7 +1434,7 @@ function enviarInscripcion() {
             }
             $("#mainLoader").hide();
         },
-        'error': function() {
+        'error': function () {
             swal("Formulario de Inscripción", "No fue posible completar su inscripción. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
             $("#mainLoader").hide();
         }
@@ -1414,7 +1450,7 @@ function titleCase(str) {
     return str.join(' ');
 }
 
-$("#btnEnviar").click(function() {
+$("#btnEnviar").click(function () {
     if ($("#fichero")[0].files.length <= 0) {
         swal("", "Debe seleccionar una imagen.", "error");
         return;
@@ -1430,11 +1466,11 @@ $("#btnEnviar").click(function() {
         cache: false,
         contentType: false,
         processData: false,
-        beforeSend: function() {
+        beforeSend: function () {
             $('#modalComprobante').modal('hide');
             $(".modal-carga").show();
         }
-    }).done(function(response) {
+    }).done(function (response) {
         $(".modal-carga").hide();
         var respuesta = "";
         switch (response) {
@@ -1456,12 +1492,12 @@ $("#btnEnviar").click(function() {
                 break;
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             swal("", respuesta, "info");
 
         }, 1000);
 
-    }).fail(function(response) {
+    }).fail(function (response) {
         swal("", "Error al enviar el comprobante de pago. Intente nuevamente por favor.", "error");
     });
 });
@@ -1490,7 +1526,7 @@ function insertarComprobante() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/InsertarComprobantePago",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/InsertarComprobantePago",
         'dataType': 'json',
         'success': insertarEnvioComprobante
     });
@@ -1514,7 +1550,7 @@ function obtenerComprobantePago() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneComprobantePago",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneComprobantePago",
         'dataType': 'json',
         'success': comprobantePago
     });
@@ -1571,7 +1607,7 @@ function comprobantePago(response) {
     }
 }
 
-$(document).on("change", "#txtEmailComprobante", function() {
+$(document).on("change", "#txtEmailComprobante", function () {
     if ($("#divError-email").find(".msgError").length > 0) {
         $("#divError-email").find("p").remove();
     }
@@ -1590,7 +1626,7 @@ function isEmail(email) {
 
 function bloqueoInscripcion() {
     if (botonInscripcionVisible == 0) {
-        setTimeout(function() { $('input[type=checkbox]').prop('disabled', true); }, 1000);
+        setTimeout(function () { $('input[type=checkbox]').prop('disabled', true); }, 1000);
         $('#selMateria_btn').hide();
         return;
     }
@@ -1610,11 +1646,11 @@ function bloqueoInscripcion() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/BloqueoInscripcion",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/BloqueoInscripcion",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Data.BOOLBLOQUEO == 1) {
-                setTimeout(function() { $('input[type=checkbox]').prop('disabled', true); }, 1000);
+                setTimeout(function () { $('input[type=checkbox]').prop('disabled', true); }, 1000);
                 $('#selMateria_btn').hide();
                 swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible. <br>" + response.Data.DESCRIPCION, "info")
             } else {
@@ -1622,20 +1658,20 @@ function bloqueoInscripcion() {
             }
             $("#mainLoader").hide();
         },
-        'error': function() {
+        'error': function () {
             $("#mainLoader").hide();
             $('#selMateria_btn').hide();
         }
     });
 }
 
-$(function() {
+$(function () {
     var btnEnviar = $("#btnEnviar").attr("disabled", true);
-    $("#modalComprobante .requerido").change(function() {
+    $("#modalComprobante .requerido").change(function () {
         var valid = true;
         var correo = $("#txtEmailComprobante").val();
         var fichero = $("#fichero").val();
-        $.each($("#modalComprobante .requerido"), function(index, value) {
+        $.each($("#modalComprobante .requerido"), function (index, value) {
             if (!$(value).val()) {
                 valid = false;
             } else if ($(value).val() == fichero) {
@@ -1662,6 +1698,7 @@ function sendVacunaDatos() {
     datos.pCI = $("#vacunaci_txt").val();
     datos.pFecha = $("#vacunafecha_txt").val();
     datos.pEmail = $("#vacunaemail_txt").val();
+    datos.pCelular = $("#vacunacelular_txt").val();
     var token = localStorage.getItem("token");
     $("#mainLoader").show();
     $("#mevacune_modal button").prop('disabled', true);
@@ -1673,17 +1710,18 @@ function sendVacunaDatos() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudVacunado",
+        'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudVacunado",
         'dataType': 'json',
-        'success': function(response) {
+        'success': function (response) {
             if (response.Data == 1) {
-                swal("Formulario enviado", "Gracias por enviarnos sus datos, recibira una confirmación a su correo electrónico " + $("#vacunaemail_txt").val() + ", cuando hallan sido registrado sus datos de vacunación.", "info")
+                swal("Formulario enviado", "Gracias por enviarnos sus datos, recibirá una confirmación cuando hallan sido registrado sus datos de vacunación, vía email o whatsapp al contacto que ha proporcionado ("
+                    + $("#vacunaemail_txt").val() + " - " + $("#vacunacelular_txt").val() + ").", "info")
             }
             $("#mevacune_modal").modal('hide');
             $("#mevacune_modal button").prop('disabled', false);
             $("#mainLoader").hide();
         },
-        'error': function() {
+        'error': function () {
             $("#mevacune_modal button").prop('disabled', false);
             $("#mainLoader").hide();
         }

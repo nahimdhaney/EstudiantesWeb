@@ -44,11 +44,11 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        var boolModoDev = 0;
+        var boolModoDevLocal = 1;
 
         $(document).ready(function() {
 
-            if (location.protocol !== 'https:' && boolModoDev == 0) {
+            if (location.protocol !== 'https:' && boolModoDevLocal == 0) {
                 location.replace(`https:${location.href.substring(location.protocol.length)}`);
             }
 

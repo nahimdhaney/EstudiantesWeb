@@ -1,8 +1,8 @@
-var boolModoDev = 1;
+var boolModoDevLocal = 1;
 
 $(document).ready(function() {
 
-    if (location.protocol !== 'https:' && boolModoDev == 0) {
+    if (location.protocol !== 'https:' && boolModoDevLocal == 0) {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
 

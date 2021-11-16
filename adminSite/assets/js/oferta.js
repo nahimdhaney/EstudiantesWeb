@@ -406,8 +406,6 @@ function cargarSemi(element) {
         // tr.append(td4)
     tr.append(td5)
     tr.append(td12)
-    tr.append(td7)
-    tr.append(td8)
 
     //  MODALIDAD DE GRUPO
     var boolEsPre = 0;
@@ -424,6 +422,8 @@ function cargarSemi(element) {
         tr.append("<td><span class='alert alert-info'>V</span></td>");
     }
 
+    tr.append(td7)
+    tr.append(td8)
     tr.append(td9)
     tr.append(td10)
     tr.append(td11)

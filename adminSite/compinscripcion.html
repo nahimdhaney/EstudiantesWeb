@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Comprobante de inscripción</title>
+
+    <link rel="icon" type="image/png" href="assets/img/nur.png">
+
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        .tabla_1 td {
+            padding: 10px;
+        }
+        
+        .tabla_1 th {
+            padding: 5px 10px;
+        }
+        
+        .tabla_1 tr:first-child,
+        .tabla_1 tr:first-child td {
+            border: 1px solid black;
+        }
+        
+        .tablamaterias th,
+        .tablamaterias td {
+            padding: 5px;
+            font-size: 11px;
+        }
+        
+        .horario {
+            min-width: 75px;
+        }
+        
+        .inicla {
+            width: 100%;
+            margin: 1px;
+            padding: 5px;
+            border: 1px solid black;
+            box-shadow: 5px 5px;
+        }
+        
+        body {
+            background-color: #1E1E1E;
+        }
+        
+        .contenedor {
+            display: none;
+            padding: 15px;
+            width: 765px;
+            min-height: 1000px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 3px;
+        }
+        
+        @media print {
+            .print_btn {
+                display: none;
+            }
+        }
+        
+        .loader {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader"></div>
+    <div class="contenedor">
+
+
+        <div style="display: flex; ">
+            <div style="text-align: center; width: 200px; border-right: 3px solid black;border-bottom: 3px solid black; ">
+                UNIVERSIDAD NUR <br> DPTO. DE REGISTROS
+            </div>
+            <div style="width: 100px; margin-left:auto ;margin-right: 0;margin-top: 0; ">
+                <span class="fechaactual ">...</span><br>
+                <span class="horaactual ">...</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; ">
+            <a class="print_btn" onclick="javascript:window.print() " style="width: 40px; float: left; ">
+                <img class='imgPrint' src="../adminSite/assets/img/print.png " width="100% ">
+            </a>
+            <h3 class="text-center ">COMPROBANTE DE INSCRIPCIÓN</h3>
+        </div>
+
+        <div style="margin-top: 30px; ">
+            <table class="tabla_1 " style="width: 100%; ">
+                <tr>
+                    <td><span class="nroregistro">...</span></td>
+                    <td><span class="nombrecompleto">...</span></td>
+                    <td><span class="carrera">...</span></td>
+                    <td><span class="periodo">...</span></td>
+                    <td><span class="fecharegistro">...</span></td>
+                </tr>
+                <tr>
+                    <th>Registro</th>
+                    <th>Apellido(s) y Nombre(s)</th>
+                    <th>Carrera</th>
+                    <th>Periodo</th>
+                    <th>Fecha de Registro</th>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <p style="border: 1px solid black;padding-left: 2px; ">
+                <b> Horas de Servicio:</b> <span class="horasservicio ">...</span></p>
+        </div>
+
+        <div>
+            <table class="tablamaterias" style="width: 100%; ">
+                <thead>
+                    <tr style="border-bottom: 2px solid black; ">
+                        <th>Cent.</th>
+                        <th>Gr.</th>
+                        <th>Materia</th>
+                        <th>Docente</th>
+                        <th>Dias</th>
+                        <th>Sem.</th>
+                        <th>Horario</th>
+                        <th>Aula</th>
+                        <th>Mod.</th>
+                        <th>Inicio clases</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>
+                        <td>010</td>
+                        <td>A1</td>
+                        <td>Matematica Financiera III</td>
+                        <td>HUSTADO, KARIN ROMINA</td>
+                        <td>SA</td>
+                        <td>A</td>
+                        <td>16:15 - 18:45</td>
+                        <td>S/A</td>
+                        <td>V</td>
+                        <td><span class="inicla ">14/08/2021</span></td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 30px; ">
+            <div style="display: flex;font-size: 18px; ">
+                <div style="padding-right: 16px; ">
+                    <b>IMPORTANTE: </b>
+                </div>
+                <div>
+                    La Asistencia será controlada desde el primer día de clases, ver recuadro de "INICIO CLASES " en cada una de las materias que registró y su modalidad.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; ">
+            <div style="display: flex; ">
+                <div style="width: 33%; "><b>Celular: </b><span class="celular">...</span></div>
+                <div style="width: 33%; "><b>Telf. Fijo: </b>..................</div>
+                <div style="width: 33%; "><b>Email: </b><span class="email">...</span></div>
+            </div>
+            <div style="display: flex; ">
+                <div style="width: 50%; "><b>Dirección: </b><span class="direccion">...</span></div>
+                <div style="width: 50%; "><b>Telf. Oficina: </b>...................</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="assets/js/jquery.3.2.1.min.js " type="text/javascript "></script>
+    <script src="assets/js/compinscripcion.js"></script>
+</body>
+
+</html>

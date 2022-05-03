@@ -1,4 +1,4 @@
-var boolModoDevLocal = 1;
+var boolModoDevLocal = 0;
 
 $(document).ready(function() {
 
@@ -6,8 +6,8 @@ $(document).ready(function() {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
 
-    var userId = localStorage.getItem("token");
-    if (userId != null && userId != "") {
+    var token = localStorage.getItem("token");
+    if (token != null && token != "") {
         var url = "adminSite/dashboard.html";
         $(location).attr("href", url);
     }
@@ -29,49 +29,45 @@ $(document).ready(function() {
                     "Content-Type": "application/json",
                 },
                 type: "POST",
-                url: "http://sisnur.nur.edu:8085/api/Registros/Login",
+                url: "https://nurssl.nur.edu:8182/api/Registros/Login",
                 data: JSON.stringify(usuario),
                 dataType: "json",
-                success: resultado,
-                error: errorLogin,
+                success: function(resultado) {
+                    if (resultado == "") {
+                        $("#loader").attr("style", "display:none");
+                        $("#loginButton").removeAttr("style");
+                        swal("Error", "Usuario o Pin incorrectos.", "error");
+                        return;
+                    }
+                    localStorage.setItem("token", resultado);
+                    obtenerBloqueo(resultado);
+                    window.location = "adminSite/dashboard.html";
+                },
+                error: function() {
+                    $("#loader").attr("style", "display:none");
+                    $("#loginButton").removeAttr("style");
+                    swal("Error", "Usuario o Pin incorrectos.", "error");
+                },
             });
         }
         return false;
     });
 
-    function resultado(resultado) {
-        if (resultado == "") {
-            $("#loader").attr("style", "display:none");
-            $("#loginButton").removeAttr("style");
-            swal("Error", "Usuario o Pin incorrectos.", "error");
-            return;
-        }
-        localStorage.setItem("token", resultado);
-        obtenerBloqueo(resultado);
-        var url = "adminSite/dashboard.html";
-        $(location).attr("href", url);
-    }
-
-    function obtenerBloqueo(token) {
-        $.ajax({
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-            },
-            type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
-            dataType: "json",
-        }).done(function(response) {
-            var data = response.Data.toLowerCase();
-            localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
-        });
-    }
-
-    function errorLogin() {
-        $("#loader").attr("style", "display:none");
-        $("#loginButton").removeAttr("style");
-        swal("Error", "Usuario o Pin incorrectos.", "error");
-    }
 
 });
+
+function obtenerBloqueo(token) {
+    $.ajax({
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+        },
+        type: "POST",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoBloqueo",
+        dataType: "json",
+    }).done(function(response) {
+        var data = response.Data.toLowerCase();
+        localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
+    });
+}

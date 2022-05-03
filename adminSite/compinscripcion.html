@@ -31,11 +31,15 @@
         .tablamaterias th,
         .tablamaterias td {
             padding: 5px;
-            font-size: 11px;
+            font-size: 10px;
         }
         
-        .horario {
-            min-width: 75px;
+        .horario_td {
+            min-width: 80px;
+        }
+        
+        .docente_td {
+            min-width: 180px;
         }
         
         .inicla {
@@ -43,7 +47,7 @@
             margin: 1px;
             padding: 5px;
             border: 1px solid black;
-            box-shadow: 5px 5px;
+            box-shadow: 3px 3px;
         }
         
         body {
@@ -54,10 +58,10 @@
             display: none;
             padding: 15px;
             width: 765px;
-            min-height: 1000px;
-            margin: 20px auto;
+            min-height: 900px;
+            margin: 0px auto;
             background-color: white;
-            border-radius: 3px;
+            border-radius: 2px;
         }
         
         @media print {
@@ -149,11 +153,11 @@
                         <th>Gr.</th>
                         <th>Materia</th>
                         <th>Docente</th>
-                        <th>Dias</th>
                         <th>Sem.</th>
+                        <th>Mod.</th>
+                        <th>Dias</th>
                         <th>Horario</th>
                         <th>Aula</th>
-                        <th>Mod.</th>
                         <th>Inicio clases</th>
                     </tr>
                 </thead>
@@ -188,12 +192,12 @@
         <div style="margin-top: 30px; ">
             <div style="display: flex; ">
                 <div style="width: 33%; "><b>Celular: </b><span class="celular">...</span></div>
-                <div style="width: 33%; "><b>Telf. Fijo: </b>..................</div>
+                <div style="width: 33%; "><b>Telf. Fijo: </b><span class="telffijo">...</span></div>
                 <div style="width: 33%; "><b>Email: </b><span class="email">...</span></div>
             </div>
             <div style="display: flex; ">
-                <div style="width: 50%; "><b>Dirección: </b><span class="direccion">...</span></div>
-                <div style="width: 50%; "><b>Telf. Oficina: </b>...................</span>
+                <div style="width: 70%; "><b>Dirección: </b><span class="direccion">...</span></div>
+                <div style="width: 30%; "><b>Telf. Oficina: </b>...................</span>
                 </div>
             </div>
         </div>

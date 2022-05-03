@@ -23,7 +23,7 @@ function InfoCarrera() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoCarreras",
         'dataType': 'json',
         'success': cargarInfoCarrera
     });
@@ -89,7 +89,7 @@ function InfoPersonal() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
         'dataType': 'json',
         'success': cargarInformacionPersonal
     });
@@ -138,7 +138,7 @@ function obtenerHorarios() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
         'dataType': 'json',
         'success': cargarHorarios
     });
@@ -154,26 +154,57 @@ function cargarHorarios(resultado) {
             DOCENTE,
             HORARIO
         } = element;
-        var tr = $("<tr ></tr>")
-        var tdGrupo = $("<td ></td>")
-        tdGrupo.text(SCODGRUPO)
+        var tr = $("<tr></tr>");
+        var tdGrupo = $("<td></td>");
+        tdGrupo.text(SCODGRUPO);
         tdGrupo.css("padding-left", "20px");
-        tr.append($("<td></td>").text(SMATERIA_DSC))
-            //tr.append($("<td></td>").text(SCENTRO_DSC))
-        tr.append($("<td></td>").text(DOCENTE))
-        tr.append(tdGrupo)
-        tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC))
-        tr.append($("<td></td>").text(HORARIO == null ? "" : HORARIO[0].ENTRADA + " - " + HORARIO[0].SALIDA))
-        tr.append($("<td></td>").text(HORARIO == null ? "" : getDiasHorario(HORARIO)))
-        $('#tablaHorario').append(tr);
+
+        tr.append($("<td></td>").text(SCODMATERIA + " " + SMATERIA_DSC));
+        tr.append($("<td></td>").text(DOCENTE));
+        tr.append(tdGrupo);
+
+        var mismoHorario = false;
+        var hora = "";
+        var diasConcat = "";
+        HORARIO.forEach(h => {
+            diasConcat += h.SDIA_DSC.substring(0, 2).toUpperCase() + " ";
+            if (hora) {
+                if (hora == h.ENTRADA) {
+                    mismoHorario = true;
+                    return;
+                }
+            }
+            hora = h.ENTRADA;
+        });
+
+        if (HORARIO == null) {
+            tr.append($("<td></td>").text(""));
+            tr.append($("<td></td>").text(""));
+            tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC));
+            $('#tablaHorario').append(tr);
+        } else {
+            if (mismoHorario) {
+                tr.append($("<td></td>").text(diasConcat));
+                tr.append($("<td></td>").text(HORARIO[0].ENTRADA + " - " + HORARIO[0].SALIDA));
+                tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC));
+                $('#tablaHorario').append(tr);
+            } else {
+                var conH = 1;
+                HORARIO.forEach(h => {
+                    if (conH > 1) {
+                        tr = $("<tr ></tr>");
+                        tr.append($("<td></td>").text(""));
+                        tr.append($("<td></td>").text(""));
+                        tr.append($("<td></td>").text(""));
+                    }
+                    tr.append($("<td></td>").text(h.SDIA_DSC.substring(0, 2).toUpperCase() + "  "));
+                    tr.append($("<td></td>").text(h.ENTRADA + " - " + h.SALIDA));
+                    tr.append($("<td></td>").text(HORARIO[0].SAULA_DSC));
+                    $('#tablaHorario').append(tr);
+                    conH++;
+                });
+            }
+        }
     });
     terminarMainCargado()
-}
-
-function getDiasHorario(HORARIO) {
-    var dias = ''
-    HORARIO.forEach(function(element) {
-        dias += element.SDIA_DSC.substring(0, 2).toUpperCase() + "  ";
-    })
-    return dias;
 }

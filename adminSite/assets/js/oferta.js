@@ -1,11 +1,10 @@
-var boolModoSimulacion = 1;
-var botonInscripcionVisible = 1;
+var boolModoSimulacion = 0;
+var botonInscripcionVisible = 0;
 
 $(document).ready(function() {
     cargarPagina();
     getCostosSemestre();
     tieneLaboratorio();
-    bloqueoInscripcion();
 })
 $("#imprimir").click(function() {
     window.print();
@@ -32,7 +31,7 @@ function getCostosSemestre() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetCostosSemestre",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
     });
@@ -97,7 +96,7 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneLaboratorio",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -128,7 +127,7 @@ function InfoCarrera() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoCarreras",
         'dataType': 'json',
         'success': cargarInfoCarrera
     });
@@ -191,7 +190,7 @@ function InfoPersonal() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
         'dataType': 'json',
         'success': cargarInformacionPersonal
     });
@@ -236,8 +235,10 @@ function obtenerOferta() {
     }
     var token = localStorage.getItem("token");
     var usuario = new Object();
-    usuario.pCarreraId = carreraId;
     usuario.pPeriodoId = periodoOferta;
+    usuario.pCarreraId = carreraId;
+    $("#hdnPeriodoId").val(periodoOferta);
+    $("#hdnCarreraId").val(carreraId);
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -246,7 +247,7 @@ function obtenerOferta() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta_v2",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
         'dataType': 'json',
         'success': cargarOferta
     });
@@ -296,7 +297,7 @@ function cargarOferta(resultado) {
             var row = $("<td class='no'></td>").append(input);
             var td1 = $("<td></td>").text(SMATERIA_DSC);
             var td2 = $("<td class='no'></td>").text(LSEMESTRE);
-            var td3 = $("<td class='no'></td>").text(LCREDITOS);
+            var td3 = $("<td></td>").text(LCREDITOS);
             var td4 = $("<td class='no'></td>").text(LLABORATORIO == 1 ? "*" : "");
             var td5 = $("<td></td>").text(DOCENTE);
             var td6 = $("<td class='no'></td>").text(SCODMATERIA);
@@ -310,21 +311,18 @@ function cargarOferta(resultado) {
             tr.append(td6)
             tr.append(td1)
             tr.append(td2)
-                // tr.append(td3)
+            tr.append(td3)
                 // tr.append(td4)
             tr.append(td5)
             tr.append(row)
 
             //  MODALIDAD DE GRUPO
-            var boolEsPre = 0;
             if (SCODGRUPO[SCODGRUPO.length - 1] == 'P') {
                 tr.append("<td><span class='alert alert-success'>P</span></td>");
-                boolEsPre = 1;
             } else if (SSEMANA) {
-                if (SSEMANA[0] == 'P') {
+                if (SSEMANA[0] == 'P' || SSEMANA[SSEMANA.length - 1] == 'P')
                     tr.append("<td><span class='alert alert-success'>P</span></td>");
-                    boolEsPre = 1;
-                } else
+                else
                     tr.append("<td><span class='alert alert-info'>V</span></td>");
             } else {
                 tr.append("<td><span class='alert alert-info'>V</span></td>");
@@ -342,10 +340,7 @@ function cargarOferta(resultado) {
                 tr.css({ 'pointer-events': 'none' });
                 tr.find('td[name ="ins"]').css({ 'font-weight': 'bold' });
             }
-            if ($('#EstaVacunado_hf').val() == 0 && boolEsPre == 1) {
-                // NO SE MUESTRA
-            } else
-                $('#tablaOferta').append(tr);
+            $('#tablaOferta').append(tr);
 
         }
         if (LCENTRO_ID == 2) {
@@ -358,7 +353,8 @@ function cargarOferta(resultado) {
         $('.noMateriasSemiPresencial').show();
         $('.noMateriasSemiPresencial').parent().css({ "padding": "15px" });
     }
-    terminarMainCargado()
+    bloqueoInscripcion();
+    terminarMainCargado();
 }
 
 function cargarSemi(element) {
@@ -386,7 +382,7 @@ function cargarSemi(element) {
 
     var td1 = $("<td></td>").text(SMATERIA_DSC);
     var td2 = $("<td class='no'></td>").text(LSEMESTRE);
-    var td3 = $("<td class='no'></td>").text(LCREDITOS);
+    var td3 = $("<td></td>").text(LCREDITOS);
     var td4 = $("<td class='no'></td>").text(LLABORATORIO == 1 ? "*" : "");
     var td5 = $("<td></td>").text(DOCENTE);
     var td6 = $("<td class='no'></td>").text(SCODMATERIA);
@@ -402,21 +398,18 @@ function cargarSemi(element) {
     tr.append(td6)
     tr.append(td1)
     tr.append(td2)
-        // tr.append(td3)
+    tr.append(td3)
         // tr.append(td4)
     tr.append(td5)
     tr.append(td12)
 
     //  MODALIDAD DE GRUPO
-    var boolEsPre = 0;
     if (SCODGRUPO[SCODGRUPO.length - 1] == 'P') {
         tr.append("<td><span class='alert alert-success'>P</span></td>");
-        boolEsPre = 1;
     } else if (SSEMANA) {
-        if (SSEMANA[0] == 'P') {
+        if (SSEMANA[0] == 'P' || SSEMANA[SSEMANA.length - 1] == 'P')
             tr.append("<td><span class='alert alert-success'>P</span></td>");
-            boolEsPre = 1;
-        } else
+        else
             tr.append("<td><span class='alert alert-info'>V</span></td>");
     } else {
         tr.append("<td><span class='alert alert-info'>V</span></td>");
@@ -433,10 +426,7 @@ function cargarSemi(element) {
         tr.css({ 'pointer-events': 'none' });
         tr.find('td[name ="ins"]').css({ 'font-weight': 'bold' });
     }
-    if ($('#EstaVacunado_hf').val() == 0 && boolEsPre == 1) {
-        // NO SE MUESTRA
-    } else
-        $('#tablaOfertaSemi').append(tr);
+    $('#tablaOfertaSemi').append(tr);
 }
 
 function obtenerDocumentos() {
@@ -448,7 +438,7 @@ function obtenerDocumentos() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoDoc",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoDoc",
         'dataType': 'json',
         'success': function(resultado) {
             resultado.Data.forEach(function(element) {
@@ -626,7 +616,7 @@ function enviarSolicitudRegistro() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudInscripcion",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudInscripcion",
         'dataType': 'json',
         'success': function(response) {
             if (response.Status) {
@@ -688,7 +678,7 @@ function enviarSolicitudRetiro() {
             },
             'type': 'POST',
             'data': JSON.stringify(datos),
-            'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudInscripcion",
+            'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
             'success': function(response) {
                 if (response.Status) {
@@ -739,7 +729,7 @@ function tieneSolicitudPendiente($tipo) {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetTieneSolicitudPendiente",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetTieneSolicitudPendiente",
         'dataType': 'json',
         'success': function(response) {
             var obj = response.Data;
@@ -836,7 +826,7 @@ function anularSolicitud($tipo) {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/AnularSolicitud",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/AnularSolicitud",
         'dataType': 'json',
         'success': function(response) {
             if (response.Status) {
@@ -865,7 +855,7 @@ function obtenerTablaNotas() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
         'dataType': 'json',
         'success': cargarNotasSolicitud,
         'error': function() {
@@ -922,7 +912,7 @@ function enviarVisto($tipo) {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudVista",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudVista",
         'dataType': 'json',
         'success': function(response) {
             if (response.Status)
@@ -949,7 +939,7 @@ function cargarOfertaSolicitud(resultado) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta_v2",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
         'dataType': 'json',
         'success': function(resultado) {
             $("#tablaNotas_SOfertaCambio tbody").empty();
@@ -1077,7 +1067,7 @@ function enviarSolicitudCambio() {
             },
             'type': 'POST',
             'data': JSON.stringify(datos),
-            'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudInscripcion",
+            'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudInscripcion",
             'dataType': 'json',
             'success': function(response) {
                 if (response.Status) {
@@ -1391,17 +1381,27 @@ function cargaMateriaSelecionada() {
     }
 };
 
-function enviarInscripcion() {
-    var pPeriodoId = parseInt(localStorage.getItem("periodoOferta"));
-    var pCarreraId = parseInt(localStorage.getItem("carreraId"));
+function enviarInscripcionOnline() {
+    var pPeriodoId = $("#hdnPeriodoId").val();
+    var pCarreraId = $("#hdnCarreraId").val();
     var pGruposIds = localStorage.getItem("selMateria_lista").split(",");
-    var token = localStorage.getItem("token");
+    var pNroCuotas = $('#cbCuotas').val();
+    var pEmail = $('#email_ins_txt').val().trim();
+    var pCelular = $('#celular_ins_txt').val().trim();
+    if (!pEmail || !pCelular) {
+        swal("", "Debe ingresar su email y telf. celular", "info");
+        return;
+    }
     var datos = new Object();
     datos.pPeriodoId = pPeriodoId;
     datos.pCarreraId = pCarreraId;
     datos.pGruposIds = pGruposIds;
-    $("#mainLoader").show();
+    datos.pNroCuotas = pNroCuotas;
+    datos.pEmail = pEmail;
+    datos.pCelular = pCelular;
     $("#modalCostos").modal('hide');
+    $('#selMateria_btn').hide();
+    $("#mainLoader").show();
     if (boolModoSimulacion == 1) {
         swal("Proceso finalizado", "Usted acaba de inscribirse, por lo tanto, adquirió una deuda, ahora debe realizar su pago mediante vía online en nuestra plataforma o en ventanilla de Caja en Nur. Tiene un plazo máximo de <b>2 horas</b> para hacer su pago. <br><br> En caso de no pagarlas en ese tiempo, nos reservamos el derecho de retirar o no las materias registradas y si desea reinscribirse deberá ser de manera presencial en el edificio de Nur.", "success");
         $('input[type=checkbox]').prop('disabled', true);
@@ -1409,6 +1409,7 @@ function enviarInscripcion() {
         $("#mainLoader").hide();
         return;
     }
+    var token = localStorage.getItem("token");
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -1417,11 +1418,12 @@ function enviarInscripcion() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/InscripcionOnline",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/InscripcionOnline",
         'dataType': 'json',
         'success': function(response) {
             if (response.Status) {
-                swal("Proceso finalizado", "Usted acaba de inscribirse, por lo tanto, adquirió una deuda, ahora debe realizar su pago mediante vía online en nuestra plataforma o en ventanilla de Caja en Nur. Tiene un plazo máximo de <b>2 horas</b> para hacer su pago. <br><br> En caso de no pagarlas en ese tiempo, nos reservamos el derecho de retirar o no las materias registradas y si desea reinscribirse deberá ser de manera presencial en el edificio de Nur.", "success");
+                // swal("Proceso finalizado", "Usted acaba de inscribirse, por lo tanto, adquirió una deuda, ahora debe realizar su pago mediante vía online en nuestra plataforma o en ventanilla de Caja en Nur. Tiene un plazo máximo de <b>2 horas</b> para hacer su pago. <br><br> En caso de no pagarlas en ese tiempo, nos reservamos el derecho de retirar o no las materias registradas y si desea reinscribirse deberá ser de manera presencial en el edificio de Nur.", "success");
+                $('#inscripcionFinalizado_modal').modal('show');
                 $('input[type=checkbox]').prop('disabled', true);
                 $('#selMateria_btn').hide();
             } else {
@@ -1429,12 +1431,15 @@ function enviarInscripcion() {
                     swal("Formulario de Inscripción", response.Message, "info");
                 else
                     swal("Formulario de Inscripción", "No fue posible completar su inscripción. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
+                $('#selMateria_btn').show();
+
             }
             $("#mainLoader").hide();
         },
         'error': function() {
             swal("Formulario de Inscripción", "No fue posible completar su inscripción. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
             $("#mainLoader").hide();
+            $('#selMateria_btn').show();
         }
     });
 
@@ -1524,7 +1529,7 @@ function insertarComprobante() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/InsertarComprobantePago",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/InsertarComprobantePago",
         'dataType': 'json',
         'success': insertarEnvioComprobante
     });
@@ -1548,7 +1553,7 @@ function obtenerComprobantePago() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneComprobantePago",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneComprobantePago",
         'dataType': 'json',
         'success': comprobantePago
     });
@@ -1644,15 +1649,15 @@ function bloqueoInscripcion() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/BloqueoInscripcion",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/BloqueoInscripcion",
         'dataType': 'json',
         'success': function(response) {
             if (response.Data.BOOLBLOQUEO == 1) {
                 setTimeout(function() { $('input[type=checkbox]').prop('disabled', true); }, 1000);
                 $('#selMateria_btn').hide();
-                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible. <br>" + response.Data.DESCRIPCION, "info")
+                swal("Formulario de Inscripción", "La inscripción en línea no se encuentra disponible. <br>" + response.Data.DESCRIPCION, "info");
             } else {
-
+                $('#modalidad_modal').modal('show');
             }
             $("#mainLoader").hide();
         },
@@ -1708,12 +1713,11 @@ function sendVacunaDatos() {
         },
         'type': 'POST',
         'data': JSON.stringify(datos),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/SolicitudVacunado",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/SolicitudVacunado",
         'dataType': 'json',
         'success': function(response) {
             if (response.Data == 1) {
-                swal("Formulario enviado", "Gracias por enviarnos sus datos, recibirá una confirmación cuando hallan sido registrado sus datos de vacunación, vía email o whatsapp al contacto que ha proporcionado (" +
-                    $("#vacunaemail_txt").val() + " - " + $("#vacunacelular_txt").val() + ").", "info")
+                swal("Formulario enviado", "Gracias por enviarnos sus datos, recibirá una confirmación cuando su vacunación sea verificada, vía Email o Whatsapp al contacto que ha proporcionado.", "success");
             }
             $("#mevacune_modal").modal('hide');
             $("#mevacune_modal button").prop('disabled', false);
@@ -1724,6 +1728,54 @@ function sendVacunaDatos() {
             $("#mainLoader").hide();
         }
     });
+}
+
+function comprobarCruceOferta() {
+    var pPeriodoId = $("#hdnPeriodoId").val();
+    var pCarreraId = $("#hdnCarreraId").val();
+    var pGruposIds = localStorage.getItem("selMateria_lista").split(",");
+    var token = localStorage.getItem("token");
+    var datos = new Object();
+    datos.pPeriodoId = pPeriodoId;
+    datos.pCarreraId = pCarreraId;
+    datos.pGruposIds = pGruposIds;
+    $("#mainLoader").show();
+    $("#modalCostos").modal('hide');
+
+    jQuery.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        'type': 'POST',
+        'data': JSON.stringify(datos),
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetBloqueoOferta",
+        'dataType': 'json',
+        'success': function(response) {
+            if (response.Status) {
+                $('.modal').modal('hide');
+                $('#Paso2_modal').modal('show');
+            } else {
+                if (response.Message.includes('Bloqueo'))
+                    swal("Formulario de Inscripción", response.Message, "info");
+                else
+                    swal("Formulario de Inscripción", "Existe un problema con la selección de materias. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
+            }
+            $("#mainLoader").hide();
+        },
+        'error': function() {
+            swal("Formulario de Inscripción", "Existe un problema con la selección de materias. Para consultas sobre su inscripción comunicarse con el Dpto. de Registros con el Whatsapp 76392502.", "info");
+            $("#mainLoader").hide();
+        }
+    });
+}
+
+function verComprobante() {
+    var carreraId = parseInt(localStorage.getItem("carreraId"));
+    var periodoActual = parseInt(localStorage.getItem("periodoOferta"));
+    localStorage.setItem("repcompinscripcion", periodoActual + '-' + carreraId);
+    window.open('compinscripcion.html', '_blank');
 }
 
 //$('#registro_btn, #retiro_btn, #cambio_btn').hide();

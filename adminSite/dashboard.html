@@ -37,6 +37,7 @@
     <input type="hidden" id="dperiodoActual">
     <input type="hidden" id="isHistorialCargado" value="0">
     <input type="hidden" id="firstLoad" value="">
+    <input type="hidden" id="ultimoPeriodo" value="0">
     <div id="mainLoader" class='loader'></div>
     <div id="mainContainer" class="wrapper" style="display:none">
         <div class="sidebar" data-color="purple">
@@ -121,12 +122,12 @@
                                     <a class="dropdown-item btnSimulador" id="btnSimulador" onclick="PeriodosSimular()" href="javascript:void(0)">
                                         <p>Simulador de pagos</p>
                                     </a>
-                                    <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial" onclick="verListaHistorial()">
+                                    <!-- <a href="javascript:void(0)" class="dropdown-item" id="botonHistorial" onclick="verListaHistorial()">
                                         <p>Historial de notas</p>
                                     </a>
                                     <a class="dropdown-item" id="botonHistorial" onclick="verHistorial()" href="javascript:void(0)">
                                         <p>Gráfico historial</p>
-                                    </a>
+                                    </a> -->
                                     <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#modalCambiarPin" onclick="getElementById('bodyClick').click()">
                                         <p>Cambiar pin</p>
                                     </a>
@@ -185,15 +186,15 @@
                 <div class="row" id='containerNotas'>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="header">
-                                <h4 class="title">Notas</h4>
+                            <div class="header" style="display: flex;">
+                                <h4 class="title" style="margin-left: 0;margin-right: auto;">Notas</h4>
+                                <a onclick="cargarComprobante()" style="margin-left: auto;margin-right: 0;display: none;" class="compins_btn btn btn-primary"><i class="fas fa-print"></i> Comprobante</a>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
                                     <thead>
-                                        <th>SIGLA</th>
+                                        <th>CODIGO</th>
                                         <th>MATERIA</th>
-                                        <th>GRUPO</th>
                                         <th>DOCENTE</th>
                                         <th>TRAB</th>
                                         <th>CONT</th>
@@ -220,10 +221,12 @@
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
                                     <thead>
-                                        <th>SIGLA</th>
+                                        <th>CODIGO</th>
                                         <th>MATERIA</th>
-                                        <th>GRUPO</th>
                                         <th>DOCENTE</th>
+                                        <th>GR</th>
+                                        <th>SEM</th>
+                                        <th>MOD</th>
                                         <th class="secondSemester" style="display: none">AGO</th>
                                         <th class="secondSemester" style="display: none">SEP</th>
                                         <th class="secondSemester" style="display: none">OCT</th>
@@ -366,8 +369,9 @@
                                 <table class="table table-hover table-striped">
                                     <thead>
                                         <th>Materia</th>
-                                        <th>Aprobada</th>
-                                        <th>Creditos</th>
+                                        <th class='text-right'>Nota</th>
+                                        <th class='text-center'>Aprobada</th>
+                                        <th class='text-right'>Creditos</th>
                                         <th>Requisitos</th>
                                     </thead>
                                     <tbody id='{tableId}'>
@@ -585,7 +589,7 @@
                             <label for="repetirNuevoPin">Vuelve a escribir tu nuevo pin</label>
                             <input type="password" class="form-control" id="repetirNuevoPin" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a class="btn btn-primary" onclick="UpdatePin()">Guardar</a>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </form>
                 </div>

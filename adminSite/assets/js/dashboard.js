@@ -4,7 +4,8 @@ var isPageLoaded = false;
 var isHistorialCargado = false;
 var esconderPeriodos = false;
 var botonPagoVisible = 1;
-var boolModoDevLocal = 1;
+var boolModoDevLocal = 0;
+var botonCompInscripcion = 1;
 
 $(document).ready(function() {
 
@@ -12,18 +13,8 @@ $(document).ready(function() {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
 
-    var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
-    if (tieneBloqueo == 1) {
-        $("#titlePeriodos").remove();
-        $("#containerNotas").remove();
-        $("#containerAsistencia").remove();
-        $("#containerDeuda").removeAttr("style");
-        $("#containerDeuda").fadeIn();
-    }
-
     cargarPagina();
 
-    //tieneLaboratorio();
     $("#carrerasAlumno").change(function() {
         localStorage.setItem("carreraId", this.value);
         localStorage.setItem("carreraNombre", $(this).find("option:selected").text());
@@ -35,7 +26,6 @@ $(document).ready(function() {
         $(".periodosInvisibles").remove();
         comenzarMainCargado();
         $("#firstLoad").val("1");
-        //cargarPagina();
 
         var arrayCarPer = JSON.parse(localStorage.getItem("arrayCarPer"));
         arrayCarPer.forEach(function(element) {
@@ -54,50 +44,6 @@ $(document).ready(function() {
         $("#containerNotas").show();
         $("#containerAsistencia").show();
         $("#containerPensul").hide();
-    });
-
-    $("#formCambiarPin").submit(function(event) {
-        var pinAnterior = $("#pinAnterior").val();
-        var nuevoPin = $("#nuevoPin").val();
-        var repetirNuevoPin = $("#repetirNuevoPin").val();
-
-        if (nuevoPin.localeCompare(repetirNuevoPin) == 0) {
-            swal({
-                title: "¿Estas seguro de cambiar tu Pin ?",
-                type: "warning",
-                text: "Cambiara tu contraseña para ingresar al sitio de notas y para conectarte al Wi-Fi de la universidad",
-                showCancelButton: true,
-                confirmButtonText: "Aceptar",
-                cancelButtonText: "Cancelar",
-            }).then((result) => {
-                var token = localStorage.getItem("token");
-                var usuario = new Object();
-                usuario.pPinActual = pinAnterior;
-                usuario.pPinNuevo = nuevoPin;
-                $.ajax({
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + token,
-                    },
-                    type: "POST",
-                    data: JSON.stringify(usuario),
-                    url: "http://sisnur.nur.edu:8085/api/Registros/UpdatePin",
-                    dataType: "json",
-                }).done(function(response) {
-                    if (response.Status) {
-                        swal("Operacion Exitosa!", "Pin actualizado correctamente!", "success");
-                    } else {
-                        swal("Error", "Hubo un error al actualizar su Pin", "error");
-                    }
-                });
-            });
-        } else {
-            swal("Error", "Los Pines no son iguales.", "error");
-        }
-        $("#modalCambiarPin").modal("hide");
-        $("#formCambiarPin")[0].reset();
-        return false;
     });
 
     $("#verOferta").click(function() {
@@ -135,6 +81,7 @@ $(document).ready(function() {
         var periodoId = parseInt(JSON.parse($(this).attr("data-json")));
         var dperiodoActual = $(this).children("p").text();
         localStorage.setItem("MasterPeriodoActual", periodoId);
+        localStorage.setItem("corrPeActId", periodoId);
         $("#containerPensul").hide();
         $("#containerPerfil").hide();
         $("#containerPlanPagos").hide();
@@ -179,7 +126,7 @@ $(document).ready(function() {
                         Authorization: "Bearer " + token,
                     },
                     type: "POST",
-                    url: "http://sisnur.nur.edu:8085/api/Registros/UpdateEmailTelefono",
+                    url: "https://nurssl.nur.edu:8182/api/Registros/UpdateEmailTelefono",
                     dataType: "json",
                     data: JSON.stringify(datos),
                     success: function(response) {
@@ -513,6 +460,9 @@ $(document).ready(function() {
             $("#montoPago_txt").val(fnDosDigitos(pMontoPago));
     });
 
+    if (botonCompInscripcion == 1)
+        $('.compins_btn').css('display', 'block');
+
 });
 
 function comenzarMainCargado() {
@@ -526,12 +476,14 @@ function terminarMainCargado() {
 }
 
 function cargarPagina() {
-    var token = localStorage.getItem("token");
-    obtenerBloqueo(token)
-    obtenerNombre(token);
-    obtenerImagen(token);
-    getCarreraInfo(token);
-    setTimeout(function() { cargarPeriodoYNotas(); }, 5000);
+    comenzarCargado()
+
+    obtenerNombre();
+    getCarreraInfo();
+    obtenerBloqueo();
+
+    comenzarCargado()
+    setTimeout(function() { cargarPeriodoYNotas() }, 2000);
 }
 
 function resultadoBloqueo(resultado) {
@@ -570,7 +522,8 @@ function cargarCreditos(creditosVencidos) {
     chart.legend = new am4charts.Legend();
 }
 
-function obtenerImagen(token) {
+function obtenerImagen() {
+    var token = localStorage.getItem("token");
     if (token != "") {
         $.ajax({
             headers: {
@@ -579,7 +532,7 @@ function obtenerImagen(token) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoImagen",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoImagen",
             dataType: "json",
             success: function(resultado) {
                 if (resultado.Data == "") {
@@ -597,8 +550,55 @@ function obtenerImagen(token) {
 }
 
 
+function UpdatePin() {
+    var pinAnterior = $("#pinAnterior").val();
+    var nuevoPin = $("#nuevoPin").val();
+    var repetirNuevoPin = $("#repetirNuevoPin").val();
+    if (nuevoPin.length < 5) {
+        swal('', 'Su nuevo PIN debe contener 5 o mas caracteres.', 'info')
+        return;
+    } else if (nuevoPin != repetirNuevoPin) {
+        swal("", "Los Pines no son iguales.", "info");
+        return
+    }
+    swal({
+        title: "¿Estas seguro de cambiar tu Pin ?",
+        type: "warning",
+        text: "Cambiara tu contraseña para ingresar al sitio de notas y para conectarte al Wi-Fi de la universidad",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        var token = localStorage.getItem("token");
+        var usuario = new Object();
+        usuario.pPinActual = pinAnterior;
+        usuario.pPinNuevo = nuevoPin;
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            'type': 'POST',
+            'data': JSON.stringify(usuario),
+            'url': "https://nurssl.nur.edu:8182/api/Registros/UpdatePin",
+            'dataType': 'json',
+            'success': function(response) {
+                if (response.Status) {
+                    swal("Operacion Exitosa!", "Pin actualizado correctamente!", "success");
+                    $("#formCambiarPin")[0].reset();
+                } else {
+                    swal("Error", "Hubo un error al actualizar su Pin", "error");
+                }
+            }
+        });
+    });
+    $("#modalCambiarPin").modal("hide");
+}
 
-function obtenerNombre(token) {
+
+function obtenerNombre() {
+    var token = localStorage.getItem("token");
     if (token != "") {
         $.ajax({
             headers: {
@@ -607,27 +607,27 @@ function obtenerNombre(token) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
             dataType: "json",
-            success: resultado,
+            success: function(resultado) {
+                const { SREGISTRO, SAPELLIDOP, SAPELLIDOM, SNOMBRES, SCELULAR, STELEFONO, SEMAIL, LHORASERVICIO } = resultado.Data;
+                var NombreCompleto = SREGISTRO + " " + SNOMBRES + " " + SAPELLIDOP + " " + SAPELLIDOM;
+                $("#nombreEstudiante").text(NombreCompleto);
+                $("#inputTelefono").val(STELEFONO);
+                $("#inputCelular").val(SCELULAR);
+                $("#inputEmail").val(SEMAIL);
+                $("#tituloNombreEstudiante").text(NombreCompleto);
+                obtenerImagen();
+                getEmailValido();
+                cargarCreditos(LHORASERVICIO);
+            },
             error: errorSesion,
         });
     }
 }
 
-function resultado(resultado) {
-    const { SREGISTRO, SAPELLIDOP, SAPELLIDOM, SNOMBRES, SCELULAR, STELEFONO, SEMAIL, LHORASERVICIO } = resultado.Data;
-    var NombreCompleto = SREGISTRO + " " + SNOMBRES + " " + SAPELLIDOP + " " + SAPELLIDOM;
-    $("#nombreEstudiante").text(NombreCompleto);
-    $("#inputTelefono").val(STELEFONO);
-    $("#inputCelular").val(SCELULAR);
-    $("#inputEmail").val(SEMAIL);
-    $("#tituloNombreEstudiante").text(NombreCompleto);
-    cargarCreditos(LHORASERVICIO);
-    getEmailValido();
-}
-
-function getCarreraInfo(token) {
+function getCarreraInfo() {
+    var token = localStorage.getItem("token");
     if (token != "") {
         jQuery.ajax({
             headers: {
@@ -636,7 +636,7 @@ function getCarreraInfo(token) {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoCarreras",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoCarreras",
             dataType: "json",
             success: infoCarrera,
             error: errorSesion,
@@ -648,7 +648,6 @@ function infoCarrera(resultado) {
     var count = 0;
     //$('#carrerasAlumno').empty();
     var carreras = "";
-    var correcionId = 0;
     var arrayCarPer = [];
     resultado.Data.forEach(function(element) {
         const { LCARRERA_ID, SCARRERA_DSC, LPERIODOACTUAL, LPERIODOACTUAL_ID } = element;
@@ -704,7 +703,7 @@ function GetPeriodosCursados() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosCursados",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetPeriodosCursados",
             dataType: "json",
             data: JSON.stringify(usuario),
             success: periodosCursados,
@@ -765,8 +764,12 @@ function periodosCursados(resultado) {
             lista.append(link);
             $("#periodosTitle").after(lista);
         }
+        if (count == length - 1) {
+            $("#ultimoPeriodo").val(LPERIODO_ID);
+        }
         count++;
     });
+    terminarCargado();
 }
 
 function GetPeriodosOfertas() {
@@ -782,7 +785,7 @@ function GetPeriodosOfertas() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetPeriodosOfertaCarrera",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetPeriodosOfertaCarrera",
             dataType: "json",
             data: JSON.stringify(obj),
             success: periodosOfertas,
@@ -830,19 +833,20 @@ function periodosOfertas(resultado) {
 }
 
 function obtenerNotas(periodoId) {
+    var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
+    if (tieneBloqueo == 1)
+        return;
+
     var periodoActual = $("#dperiodoActual").val();
     var semestre = periodoActual.split("-")[1];
-    var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
-    if (tieneBloqueo == 0) {
-        mostrarColumnas(semestre);
-    }
-    var token = localStorage.getItem("token");
+    mostrarColumnas(semestre);
     var carreraId = $("#carrerasAlumno").find(":selected").val();
-    var userId = localStorage.getItem("idUser");
     var usuario = new Object();
     usuario.pCarreraId = carreraId;
     usuario.pPeriodoId = periodoId;
-    if (userId != "") {
+    $('#containerNotas, #containerAsistencia').css('display', 'none');
+    var token = localStorage.getItem("token");
+    if (token != "") {
         jQuery.ajax({
             headers: {
                 Accept: "application/json",
@@ -851,7 +855,7 @@ function obtenerNotas(periodoId) {
             },
             type: "POST",
             data: JSON.stringify(usuario),
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
             dataType: "json",
             success: cargarNotas,
             error: errorSesion,
@@ -900,11 +904,10 @@ function cargarNotas(resultado) {
         return;
     }
     resultado.Data.forEach(function(element) {
-        const { SCODMATERIA, SCODGRUPO, DOCENTE, EXFINAL, FINAL, PAR1, PAR2, TRABPRACTICOS, CONLECTURA, SMATERIA_DSC, LCENTRO_ID } = element;
+        const { SCODMATERIA, DOCENTE, SCODGRUPO, SSEMANA, MODALIDAD, EXFINAL, FINAL, PAR1, PAR2, TRABPRACTICOS, CONLECTURA, SMATERIA_DSC, LCENTRO_ID } = element;
         var tr = $("<tr ></tr>");
         var tdCodMateria = $("<td></td>").text(SCODMATERIA);
         var tdMateria = $("<td></td>").text(SMATERIA_DSC);
-        var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
         var tdDocente = $("<td></td>").text(DOCENTE);
         var tdExFinal = $("<td></td>").text(EXFINAL);
         var tdFinal = $("<td></td>").text(FINAL);
@@ -914,7 +917,6 @@ function cargarNotas(resultado) {
         var tdCont = $("<td></td>").text(CONLECTURA);
         tr.append(tdCodMateria);
         tr.append(tdMateria);
-        tr.append(tdCodgrupo);
         tr.append(tdDocente);
         tr.append(tdTrab);
         tr.append(tdCont);
@@ -925,19 +927,31 @@ function cargarNotas(resultado) {
         $("#tablaNotas").append(tr);
         cargarAsistencias(element);
     });
+    $('#containerNotas, #containerAsistencia').css('display', 'block');
 }
 
 function cargarAsistencias(element) {
-    const { SCODMATERIA, SCODGRUPO, DOCENTE, SMATERIA_DSC, LCENTRO_ID } = element;
+    const { SCODMATERIA, DOCENTE, SCODGRUPO, SSEMANA, MODALIDAD, SMATERIA_DSC, LCENTRO_ID } = element;
     var tr = $("<tr ></tr>");
     var tdCodMateria = $("<td></td>").text(SCODMATERIA);
     var tdMateria = $("<td></td>").text(SMATERIA_DSC);
-    var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
     var tdDocente = $("<td></td>").text(DOCENTE);
+    var tdCodgrupo = $("<td></td>").text(SCODGRUPO);
+    var tdSemana = $("<td></td>").text(SSEMANA);
     tr.append(tdCodMateria);
     tr.append(tdMateria);
-    tr.append(tdCodgrupo);
     tr.append(tdDocente);
+    tr.append(tdCodgrupo);
+    tr.append(tdSemana);
+
+    //  MODALIDAD DE GRUPO
+    if (MODALIDAD == 'P')
+        tr.append("<td><span class='alert alert-success'>" + MODALIDAD + "</span></td>");
+    else if (MODALIDAD == 'V')
+        tr.append("<td><span class='alert alert-info'>" + MODALIDAD + "</span></td>");
+    else
+        tr.append("<td>" + MODALIDAD + "</td>");
+
     var periodoActual = $("#dperiodoActual").val();
     var semestre = periodoActual.split("-")[1];
     var count = 0;
@@ -1058,7 +1072,7 @@ function tieneOferta() {
             },
             type: "POST",
             data: JSON.stringify(usuario),
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoOferta_v2",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoOferta_v2",
             dataType: "json",
         })
         .done(function(resultado) {
@@ -1067,7 +1081,7 @@ function tieneOferta() {
     return response;
 }
 
-function cargarHistorial(resultado) {
+function cargarHistorialListado(resultado) {
     var semestre = " SEMESTRE";
     var espacio = "-";
 
@@ -1075,9 +1089,12 @@ function cargarHistorial(resultado) {
     resultado.Data.CURSADAS.forEach(function(element) {
         const { MATERIAS, REQUISITOS } = element;
         var objMateria = new Object();
+        objMateria.periodoId = parseInt(MATERIAS.LPERIODO_ID);
+        objMateria.periodo = MATERIAS.SPERIODO_DSC;
         objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
         objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
         objMateria.nombre = MATERIAS.SMATERIA_DSC;
+        objMateria.nota = parseFloat(MATERIAS.LNOTA);
         objMateria.requisitos = REQUISITOS;
         objMateria.cursada = 1;
         arbol.push(objMateria);
@@ -1088,15 +1105,18 @@ function cargarHistorial(resultado) {
             return;
         }
         var objMateria = new Object();
+        objMateria.periodoId = parseInt(MATERIAS.LPERIODO_ID);
+        objMateria.periodo = MATERIAS.SPERIODO_DSC;
         objMateria.semestre = parseInt(MATERIAS.LSEMESTRE);
         objMateria.creditos = parseInt(MATERIAS.LCREDITOS);
         objMateria.nombre = MATERIAS.SMATERIA_DSC;
+        objMateria.nota = parseFloat(MATERIAS.LNOTA);
         objMateria.requisitos = REQUISITOS;
         objMateria.cursada = 0;
         arbol.push(objMateria);
     });
     arbol.sort(function(a, b) {
-        return a.semestre - b.semestre;
+        return a.periodoId - b.periodoId;
     });
     construirTablas(arbol);
 }
@@ -1107,14 +1127,15 @@ function construirTablas(arbol) {
     var tableBody = $("<tbody ></tbody>");
     var html = trPlantilla.html();
     for (var i = 0; i < arbol.length; i++) {
-        const { creditos, cursada, nombre, requisitos, semestre } = arbol[i];
-        if (semestre != semestreAnterior) {
-            semestreAnterior = semestre;
+        const { creditos, cursada, nombre, requisitos, semestre, periodo, periodoId, nota } = arbol[i];
+        if (periodoId != semestreAnterior) {
+            semestreAnterior = periodoId;
             var html = trPlantilla.html();
             tablaId = "tabla" + i;
-            html = html.replace("{Semestre}", obtenerNumerosCardinales(semestre) + " Semestre");
+            // html = html.replace("{Semestre}", obtenerNumerosCardinales(semestre) + " Semestre");
+            html = html.replace("{Semestre}", periodo);
             html = html.replace("{tableId}", tablaId);
-            var div = $("<div ></div>").addClass("col-md-6");
+            var div = $("<div ></div>").addClass("col-md-12");
             div.append(html);
 
             $("#containerHistorial").append(div);
@@ -1122,14 +1143,15 @@ function construirTablas(arbol) {
             var tableBody = $("#" + tablaId);
         }
         var tr = $("<tr ></tr>");
-        tr.append($("<td></td>").text(nombre));
+        tr.append($("<td style='width: 500px;'></td>").text(nombre));
+        tr.append($("<td style='width: 80px;' class='text-right'></td>").text(nota));
 
-        if (cursada == 1) {
-            tr.append($("<td></td>").append($("<i ></i>").addClass("fas fa-check-square iconClass")));
+        if (nota >= 51) {
+            tr.append($("<td style='width: 80px;' class='text-center'></td>").append($("<i ></i>").addClass("fas fa-check-square iconClass")));
         } else {
-            tr.append($("<td></td>").text(""));
+            tr.append($("<td style='width: 80px;' class='text-center'></td>").text("-"));
         }
-        tr.append($("<td></td>").text(creditos));
+        tr.append($("<td style='width: 80px;' class='text-right'></td>").text(creditos));
         tr.append($("<td></td>").text(obtenerRequisitos(requisitos)));
         tableBody.append(tr);
         terminarCargado();
@@ -1273,9 +1295,8 @@ function cargarPromedio() {
 }
 
 function errorSesion() {
-    localStorage.removeItem("token");
-    var url = "../index.html";
-    $(location).attr("href", url);
+    localStorage.clear();
+    window.location = "../index.html";
 }
 
 function removerAcentos(newStringComAcento) {
@@ -1314,7 +1335,7 @@ function terminarCargado() {
 }
 
 function logout() {
-    localStorage.removeItem("token");
+    localStorage.clear();
 }
 
 function mostrarHorario() {
@@ -1334,13 +1355,13 @@ function mostrarHorario() {
             },
             type: "POST",
             data: JSON.stringify(usuario),
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetNotasFaltas",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetNotasFaltas",
             dataType: "json",
         })
         .done(function(resultado) {
             if (resultado.Data.length == 0) response = false;
         });
-    if (response) window.location = "horario.html";
+    if (response) window.open('horario.html', '_blank');
     else swal("", "Tu horario no esta disponible aún", "info");
     $("#bodyClick").click();
 }
@@ -1380,7 +1401,6 @@ function verHistorial() {
         $("#containerPensul").show();
         return;
     }
-    comenzarCargado();
     //realizarAjaxHistorial();
     $("#containerHistorial").hide();
     $("#containerPensul").show();
@@ -1388,6 +1408,8 @@ function verHistorial() {
 }
 
 function verListaHistorial() {
+    swal("", "El historial no se encuentra disponible, si desea solicitarlo comuníquese con 76392502.", "info");
+    return;
     $("#containerNotas").hide();
     $("#containerAsistencia").hide();
     $("#containerPerfil").hide();
@@ -1399,13 +1421,13 @@ function verListaHistorial() {
         $("#containerHistorial").show();
         return;
     }
-    comenzarCargado();
     var carreraId = localStorage.getItem("carreraId");
     var carreraNombre = localStorage.getItem("carreraNombre");
     var usuario = new Object();
     usuario.pCarreraId = carreraId;
     $("#carreraNombre").text(carreraNombre);
     var token = localStorage.getItem("token");
+    comenzarCargado();
     jQuery.ajax({
         headers: {
             Accept: "application/json",
@@ -1413,10 +1435,10 @@ function verListaHistorial() {
             Authorization: "Bearer " + token,
         },
         type: "POST",
-        url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoHistorial",
         dataType: "json",
         data: JSON.stringify(usuario),
-        success: cargarHistorial,
+        success: cargarHistorialListado,
         error: function() {
             swal("", "Lo sentimos, el servicio de historial en línea está temporalmente inhabilitado.", "info");
         },
@@ -1425,6 +1447,8 @@ function verListaHistorial() {
 }
 
 function realizarAjaxHistorial() {
+    swal("", "El historial no se encuentra disponible, si desea solicitarlo comuníquese con 76392502.", "info");
+    return;
     var carreraId = localStorage.getItem("carreraId");
     var usuario = new Object();
     usuario.pCarreraId = carreraId;
@@ -1437,7 +1461,7 @@ function realizarAjaxHistorial() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoHistorial",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoHistorial",
             dataType: "json",
             data: JSON.stringify(usuario),
             success: cargarHistorial,
@@ -1572,7 +1596,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "http://sisnur.nur.edu:8085/api/Registros/GetPlanPagos",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultadoCxc,
         error: errorSesion,
@@ -1746,7 +1770,7 @@ function cargarLinks() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetLinks",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetLinks",
             dataType: "json",
             success: function(response) {
                 $("#ListaLinks_ul").empty();
@@ -1765,7 +1789,9 @@ function cargarLinks() {
     }
 }
 
-function obtenerBloqueo(token) {
+function obtenerBloqueo() {
+    localStorage.removeItem("tieneBloqueo");
+    var token = localStorage.getItem("token");
     $.ajax({
         headers: {
             Accept: "application/json",
@@ -1773,11 +1799,22 @@ function obtenerBloqueo(token) {
             Authorization: "Bearer " + token,
         },
         type: "POST",
-        url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoBloqueo",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoBloqueo",
         dataType: "json",
-    }).done(function(response) {
-        var data = response.Data.toLowerCase();
-        localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
+        success: function(response) {
+            var data = response.Data.toLowerCase();
+            localStorage.setItem("tieneBloqueo", data.includes("bloqueo") ? 1 : 0);
+            var tieneBloqueo = parseInt(localStorage.getItem("tieneBloqueo"));
+            if (tieneBloqueo == 1) {
+                $("#titlePeriodos").remove();
+                $("#containerNotas").remove();
+                $("#containerAsistencia").remove();
+                $("#containerDeuda").removeAttr("style");
+                $("#containerDeuda").fadeIn();
+            }
+            terminarCargado();
+            terminarMainCargado();
+        }
     });
 }
 
@@ -1803,7 +1840,7 @@ function getCostosSemestre(periodoId, carreraId) {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetCostosSemestre",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetCostosSemestre",
         'dataType': 'json',
         'success': cargarCostos
     });
@@ -1824,7 +1861,7 @@ function tieneLaboratorio() {
         },
         'type': 'POST',
         'data': JSON.stringify(usuario),
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneLaboratorio",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneLaboratorio",
         'dataType': 'json',
         'success': cargarCostosLaboratorio
     });
@@ -1968,7 +2005,7 @@ function getEmailValido() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneEmailValido",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -1984,10 +2021,10 @@ function getEmailValido() {
 }
 
 function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
-    comenzarCargado();
     $('#nextPagoId_hf').val(pPlanPagosId);
     $('#nextPagoSaldo_hf').val(pSaldo);
     var token = localStorage.getItem("token");
+    comenzarCargado();
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -1995,7 +2032,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneEmailValido",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -2013,8 +2050,8 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             terminarCargado();
         },
         'error': function() {
-            swal("", "No fue posible verificar su correo electrónico, intente mas tarde.", "info");
             terminarCargado();
+            swal("", "No fue posible verificar su correo electrónico, intente mas tarde.", "info");
         }
     });
 }
@@ -2029,11 +2066,11 @@ function GetLinkPago() {
     } else {
         pSaldo = pMontoPago;
     }
-    comenzarCargado();
     var datos = new Object();
     datos.pPlanPagosId = pPlanPagosId;
     datos.pSaldo = pSaldo;
     var token = localStorage.getItem("token");
+    comenzarCargado();
     jQuery.ajax({
         headers: {
             'Accept': 'application/json',
@@ -2041,19 +2078,19 @@ function GetLinkPago() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetLinkPago",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetLinkPago",
         'dataType': 'json',
         'data': JSON.stringify(datos),
         'success': function(response) {
             terminarCargado();
             var pPlanPagosId = $('#nextPagoId_hf').val();
-            if (response.Data != "") {
+            if (response.Data) {
                 // Abrir ventana de PAGO
                 $('#pago_btn_' + pPlanPagosId).text("En proceso...");
                 $('#pago_btn_' + pPlanPagosId).attr("disabled", "disabled");
                 $('#pago_btn_' + pPlanPagosId).prop("onclick", null).off("click");
                 //setTimeout(window.open(response.Data, '_blank'), 3000);
-                window.location.href = response.Data;
+                window.location = response.Data;
             } else {
                 swal("", "No sentimos, no se pudo solicitar el pago en línea.", "info");
             }
@@ -2063,4 +2100,19 @@ function GetLinkPago() {
             terminarCargado();
         }
     });
+}
+
+function cargarComprobante() {
+    var carreraId = localStorage.getItem("carreraId");
+    var periodoActual = localStorage.getItem("corrPeActId");
+    localStorage.setItem("repcompinscripcion", periodoActual + '-' + carreraId);
+    window.open('compinscripcion.html', '_blank');
+}
+
+function cargarRepHistorial() {
+    var carreraId = localStorage.getItem("carreraId");
+    var periodoId = $("#ultimoPeriodo").val();
+    localStorage.setItem("rephistorial", periodoId + '-' + carreraId);
+    window.open('historial.html', '_blank');
+
 }

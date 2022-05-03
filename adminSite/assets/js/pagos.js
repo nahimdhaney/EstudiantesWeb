@@ -21,9 +21,9 @@ function showPuntosPago() {
 }
 
 function showPagoOnline() {
-    var userId = localStorage.getItem("tokenPagosNur");
+    var token = localStorage.getItem("tokenPagosNur");
     $('.formapago').css('display', 'none');
-    if (userId != null && userId != "") {
+    if (token != null && token != "") {
         $('.pagosdiv').css('display', 'block');
         consultarCXC();
         return;
@@ -49,7 +49,7 @@ $("#loginButton").click(function() {
                 "Content-Type": "application/json",
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/Login",
+            url: "https://nurssl.nur.edu:8182/api/Registros/Login",
             data: JSON.stringify(usuario),
             dataType: "json",
             success: function(resultado) {
@@ -85,7 +85,7 @@ function obtenerNombre() {
                 Authorization: "Bearer " + token,
             },
             type: "POST",
-            url: "http://sisnur.nur.edu:8085/api/Registros/GetAlumnoInfo",
+            url: "https://nurssl.nur.edu:8182/api/Registros/GetAlumnoInfo",
             dataType: "json",
             success: function(resultado) {
                 const {
@@ -119,7 +119,7 @@ function consultarCXC() {
         },
         type: "POST",
         data: JSON.stringify(data),
-        url: "http://sisnur.nur.edu:8085/api/Registros/GetPlanPagos",
+        url: "https://nurssl.nur.edu:8182/api/Registros/GetPlanPagos",
         dataType: "json",
         success: mostrarResultadoCxc,
         error: errorSesion,
@@ -289,7 +289,7 @@ function fnDosDigitos(numero) {
 
 function errorSesion() {
     terminarCargado();
-    localStorage.removeItem("tokenPagosNur");
+    localStorage.clear();
     location.reload();
 }
 
@@ -304,7 +304,7 @@ function tieneEmailValidoPago(pPlanPagosId, pSaldo) {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/TieneEmailValido",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/TieneEmailValido",
         'dataType': 'json',
         'success': function(response) {
             var esValido = response.Data;
@@ -348,7 +348,7 @@ function GetLinkPago() {
             'Authorization': 'Bearer ' + token
         },
         'type': 'POST',
-        'url': "http://sisnur.nur.edu:8085/api/Registros/GetLinkPago",
+        'url': "https://nurssl.nur.edu:8182/api/Registros/GetLinkPago",
         'dataType': 'json',
         'data': JSON.stringify(datos),
         'success': function(response) {
@@ -372,6 +372,6 @@ function GetLinkPago() {
 }
 
 function logout() {
-    localStorage.removeItem("tokenPagosNur");
+    localStorage.clear();
     location.reload();
 }

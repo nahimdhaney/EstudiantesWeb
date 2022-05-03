@@ -36,7 +36,6 @@
     0% {
         -webkit-transform: rotate(0deg);
     }
-
     100% {
         -webkit-transform: rotate(360deg);
     }
@@ -46,7 +45,6 @@
     0% {
         transform: rotate(0deg);
     }
-
     100% {
         transform: rotate(360deg);
     }
@@ -68,7 +66,6 @@
         bottom: -100px;
         opacity: 0
     }
-
     to {
         bottom: 0px;
         opacity: 1
@@ -80,7 +77,6 @@
         bottom: -100px;
         opacity: 0
     }
-
     to {
         bottom: 0;
         opacity: 1
@@ -98,25 +94,20 @@
     .no-print * {
         display: none !important;
     }
-
     body {
         overflow-x: hidden;
     }
-
     .content {
         overflow: hidden !important;
         font-size: 5px !important;
         ;
     }
-
     .card {
         margin-bottom: 1px;
     }
-
     .table {
         margin-bottom: 2px;
     }
-
     .notas td {
         padding: 0.4% !important;
         padding-left: 0.8% !important;
@@ -148,7 +139,6 @@
     #infoAlumno * {
         font-size: 8px
     }
-
     #imgPrint {
         width: 10%;
     }
@@ -166,10 +156,10 @@
     margin-bottom: 20px;
 }
 
-    .contenedor-info p {
-        font-size: 9px;
-        margin: 0;
-    }
+.contenedor-info p {
+    font-size: 9px;
+    margin: 0;
+}
 
 @media (min-width: 425px) {
     .contenedor-info p {
@@ -199,19 +189,18 @@
     }
 }
 
-
-.header-sub > h5 {
+.header-sub>h5 {
     font-size: 14px;
 }
 
 @media (min-width: 425px) {
-    .header-sub > h5 {
+    .header-sub>h5 {
         font-size: 15px;
     }
 }
 
 @media (min-width: 768px) {
-    .header-sub > h5 {
+    .header-sub>h5 {
         font-size: 18px;
     }
 }
@@ -244,18 +233,19 @@
 }
 
 .card {
-    box-shadow: 0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0.5px 0.5px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-#iPrint, #iCompPago{
+#iPrint,
+#iCompPago {
     font-size: 30px;
     color: gray;
     margin-left: 10px;
     float: left;
 }
 
-@media (min-width: 768px){
-    #iCompPago{
+@media (min-width: 768px) {
+    #iCompPago {
         font-size: 35px;
     }
 }
@@ -267,6 +257,7 @@
 .table-der {
     text-align: right;
 }
+
 
 /* #tableCostosMaterias td{
     font-size: 13px;
@@ -289,7 +280,9 @@
     border-top: 2px solid black;
 }
 
+
 /* #pagoContado */
+
 .chkDesc {
     width: 20px;
     height: 20px;
@@ -310,7 +303,7 @@
     display: flex;
 }
 
-.lbCuotas{
+.lbCuotas {
     align-self: flex-end;
 }
 
@@ -329,27 +322,29 @@
     margin: 0;
 }
 
-#contabilizar{
+#contabilizar {
     background-image: linear-gradient(to right, #00396f, #013e78, #024380, #034889, #044d92);
     color: white;
     border: none;
 }
 
+
 /* .divModalFooter {
     display: flex;
     justify-content: flex-end;
 } */
-.divModalFooter .btnAtras{
+
+.divModalFooter .btnAtras {
     float: left;
 }
 
-.divModalCostoFooter{
+.divModalCostoFooter {
     display: flex;
     justify-content: space-between;
 }
 
-
-.div-parrafo, .div-fichero {
+.div-parrafo,
+.div-fichero {
     text-align: center;
 }
 
@@ -357,7 +352,7 @@
     margin: 35px 0;
 }
 
-#subtitulo-comp{
+#subtitulo-comp {
     text-align: left;
     margin-top: 25px;
 }
@@ -367,8 +362,8 @@
 }
 
 #btnSubir {
-    background: rgb(46,106,100);
-    background: linear-gradient(94deg, rgba(46,106,100,1) 0%, rgba(44,97,92,1) 100%);
+    background: rgb(46, 106, 100);
+    background: linear-gradient(94deg, rgba(46, 106, 100, 1) 0%, rgba(44, 97, 92, 1) 100%);
     color: white;
     border: none;
 }
@@ -389,9 +384,10 @@
     border-color: initial;
     border-image: initial;
 }
-    .boton-subir:hover {
-        color: black;
-    }
+
+.boton-subir:hover {
+    color: black;
+}
 
 .boton-siguiente,
 .btnAtras,
@@ -399,7 +395,7 @@
 .btnEnviar {
     background-color: rgb(45, 189, 166);
     color: white;
-    border-radius: 100px;
+    border-radius: 5px;
     border-style: none;
     padding: 10px 20px;
 }
@@ -411,7 +407,7 @@
     color: black;
 }
 
-.modal-carga{
+.modal-carga {
     display: flex;
     position: fixed;
     z-index: 1000;
@@ -419,14 +415,14 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba( 0, 0, 0, .8 ) ;
+    background-color: rgba( 0, 0, 0, .8);
     background-position: 50% 50%;
     background-repeat: no-repeat;
     justify-content: center;
     align-items: center;
 }
 
-.loading{
+.loading {
     width: 200px;
     height: 200px;
     box-sizing: border-box;
@@ -436,7 +432,8 @@
     animation: a1 2s linear infinite;
 }
 
-.loading::before, .loading::after{
+.loading::before,
+.loading::after {
     content: '';
     width: 200px;
     height: 200px;
@@ -447,18 +444,17 @@
     border-radius: 50%;
 }
 
-.loading::before{
+.loading::before {
     border-top: 10px solid #c5a11f;
     transform: rotate(120deg);
-
 }
 
-.loading::after{
+.loading::after {
     border-top: 10px solid #fff;
     transform: rotate(240deg);
 }
 
-.loading span{
+.loading span {
     position: absolute;
     width: 200px;
     height: 200px;
@@ -468,39 +464,41 @@
     animation: a2 2s linear infinite;
 }
 
-@keyframes a1{
-    to{
+@keyframes a1 {
+    to {
         transform: rotate(360deg);
     }
 }
 
-@keyframes a2{
-    to{
+@keyframes a2 {
+    to {
         transform: rotate(-360deg);
     }
 }
 
-#msgComprobante{
+#msgComprobante {
     color: red;
     font-size: 13px;
 }
 
-.div-email-comp, .div-telefono-comp, .div-obs-comp{
+.div-email-comp,
+.div-telefono-comp,
+.div-obs-comp {
     display: flex;
     justify-content: center;
     margin-top: 15px;
 }
 
-.inputComp{
+.inputComp {
     width: 300px;
 }
 
-.btn-disabled{
+.btn-disabled {
     opacity: 0.5;
     pointer-events: none;
 }
 
-#txtEstadoComp{
+#txtEstadoComp {
     align-self: center;
     margin: 0;
     font-weight: bold;
@@ -508,58 +506,58 @@
     text-align: left;
 }
 
-@media (min-width: 515px){
-    #txtEstadoComp{
+@media (min-width: 515px) {
+    #txtEstadoComp {
         font-size: 16px;
     }
 }
 
-#spEstadoComp{
+#spEstadoComp {
     font-weight: normal;
 }
 
-.linea-divisoria{
+.linea-divisoria {
     height: 1px;
     border-width: 0;
     color: gray;
     background-color: gray;
 }
 
-#msg{
+#msg {
     color: red;
     font-size: 13px;
 }
 
 .div-email-comp>#divError-email,
 .div-telefono-comp>#divError-email,
-.div-obs-comp>#divError-email{
+.div-obs-comp>#divError-email {
     text-align: left;
 }
 
-.msgFooterCompPago{
+.msgFooterCompPago {
     font-size: 13px;
     text-align: left;
     padding: 0px 30px;
 }
 
-#txtObsComprobante{
+#txtObsComprobante {
     resize: none;
 }
 
-.iAviso{
+.iAviso {
     display: none;
     font-size: 25px;
     vertical-align: middle;
 }
 
-.iAviso:hover{
+.iAviso:hover {
     cursor: help;
 }
 
-.disabled{
+.disabled {
     background-color: #dddddd;
 }
 
-.disabled:hover{
+.disabled:hover {
     color: white;
 }
